@@ -43,6 +43,14 @@ const YAHOO = [
   ["us10y", "^TNX", "Treasury USA 10 anni", "%", 2, "neutro", [0, 20]],
   ["eurusd_y", "EURUSD=X", "Euro / Dollaro (mercato)", "$", 4, "neutro", [0.5, 2]],
   ["oro", "GC=F", "Oro", "$/oz", 0, null, [500, 20000]],
+  ["argento", "SI=F", "Argento", "$/oz", 2, null, [5, 500]],
+  ["platino", "PL=F", "Platino", "$/oz", 0, null, [200, 10000]],
+  ["rame", "HG=F", "Rame", "$/lb", 2, null, [1, 30]],
+  ["emergenti", "EIMI.MI", "Mercati emergenti", "€", 2, null, [5, 500]],
+  ["giappone", "^N225", "Giappone (Nikkei)", "pt", 0, null, [5000, 200000]],
+  ["india", "^NSEI", "India (Nifty 50)", "pt", 0, null, [3000, 200000]],
+  ["cina", "000001.SS", "Cina (Shanghai)", "pt", 0, null, [1000, 20000]],
+  ["brasile", "^BVSP", "Brasile (Bovespa)", "pt", 0, null, [20000, 1000000]],
   ["brent", "BZ=F", "Petrolio Brent", "$/bbl", 2, "giu", [10, 400]],
   ["btc", "BTC-USD", "Bitcoin", "$", 0, null, [1000, 2000000]],
 ];
@@ -144,7 +152,7 @@ const inRange = (v, r) => num(v) != null && (!r || (v >= r[0] && v <= r[1]));
 async function yahoo(sym, range) {
   let j, lastErr;
   for (const host of ["query1", "query2"]) {
-    try { j = await get(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=3mo&interval=1d&includePrePost=false`, { json: true }); break; }
+    try { j = await get(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=1y&interval=1d&includePrePost=false`, { json: true }); break; }
     catch (e) { lastErr = e; }
   }
   if (!j) throw lastErr;
@@ -169,10 +177,21 @@ async function yahoo(sym, range) {
   if (!inRange(last, range) || !inRange(prev, range)) throw new Error(`valore fuori scala (${last})`);
   const var1 = (last / prev - 1) * 100;
   if (Math.abs(var1) > 35) throw new Error(`variazione implausibile (${var1.toFixed(1)}%)`);
-  const ago = closes.length > 22 ? closes.at(-23) : null;
+  // rendimento rispetto all'ultima chiusura disponibile a una certa data
+  const tsAll = pts.map((p) => p[0]);
+  const alla = (sec) => { let k = -1; for (let i = 0; i < tsAll.length; i++) if (tsAll[i] <= sec) k = i; return k >= 0 ? pts[k][1] : null; };
+  const ora = num(liveT) || pts.at(-1)[0];
+  const perf = (base) => (base && base > 0 ? round((last / base - 1) * 100, 2) : null);
+  const primoAnno = Date.UTC(new Date(ora * 1000).getUTCFullYear(), 0, 1) / 1000;
+  const copre = (sec) => tsAll[0] <= sec + 5 * 86400; // la serie arriva davvero a quella data
+  const rend = {
+    m1: copre(ora - 30 * 86400) ? perf(alla(ora - 30 * 86400)) : null,
+    m3: copre(ora - 91 * 86400) ? perf(alla(ora - 91 * 86400)) : null,
+    ytd: copre(primoAnno) ? perf(alla(primoAnno)) : null,
+    y1: copre(ora - 360 * 86400) ? perf(pts[0][1]) : null,
+  };
   return {
-    valore: last, var: var1, data: lastDay,
-    mese: ago ? (last / ago - 1) * 100 : null,
+    valore: last, var: var1, data: lastDay, mese: rend.m1, rend,
     serie: closes.slice(-60).map((v) => round(v, 4)),
   };
 }
@@ -259,29 +278,40 @@ const CATEGORIE = [
 async function inflazioneCategorie() {
   for (const ds of ["prc_hicp_minr", "prc_hicp_manr"]) {
     try {
-      const j = await get(`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${ds}?format=JSON&lang=EN&geo=IT&lastTimePeriod=1`, { json: true, timeout: 90000 });
+      const j = await get(`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${ds}?format=JSON&lang=EN&geo=IT&lastTimePeriod=3`, { json: true, timeout: 120000 });
       const ids = j.id, size = j.size, dims = j.dimension;
       const stride = size.map((_, i) => size.slice(i + 1).reduce((a, b) => a * b, 1));
       const dCoicop = ids.find((d) => /^coicop/i.test(d)), dUnit = ids.find((d) => d === "unit");
       if (!dCoicop) throw new Error("dimensione coicop assente");
       const uCat = dims[dUnit].category, uCodes = Object.keys(uCat.index);
       const uCode = uCodes.find((c) => c === "RCH_A") || uCodes.find((c) => /annual rate of change/i.test(uCat.label?.[c] || ""));
-      if (!uCode) throw new Error("unità RCH_A assente");
+      if (!uCode) throw new Error("unità RCH_A assente: " + uCodes.join(","));
       const cCat = dims[dCoicop].category, cCodes = Object.keys(cCat.index);
-      const periodo = Object.keys(dims.time.category.index)[0].replace(/M(\d{2})$/, "-$1");
+      const tempi = Object.entries(dims.time.category.index).sort((a, b) => b[0].localeCompare(a[0])); // dal più recente
+      const valore = (code, ti) => {
+        const flat = ids.reduce((acc, d, i) => {
+          const idx = d === dCoicop ? cCat.index[code] : d === dUnit ? uCat.index[uCode] : d === "time" ? ti : 0;
+          return acc + idx * stride[i];
+        }, 0);
+        return j.value?.[flat] ?? j.value?.[String(flat)];
+      };
+      // l'ultimo mese in cui la maggior parte delle categorie ha un valore
+      let scelto = null;
+      for (const [t, ti] of tempi) {
+        const n = CATEGORIE.filter(([, codici]) => cCodes.includes(codici[0]) && num(valore(codici[0], ti)) != null).length;
+        if (n >= 5) { scelto = [t, ti]; break; }
+      }
+      if (!scelto) throw new Error(`nessun mese completo tra ${tempi.map((x) => x[0]).join(",")}`);
+      const periodo = scelto[0].replace(/M(\d{2})$/, "-$1");
       if (!fresco(periodo, 4)) throw new Error(`${ds} fermo a ${periodo}`);
       const out = {};
       for (const [id, codici, etichetta, nome] of CATEGORIE) {
         const code = cCodes.find((c) => codici.includes(c)) || cCodes.find((c) => etichetta.test(cCat.label?.[c] || ""));
         if (!code) continue;
-        const flat = ids.reduce((acc, d, i) => {
-          const idx = d === dCoicop ? cCat.index[code] : d === dUnit ? uCat.index[uCode] : 0;
-          return acc + idx * stride[i];
-        }, 0);
-        const v = j.value?.[flat] ?? j.value?.[String(flat)];
+        const v = valore(code, scelto[1]);
         if (num(v) != null && v > -30 && v < 80) out[id] = { nome, valore: v };
       }
-      if (Object.keys(out).length < 5) throw new Error(`categorie riconosciute: ${Object.keys(out).length}; esempi ${cCodes.slice(0, 15).join(",")}`);
+      if (Object.keys(out).length < 5) throw new Error(`categorie con valore: ${Object.keys(out).length}`);
       return { periodo, categorie: out };
     } catch (e) { log("ATTENZIONE inflazione per categoria", ds, "-", motivo(e)); }
   }
@@ -508,14 +538,17 @@ function testiCalcolati(ctx, V) {
 
   // Scheda Spese
   const sb = (ctx.serie.benzina || []).filter((x) => num(x) != null);
-  const sett = sb.length >= 6 ? benz - sb.at(-6) : null;
+  const settimanale = /settimanale/i.test(V.benzina?.nota || "");
+  const passi = settimanale ? 4 : 10; // circa un mese: 4 bollettini settimanali o 10 aggiornamenti giornalieri
+  const sett = sb.length > passi ? benz - sb.at(-1 - passi) : null;
+  const rispetto = settimanale ? "rispetto a un mese fa" : "rispetto a circa una settimana fa";
   const pieno = benz != null ? benz * 50 : null;
   const brm = num(V.brent?.mese);
   const spe = {
     tema: "Spese",
     titolo: benz == null ? "Energia e carburanti" : sett != null && sett > 0.015 ? "Carburanti in aumento" : sett != null && sett < -0.015 ? "Carburanti in calo" : `Benzina a ${it(benz, 3)} €/l`,
     testo: [
-      benz != null ? `La benzina self costa in media ${it(benz, 3)} €/l${sett != null ? ` (${segno(sett * 100, 1)} centesimi rispetto agli ultimi rilevamenti)` : ""}: un pieno da 50 litri vale circa ${it(pieno, 0)} €.` : "",
+      benz != null ? `La benzina self costa in media ${it(benz, 3)} €/l${sett != null ? ` (${segno(sett * 100, 1)} centesimi ${rispetto})` : ""}: un pieno da 50 litri vale circa ${it(pieno, 0)} €.` : "",
       brm != null && Math.abs(brm) >= 3 ? `Il petrolio è ${brm >= 0 ? "salito" : "sceso"} ${prep("de", Math.abs(brm), 0)}% in un mese: i prezzi alla pompa di solito lo seguono con qualche settimana di ritardo.` : "",
       "Il Portale Offerte ARERA e l'Osservaprezzi del Mimit sono gratuiti e neutrali.",
     ].filter(Boolean).join(" "),
@@ -650,6 +683,7 @@ async function main() {
   const serie = { ...(prev.serie || {}) };
   const serieDate = { ...(prev.serieDate || {}) };
   const esito = { ok: [], ko: [] };
+  const rendimenti = {};
 
   // --- quotazioni giornaliere
   for (const [id, sym, nome, unita, dec, buono, range] of YAHOO) {
@@ -657,6 +691,7 @@ async function main() {
     await sleep(400);
     if (!y) { esito.ko.push(nome); continue; }
     V[id] = { nome, unita, decimali: dec, buono, valore: round(y.valore, dec), var: round(y.var, 2), data: y.data, mese: y.mese, fonte: "Yahoo Finance", url: `https://finance.yahoo.com/quote/${encodeURIComponent(sym)}` };
+    rendimenti[id] = y.rend;
     serie[id] = y.serie;
     esito.ok.push(nome);
   }
@@ -758,6 +793,10 @@ async function main() {
     const val = g(V.oro.valore, V[fxOro].valore);
     V.oro_eur = { nome: "Oro al grammo", unita: "€/g", decimali: 2, valore: round(val, 2), var: s.length > 1 ? round((val / s.at(-2) - 1) * 100, 2) : null, data: V.oro.data, mese: s.length > 22 ? (val / s.at(-23) - 1) * 100 : null, nota: `Oro puro. A 18 carati circa ${it(val * 0.75)} €/g`, fonte: "Calcolo su Yahoo Finance e BCE", url: "https://finance.yahoo.com/quote/GC%3DF" };
     serie.oro_eur = s;
+    if (rendimenti.oro && rendimenti[fxOro]) {
+      const r = {}; for (const k of ["m1", "m3", "ytd", "y1"]) { const a = rendimenti.oro[k], b = rendimenti[fxOro][k]; r[k] = a != null && b != null ? round(((1 + a / 100) / (1 + b / 100) - 1) * 100, 2) : null; }
+      rendimenti.oro_eur = r;
+    }
   }
 
   // --- carburanti (media dei distributori self, aggiornata ogni mattina dal Mimit)
@@ -788,12 +827,14 @@ async function main() {
 
   // --- composizione: le voci non aggiornate mantengono valore e data precedenti
   const GRUPPI = [
-    ["Borse", ["ftsemib", "stoxx50", "dax", "mondo", "sp500", "dow", "nasdaq", "vix"]],
+    ["Borse", ["ftsemib", "stoxx50", "dax", "mondo", "sp500", "nasdaq", "giappone", "vix"]],
+    ["Mercati emergenti", ["emergenti", "india", "cina", "brasile"]],
     ["Tassi", ["bce", "euribor3m", "btp10", "spread"]],
     ["Banche e lavoro in Italia", ["mutuo_medio", "dep_vincolati", "dep_conto", "disoccupazione"]],
     ["Prezzi in Italia", ["infl_it", "infl_ez", "benzina", "gasolio"]],
-    ["Valute e oro", ["eurusd", "eurgbp", "eurchf", "oro_eur"]],
-    ["Mondo e materie prime", ["fed", "us10y", "brent", "btc"]],
+    ["Metalli preziosi e industriali", ["oro_eur", "argento", "platino", "rame"]],
+    ["Valute e cripto", ["eurusd", "eurgbp", "eurchf", "btc"]],
+    ["Stati Uniti ed energia", ["fed", "us10y", "dow", "brent"]],
   ];
   const NOTE = {
     ftsemib: "Indice principale di Piazza Affari", stoxx50: "Le 50 maggiori società dell'area euro", dax: "Borsa di Francoforte",
@@ -802,6 +843,9 @@ async function main() {
     us10y: "Rendimento del decennale USA, riferimento mondiale", eurusd: "Un euro forte rende più economici gli acquisti in dollari",
     oro: "Bene rifugio, quotazione future", argento: "Metallo prezioso e industriale", brent: "Riferimento per carburanti ed energia",
     btc: "Asset speculativo, molto volatile e non protetto", ttf: "Riferimento europeo per le bollette del gas",
+    argento: "Metallo prezioso e industriale, più volatile dell'oro", platino: "Usato in gioielleria e catalizzatori auto", palladio: "Metallo per l'industria automobilistica",
+    rame: "Termometro dell'economia mondiale: sale quando l'industria cresce", emergenti: "ETF iShares MSCI EM IMI quotato a Milano: oltre 3.000 aziende di Cina, India, Taiwan, Brasile",
+    giappone: "Borsa di Tokyo, in yen", india: "Le 50 maggiori società indiane, in rupie", cina: "Borsa di Shanghai, in yuan", brasile: "Borsa di San Paolo, in real",
   };
   const mercati = GRUPPI.map(([gruppo, ids]) => ({
     gruppo,
@@ -857,6 +901,17 @@ async function main() {
     agenda,
     rendimenti: VV.dep_vincolati ? { mediaVincolati: VV.dep_vincolati.valore, mediaConto: VV.dep_conto?.valore ?? null, mutuoMedio: VV.mutuo_medio?.valore ?? null, data: VV.dep_vincolati.data, fonte: "Banca d'Italia / BCE" } : prev.rendimenti || null,
     inflazioneCategorie: inflCat || prev.inflazioneCategorie || null,
+    classifica: (() => {
+      const LISTA = [
+        ["mondo", "Azionario mondiale", "€"], ["emergenti", "Mercati emergenti", "€"], ["stoxx50", "Europa (Euro Stoxx 50)", "€"],
+        ["ftsemib", "Italia (FTSE MIB)", "€"], ["sp500", "USA (S&P 500)", "$"], ["nasdaq", "Tecnologici USA (Nasdaq)", "$"],
+        ["giappone", "Giappone", "¥"], ["india", "India", "₹"], ["cina", "Cina", "¥"], ["brasile", "Brasile", "R$"],
+        ["oro_eur", "Oro", "€"], ["argento", "Argento", "$"], ["platino", "Platino", "$"], ["rame", "Rame", "$"],
+        ["brent", "Petrolio", "$"], ["btc", "Bitcoin", "$"],
+      ];
+      const out = LISTA.filter(([id]) => rendimenti[id]).map(([id, nome, valuta]) => ({ id, nome, valuta, ...rendimenti[id] }));
+      return out.length >= 6 ? { data: giorno, voci: out } : prev.classifica || null;
+    })(),
     serie,
     serieDate,
   };

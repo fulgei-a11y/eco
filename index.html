@@ -248,6 +248,34 @@ select { appearance: auto; }
   .rank-row .rank-bar { grid-column: 1 / -1; grid-row: 2; }
   .portfolio-card { grid-template-columns: minmax(0, 1fr); }
 }
+.seg { display: inline-flex; background: var(--surface-2); border-radius: 10px; padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg button { font: inherit; font-size: .85rem; font-weight: 700; border: 0; background: transparent; color: var(--muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.perf { display: grid; gap: 6px; background: var(--surface); border-radius: var(--r); padding: 14px 16px; box-shadow: var(--shadow); }
+.perf-row { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) 5.5rem; gap: 12px; align-items: center; font-size: .92rem; }
+.perf-row .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perf-row .nm small { color: var(--muted); font-family: var(--f-mono); font-size: .7rem; margin-left: 4px; }
+.perf-track { position: relative; height: 16px; }
+.perf-track::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--line); }
+.perf-track i { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; }
+.perf-row .v { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; }
+.alerts { display: grid; gap: 8px; }
+.alert-hit { display: flex; gap: 10px; align-items: flex-start; background: var(--teal-soft); border-radius: 12px; padding: 12px 14px; font-size: .94rem; }
+.alert-hit b { font-family: var(--f-display); }
+.sig { display: grid; grid-template-columns: auto minmax(0, 1fr) 8rem; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+.sig:last-child { border-bottom: 0; }
+.sig input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--teal); }
+.sig small { display: block; color: var(--muted); font-size: .8rem; }
+.pi-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.pi-table th { text-align: left; font-weight: 700; color: var(--muted); font-size: .78rem; border-bottom: 1px solid var(--line); padding: 6px 4px; }
+.pi-table td { padding: 7px 4px; border-bottom: 1px dashed var(--line); }
+.pi-table td.n { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 560px) {
+  .perf-row { grid-template-columns: minmax(0, 1fr) 5rem; }
+  .perf-row .perf-track { grid-column: 1 / -1; grid-row: 2; }
+  .sig { grid-template-columns: auto minmax(0, 1fr); }
+  .sig .input-wrap { grid-column: 2; }
+}
 .stale-banner { background: var(--accent-soft); color: var(--ink); border-radius: 12px; padding: 12px 16px; font-size: .92rem; }
 .tile.old .t-src::after { content: " · non aggiornato"; color: var(--warn); font-weight: 600; }
 .news time { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); margin-left: 8px; }
@@ -321,6 +349,7 @@ select { appearance: auto; }
   <!-- ===================== OGGI ===================== -->
   <div class="view" id="view-oggi">
     <p class="stale-banner" id="staleBanner" hidden></p>
+    <section class="alerts" id="alertHits" aria-label="I tuoi segnali" hidden></section>
     <section id="portfolioToday" aria-label="Il tuo portafoglio oggi"></section>
 
     <section aria-labelledby="h-pert">
@@ -329,6 +358,17 @@ select { appearance: auto; }
         <p>Le notizie del giorno tradotte in effetti concreti su conto, mutuo, investimenti e spese.</p>
       </div>
       <div class="cards-4" id="perTe"></div>
+    </section>
+
+    <section aria-labelledby="h-perf">
+      <div class="section-head">
+        <h2 id="h-perf">Cosa ha reso di più</h2>
+        <div class="seg" role="group" aria-label="Periodo" id="perfSeg">
+          <button type="button" data-p="m1">1 mese</button><button type="button" data-p="m3">3 mesi</button><button type="button" data-p="ytd">Da inizio anno</button><button type="button" data-p="y1">1 anno</button>
+        </div>
+      </div>
+      <div class="perf" id="perf"></div>
+      <p class="callout" style="margin-top:12px">La classifica cambia di anno in anno e chi è primo oggi spesso non lo è domani: per questo chi investe a lungo termine diversifica invece di inseguire il vincitore. Rendimenti nella valuta indicata, senza dividendi.</p>
     </section>
 
     <section aria-labelledby="h-rank">
@@ -387,6 +427,14 @@ select { appearance: auto; }
       </div>
     </section>
 
+    <section class="panel" aria-labelledby="h-pi">
+      <header><h3 id="h-pi">La tua inflazione personale</h3><p>L'inflazione ufficiale è una media. Pesando l'aumento dei prezzi di ogni categoria con le tue spese del bilancio qui sopra, scopri quanto sta salendo il <em>tuo</em> costo della vita.</p></header>
+      <div class="grid-2">
+        <div class="result" id="piResult"></div>
+        <div style="overflow-x:auto"><table class="pi-table" id="piTable"></table></div>
+      </div>
+    </section>
+
     <section>
       <div class="grid-2">
         <div class="panel">
@@ -427,6 +475,23 @@ select { appearance: auto; }
           </div>
           <div class="result" id="salResult"></div>
         </div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="panel">
+        <header><h3>I tuoi segnali</h3><p>Scegli cosa vuoi tenere d'occhio. Quando una soglia viene superata, te lo segnaliamo in cima a «Oggi».</p></header>
+        <div id="signals"></div>
+      </div>
+      <div class="panel">
+        <header><h3>I tuoi dati</h3><p>Bilancio, portafoglio, segnali e impostazioni restano solo su questo dispositivo. Salva una copia per non perderli se cambi telefono o cancelli i dati del browser.</p></header>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button type="button" class="btn" id="bkSave">Salva una copia</button>
+          <label class="btn ghost" for="bkFile" style="cursor:pointer">Ripristina da copia</label>
+          <input type="file" id="bkFile" accept="application/json,.json" hidden>
+          <button type="button" class="btn ghost" id="bkCopy">Copia negli appunti</button>
+        </div>
+        <p id="bkMsg" class="callout" hidden></p>
       </div>
     </section>
   </div>
@@ -737,7 +802,7 @@ select { appearance: auto; }
       var val = typeof v.valore === "number" ? nf(v.valore, v.decimali) : esc(v.valore);
       var daily = /^\d{4}-\d{2}-\d{2}$/.test(String(v.data)) && ["bce", "fed"].indexOf(v.id) < 0;
       var age = upd ? (upd - new Date(String(v.data).slice(0, 10) + "T12:00:00")) / 864e5 : 0;
-      return '<div class="tile' + (daily && age > 5 ? ' old' : '') + '"><div class="t-name"><span>' + esc(v.nome) + '</span>' + chipFor(v) + '</div>' +
+      return '<div class="tile' + (daily && age > (v.id === "benzina" || v.id === "gasolio" ? 10 : 5) ? ' old' : '') + '"><div class="t-name"><span>' + esc(v.nome) + '</span>' + chipFor(v) + '</div>' +
         '<div class="t-val">' + val + '<small>' + esc(v.unita) + '</small></div>' +
         spark(v.id) +
         '<div class="t-note">' + esc(v.nota) + '</div>' +
@@ -1092,8 +1157,9 @@ select { appearance: auto; }
         '<div class="rank-bar" aria-hidden="true"><i style="left:' + left + '%;width:' + w.toFixed(1) + '%;background:' + (r.real != null && r.real < 0 ? "var(--accent)" : "var(--teal)") + '"></i>' + (inf != null ? '<span class="infl" style="left:' + x(inf) + '%"></span>' : '') + '</div>' +
         '<div class="rank-num">' + (r.net >= 0 ? "+" : "") + pct(r.net) + ' netto<span>' + segnoEur(10000 * r.net / 100) + ' l\'anno' + (r.real != null ? ' · <em class="' + cls + '" style="font-style:normal">reale ' + (r.real >= 0 ? "+" : "") + pct(r.real) + '</em>' : '') + '</span></div></div>';
     }).join("");
-    var mesi = rows.map(function (r) { return r.rif.data; }).sort();
-    $("#rankNote").textContent = "Tassi medi ufficiali di Banca d'Italia e BCE (" + meseDi({ data: mesi[mesi.length - 1] }) + ")" + (infl ? ", inflazione italiana di " + meseDi(infl) + " al " + pct(inf, 1) : "") + ". Le offerte migliori online possono pagare più della media: usa la calcolatrice in Strumenti per confrontarle.";
+    var mesi = rows.map(function (r) { return String(r.rif.data).slice(0, 7); }).sort();
+    var da = meseDi({ data: mesi[0] }), a = meseDi({ data: mesi[mesi.length - 1] });
+    $("#rankNote").textContent = "Tassi medi ufficiali di Banca d'Italia e BCE (" + (da === a ? a : da + " – " + a) + ")" + (infl ? ", inflazione italiana di " + meseDi(infl) + " al " + pct(inf, 1) : "") + ". Le offerte migliori online possono pagare più della media: usa la calcolatrice in Strumenti per confrontarle.";
   })();
 
   /* ---------- PIANO: portafoglio ---------- */
@@ -1223,6 +1289,140 @@ select { appearance: auto; }
     }
     ["fx-eur", "fx-cur", "fx-off"].forEach(function (id) { document.getElementById(id).addEventListener("input", render); });
     render();
+  })();
+
+  /* ---------- OGGI: classifica dei rendimenti ---------- */
+  (function () {
+    var C = D.classifica && D.classifica.voci || [];
+    var sez = $("#perf").closest("section");
+    if (C.length < 4) { sez.hidden = true; return; }
+    var periodo = store.get("periodo", "ytd");
+    function render() {
+      document.querySelectorAll("#perfSeg button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.p === periodo)); });
+      var rows = C.filter(function (c) { return typeof c[periodo] === "number"; }).sort(function (a, b) { return b[periodo] - a[periodo]; });
+      var max = Math.max.apply(null, rows.map(function (r) { return Math.abs(r[periodo]); })) || 1;
+      $("#perf").innerHTML = rows.map(function (r) {
+        var v = r[periodo], w = Math.abs(v) / max * 50;
+        return '<div class="perf-row"><span class="nm" title="' + esc(r.nome) + '">' + esc(r.nome) + '<small>' + esc(r.valuta) + '</small></span>' +
+          '<div class="perf-track" aria-hidden="true"><i style="' + (v >= 0 ? 'left:50%' : 'right:50%') + ';width:' + w.toFixed(1) + '%;background:' + (v >= 0 ? 'var(--up)' : 'var(--down)') + '"></i></div>' +
+          '<span class="v ' + (v >= 0 ? "pos" : "neg") + '">' + (v > 0 ? "+" : "") + pct(v, 1) + '</span></div>';
+      }).join("") || '<p class="callout">Dati non disponibili per questo periodo.</p>';
+    }
+    document.querySelectorAll("#perfSeg button").forEach(function (b) { b.addEventListener("click", function () { periodo = b.dataset.p; store.set("periodo", periodo); render(); }); });
+    render();
+  })();
+
+  /* ---------- PIANO: inflazione personale ---------- */
+  function renderPI() {
+    var IC = D.inflazioneCategorie, cat = IC && IC.categorie;
+    var infl = V("infl_it");
+    if (!cat) { $("#piResult").innerHTML = "<p>I dati per categoria non sono disponibili in questa edizione.</p>"; $("#piTable").innerHTML = ""; return; }
+    var b = store.get("budget", {}) || {};
+    var media = function (ids) { var v = ids.map(function (i) { return cat[i] && cat[i].valore; }).filter(function (x) { return typeof x === "number"; }); return v.length ? v.reduce(function (a, c) { return a + c; }, 0) / v.length : null; };
+    var MAP = [
+      ["casa", "Casa", ["casa"]], ["bollette", "Bollette", ["energia", "casa"]], ["spesa", "Spesa alimentare", ["alimentari"]],
+      ["trasporti", "Trasporti", ["trasporti"]], ["salute", "Salute e figli", ["salute"]], ["svago", "Svago e acquisti", ["svago", "ristoranti", "abbigliamento"]],
+      ["abbon", "Abbonamenti", ["comunicazioni", "svago"]]
+    ];
+    var rows = [], tot = 0, somma = 0, aumento = 0;
+    MAP.forEach(function (m) {
+      var spesa = +b[m[0]] || 0, i = cat[m[2][0]] ? cat[m[2][0]].valore : media(m[2]);
+      if (m[0] === "svago" || m[0] === "abbon") i = media(m[2]);
+      if (!spesa || typeof i !== "number") return;
+      rows.push({ n: m[1], s: spesa, i: i }); tot += spesa; somma += spesa * i; aumento += spesa * i / (100 + i);
+    });
+    if (!tot) { $("#piResult").innerHTML = "<p>Compila il bilancio qui sopra per calcolare la tua inflazione.</p>"; $("#piTable").innerHTML = ""; return; }
+    var mia = somma / tot, diff = infl ? mia - infl.valore : null;
+    var costoMese = aumento; // quanto delle spese di oggi è dovuto agli aumenti dell'ultimo anno
+    $("#piResult").className = "result" + (diff != null && diff > 0.3 ? " warn" : "");
+    $("#piResult").innerHTML = '<div class="eyebrow">La tua inflazione (dati di ' + fmtDate(IC.periodo) + ')</div><div class="big">' + pct(mia, 1) + '</div>' +
+      (infl ? '<div class="row"><span>Media nazionale (IPCA)</span><span>' + pct(infl.valore, 1) + '</span></div>' : '') +
+      '<div class="row"><span>Le tue spese costano in più rispetto a un anno fa</span><span>' + eur(costoMese) + ' al mese</span></div>' +
+      (diff != null ? '<p style="font-size:.88rem">' + (diff > 0.3 ? "I prezzi salgono più per te che per la media: le voci in cima alla tabella sono quelle dove cercare risparmi." : diff < -0.3 ? "Le tue spese sono meno esposte agli aumenti della media nazionale." : "Il tuo costo della vita sale in linea con la media nazionale.") + '</p>' : '') +
+      '<p style="font-size:.8rem;color:var(--muted)">Stima: rate del mutuo e affitti seguono regole proprie e qui sono approssimati con la voce «casa».</p>';
+    rows.sort(function (a, c) { return c.s * c.i - a.s * a.i; });
+    $("#piTable").innerHTML = '<thead><tr><th>Voce</th><th style="text-align:right">Prezzi in un anno</th><th style="text-align:right">In più al mese</th></tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr><td>' + esc(r.n) + '</td><td class="n ' + (r.i > (infl ? infl.valore : 2) ? "neg" : "") + '">' + (r.i > 0 ? "+" : "") + pct(r.i, 1) + '</td><td class="n">' + eur(r.s * r.i / (100 + r.i)) + '</td></tr>'; }).join("") + '</tbody>';
+  }
+  document.querySelectorAll("[data-b]").forEach(function (el) { el.addEventListener("input", renderPI); });
+  renderPI();
+
+  /* ---------- PIANO: segnali ---------- */
+  var SIG = [
+    ["benz_sotto", "benzina", "<", "Benzina sotto", "€/l", 0.005, 3, "Buon momento per fare il pieno"],
+    ["oro_sopra", "oro_eur", ">", "Oro sopra", "€/g", 1, 2, "Valuta se vendere oro inutilizzato"],
+    ["usd_sopra", "eurusd", ">", "Euro/dollaro sopra", "$", 0.005, 4, "Viaggi e acquisti in dollari più convenienti"],
+    ["eur_sotto", "euribor3m", "<", "Euribor 3 mesi sotto", "%", 0.05, 2, "Rate dei mutui variabili in calo"],
+    ["spread_sopra", "spread", ">", "Spread sopra", "pb", 5, 0, "Tensione sul debito italiano"],
+    ["infl_sotto", "infl_it", "<", "Inflazione sotto", "%", 0.1, 1, "Il potere d'acquisto torna a respirare"],
+    ["mondo_calo", "mondo", "calo", "Azionario mondiale in calo oltre il", "% in un mese", 1, 0, "Per chi accumula a lungo termine, i cali sono prezzi più bassi"]
+  ];
+  var sigs = store.get("segnali", {});
+  function valoreSig(s) { var v = findVoce(s[1]); if (!v) return null; return s[2] === "calo" ? (typeof v.mese === "number" ? -v.mese : null) : (typeof v.valore === "number" ? v.valore : null); }
+  $("#signals").innerHTML = SIG.map(function (s) {
+    var cur = valoreSig(s), st = sigs[s[0]] || {};
+    var def = st.soglia != null ? st.soglia : (cur != null ? (s[2] === "calo" ? 5 : +cur.toFixed(s[6])) : "");
+    return '<div class="sig"><input type="checkbox" id="sg-' + s[0] + '" data-sg="' + s[0] + '"' + (st.on ? " checked" : "") + ' aria-label="Attiva: ' + esc(s[3]) + '">' +
+      '<label for="sg-' + s[0] + '"><b>' + esc(s[3]) + '</b><small>' + esc(s[7]) + (cur != null && s[2] !== "calo" ? ' · oggi ' + nf(cur, s[6]) + ' ' + esc(s[4]) : '') + '</small></label>' +
+      '<div class="input-wrap"><input type="number" id="sgv-' + s[0] + '" data-sgv="' + s[0] + '" step="' + s[5] + '" value="' + def + '"><span class="unit">' + esc(s[4].replace("% in un mese", "%")) + '</span></div></div>';
+  }).join("");
+  function renderHits() {
+    var hits = SIG.filter(function (s) {
+      var st = sigs[s[0]]; if (!st || !st.on || st.soglia == null) return false;
+      var v = valoreSig(s); if (v == null) return false;
+      return s[2] === "<" ? v < st.soglia : v > st.soglia;
+    });
+    var box = $("#alertHits");
+    box.hidden = !hits.length;
+    box.innerHTML = hits.map(function (s) {
+      var v = valoreSig(s);
+      return '<div class="alert-hit"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 5v6M10 14v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><div><b>Segnale: ' + esc(s[3]) + ' ' + nf(sigs[s[0]].soglia, s[6]) + ' ' + esc(s[4]) + '</b><br>Valore attuale: ' + (s[2] === "calo" ? "−" : "") + nf(v, s[6] || 1) + ' ' + esc(s[4]) + '. ' + esc(s[7]) + '.</div></div>';
+    }).join("");
+  }
+  document.querySelectorAll("[data-sg], [data-sgv]").forEach(function (el) {
+    el.addEventListener("input", function () {
+      var id = el.dataset.sg || el.dataset.sgv;
+      sigs[id] = { on: document.getElementById("sg-" + id).checked, soglia: parseFloat(String(document.getElementById("sgv-" + id).value).replace(",", ".")) };
+      if (!isFinite(sigs[id].soglia)) sigs[id].soglia = null;
+      store.set("segnali", sigs); renderHits();
+    });
+  });
+  renderHits();
+
+  /* ---------- PIANO: copia di sicurezza ---------- */
+  (function () {
+    var msg = function (t) { var m = $("#bkMsg"); m.hidden = false; m.textContent = t; };
+    var dump = function () {
+      var out = { app: "eco-bussola", versione: 1, salvato: new Date().toISOString(), dati: {} };
+      try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf("eco:") === 0) out.dati[k] = localStorage.getItem(k); } } catch (e) {}
+      return JSON.stringify(out, null, 1);
+    };
+    $("#bkSave").addEventListener("click", function () {
+      try {
+        var blob = new Blob([dump()], { type: "application/json" }), a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "eco-bussola-" + new Date().toISOString().slice(0, 10) + ".json";
+        document.body.appendChild(a); a.click(); a.remove();
+        msg("Copia salvata nei download. Conservala in un posto sicuro: contiene le tue cifre.");
+      } catch (e) { msg("Il salvataggio non è riuscito: usa «Copia negli appunti» e incolla il testo in una nota."); }
+    });
+    $("#bkCopy").addEventListener("click", function () {
+      var t = dump();
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { msg("Copiato negli appunti. Incollalo in una nota personale per conservarlo."); }, function () { msg("Copia non consentita su questo dispositivo: usa «Salva una copia»."); });
+      else msg("Copia non consentita su questo dispositivo: usa «Salva una copia».");
+    });
+    $("#bkFile").addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0]; if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        try {
+          var j = JSON.parse(r.result);
+          if (!j || j.app !== "eco-bussola" || !j.dati) throw new Error("formato");
+          Object.keys(j.dati).forEach(function (k) { if (k.indexOf("eco:") === 0) localStorage.setItem(k, j.dati[k]); });
+          msg("Dati ripristinati. Ricarico la pagina…"); setTimeout(function () { location.reload(); }, 800);
+        } catch (err) { msg("Questo file non è una copia valida di Eco Bussola."); }
+      };
+      r.readAsText(f);
+    });
   })();
 
   /* ---------- app installabile ---------- */
