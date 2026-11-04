@@ -1,23 +1,27 @@
-// Aggiorna data.js con dati di mercato da fonti pubbliche gratuite.
-// I numeri arrivano solo dalle fonti; l'IA (Gemini o Groq, piani gratuiti) scrive soltanto i testi.
+// Aggiorna data.js con dati da fonti pubbliche gratuite. Funziona senza alcuna intelligenza artificiale:
+// numeri e testi sono calcolati dai dati. Se è presente GEMINI_API_KEY (o GROQ_API_KEY) l'IA può
+// riscrivere solo i testi; se non risponde o sbaglia formato, restano i testi calcolati.
 // Uso: node scripts/aggiorna.mjs   (Node 20+, nessuna dipendenza)
 
 import { readFile, writeFile } from "node:fs/promises";
 import vm from "node:vm";
 
 const FILE = new URL("../data.js", import.meta.url);
-const UA = "Mozilla/5.0 (compatible; eco-bussola/1.0)";
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 const log = (...a) => console.log("[aggiorna]", ...a);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// ---------------------------------------------------------------- configurazione
+// ================================================================ configurazione
 
+// Riunioni di politica monetaria BCE (calendari ufficiali 2026 e 2027).
 const BCE_RIUNIONI = [
   "2026-12-17",
   "2027-02-04", "2027-03-18", "2027-04-29", "2027-06-10",
   "2027-07-22", "2027-09-09", "2027-10-28", "2027-12-16",
 ];
 
-const SCADENZE_FISCALI = [ // [mese, giorno, evento, perché]
+// Scadenze fiscali ricorrenti: [mese, giorno, evento, perché]. Se cadono di sabato o domenica slittano al lunedì.
+const SCADENZE_FISCALI = [
   [6, 16, "Acconto IMU", "Prima rata per seconde case e immobili non esenti"],
   [6, 30, "Saldo e primo acconto Irpef", "Per chi presenta il modello Redditi"],
   [9, 30, "Termine per il 730", "Ultimo giorno per la dichiarazione precompilata"],
@@ -25,27 +29,39 @@ const SCADENZE_FISCALI = [ // [mese, giorno, evento, perché]
   [12, 16, "Saldo IMU", "Seconde case e immobili non esenti"],
 ];
 
-const YAHOO = [ // id, simbolo, nome, unità, decimali, buono
-  ["ftsemib", "FTSEMIB.MI", "FTSE MIB", "pt", 0],
-  ["stoxx50", "^STOXX50E", "Euro Stoxx 50", "pt", 0],
-  ["dax", "^GDAXI", "DAX", "pt", 0],
-  ["mondo", "SWDA.MI", "Azionario mondiale", "€", 2],
-  ["sp500", "^GSPC", "S&P 500", "pt", 2],
-  ["dow", "^DJI", "Dow Jones", "pt", 2],
-  ["nasdaq", "^IXIC", "Nasdaq", "pt", 2],
-  ["vix", "^VIX", "Indice della paura (VIX)", "pt", 2, "giu"],
-  ["us10y", "^TNX", "Treasury USA 10 anni", "%", 2],
-  ["eurusd", "EURUSD=X", "Euro / Dollaro", "$", 4],
-  ["oro", "GC=F", "Oro", "$/oz", 0],
-  ["argento", "SI=F", "Argento", "$/oz", 2],
-  ["brent", "BZ=F", "Petrolio Brent", "$/bbl", 2, "giu"],
-  ["ttf", "TTF=F", "Gas TTF", "€/MWh", 2, "giu"],
-  ["btc", "BTC-USD", "Bitcoin", "$", 0],
+// Quotazioni giornaliere: id, simbolo Yahoo, nome, unità, decimali, buono ("giu" = scendere è favorevole), [min, max] plausibili
+const YAHOO = [
+  ["ftsemib", "FTSEMIB.MI", "FTSE MIB", "pt", 0, null, [10000, 200000]],
+  ["stoxx50", "^STOXX50E", "Euro Stoxx 50", "pt", 0, null, [1500, 20000]],
+  ["dax", "^GDAXI", "DAX", "pt", 0, null, [5000, 100000]],
+  ["mondo", "SWDA.MI", "Azionario mondiale", "€", 2, null, [20, 1000]],
+  ["sp500", "^GSPC", "S&P 500", "pt", 2, null, [1000, 30000]],
+  ["dow", "^DJI", "Dow Jones", "pt", 2, null, [10000, 200000]],
+  ["nasdaq", "^IXIC", "Nasdaq", "pt", 2, null, [3000, 100000]],
+  ["vix", "^VIX", "Indice della paura (VIX)", "pt", 2, "giu", [5, 150]],
+  ["us10y", "^TNX", "Treasury USA 10 anni", "%", 2, "neutro", [0, 20]],
+  ["eurusd", "EURUSD=X", "Euro / Dollaro", "$", 4, null, [0.5, 2]],
+  ["oro", "GC=F", "Oro", "$/oz", 0, null, [500, 20000]],
+  ["argento", "SI=F", "Argento", "$/oz", 2, null, [5, 500]],
+  ["brent", "BZ=F", "Petrolio Brent", "$/bbl", 2, "giu", [10, 400]],
+  ["ttf", "TTF=F", "Gas TTF", "€/MWh", 2, "giu", [3, 500]],
+  ["btc", "BTC-USD", "Bitcoin", "$", 0, null, [1000, 2000000]],
+];
+
+// Statistiche ufficiali BCE (le chiavi alternative coprono eventuali variazioni di codifica).
+const BCE_SERIE = [
+  // id, chiavi, nome, nota, buono, decimali, osservazioni, [min, max]
+  ["infl_it", ["ICP.M.IT.N.000000.4.ANR"], "Inflazione Italia", "Indice armonizzato IPCA, variazione annua", "giu", 1, 13, [-5, 30]],
+  ["infl_ez", ["ICP.M.U2.N.000000.4.ANR"], "Inflazione Eurozona", "Variazione annua, area euro", "giu", 1, 13, [-5, 30]],
+  ["euribor3m", ["FM.M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA"], "Euribor 3 mesi", "Parametro dei mutui variabili, media mensile", "neutro", 2, 13, [-2, 15]],
+  ["mutuo_medio", ["MIR.M.IT.B.A2C.AM.R.A.2250.EUR.N", "MIR.M.IT.B.A2C.A.R.A.2250.EUR.N"], "Tasso medio mutui casa", "Nuovi mutui alle famiglie in Italia", "giu", 2, 13, [0, 20]],
+  ["dep_vincolati", ["MIR.M.IT.B.L22.F.R.A.2250.EUR.N"], "Depositi vincolati", "Tasso lordo medio fino a 1 anno, nuovi depositi delle famiglie", null, 2, 13, [-1, 15]],
+  ["dep_conto", ["MIR.M.IT.B.L21.A.R.A.2250.EUR.O", "MIR.M.IT.B.L21.A.R.A.2250.EUR.N"], "Conti correnti", "Tasso lordo medio pagato sui conti delle famiglie", null, 2, 13, [-1, 15]],
 ];
 
 const RSS = [
-  ["ANSA Economia", "https://www.ansa.it/sito/notizie/economia/economia_rss.xml"],
-  ["ANSA Borsa", "https://www.ansa.it/sito/notizie/economia/borsa/borsa_rss.xml"],
+  ["ANSA", "https://www.ansa.it/sito/notizie/economia/economia_rss.xml"],
+  ["ANSA", "https://www.ansa.it/sito/notizie/economia/borsa/borsa_rss.xml"],
   ["Il Sole 24 Ore", "https://www.ilsole24ore.com/rss/finanza.xml"],
   ["Il Sole 24 Ore", "https://www.ilsole24ore.com/rss/economia.xml"],
   ["Rai News", "https://www.rainews.it/rss/economia"],
@@ -53,139 +69,334 @@ const RSS = [
   ["BCE", "https://www.ecb.europa.eu/rss/press.html"],
 ];
 
-// ---------------------------------------------------------------- utilità
+// Parole che rendono una notizia rilevante per chi risparmia (servono a ordinare, non a giudicare).
+const PAROLE_CHIAVE = /borsa|piazza affari|ftse|spread|btp|bce|lagarde|fed|tass[oi]|mutu|inflazion|prezz|bollett|carburant|benzin|gas|petroli|energia|pil|istat|lavoro|occupa|disoccupa|pension|fisco|tasse|irpef|imu|manovra|bilancio|risparm|banc|conto|deposit|euribor|dollaro|oro|crypto|bitcoin|salari|stipend|consum/i;
 
-async function get(url, { text = true, timeout = 30000, headers = {} } = {}) {
-  const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), timeout);
-  try {
-    const r = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: ctl.signal });
-    if (!r.ok) throw new Error(`HTTP ${r.status} ${url}`);
-    return text ? await r.text() : await r.json();
-  } finally { clearTimeout(t); }
+// ================================================================ utilità
+
+async function get(url, { json = false, timeout = 30000, tries = 3 } = {}) {
+  let last;
+  for (let i = 0; i < tries; i++) {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), timeout);
+    try {
+      const r = await fetch(url, { headers: { "User-Agent": UA, Accept: json ? "application/json" : "*/*" }, signal: ctl.signal, redirect: "follow" });
+      if (r.status === 429 || r.status >= 500) throw Object.assign(new Error(`HTTP ${r.status}`), { retry: true });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return json ? await r.json() : await r.text();
+    } catch (e) {
+      last = e;
+      if (!(e.retry || e.name === "AbortError" || /fetch failed|ECONNRESET|ETIMEDOUT/i.test(e.message))) break;
+      await sleep(1500 * (i + 1));
+    } finally { clearTimeout(t); }
+  }
+  throw last;
 }
 const safe = async (label, fn) => { try { return await fn(); } catch (e) { log("ATTENZIONE", label, "-", e.message); return null; } };
-const romeNow = () => new Date();
-const isoRome = (d = romeNow()) => {
-  const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZoneName: "longOffset" }).formatToParts(d).map((x) => [x.type, x.value]));
-  const off = (p.timeZoneName || "GMT+01:00").replace("GMT", "") || "+00:00";
+
+const romeParts = (d) => Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZoneName: "longOffset" }).formatToParts(d).map((x) => [x.type, x.value]));
+const isoRome = (d = new Date()) => {
+  const p = romeParts(d);
+  const off = (p.timeZoneName || "GMT").replace("GMT", "") || "+00:00";
   return `${p.year}-${p.month}-${p.day}T${p.hour === "24" ? "00" : p.hour}:${p.minute}:${p.second}${off}`;
 };
-const dayRome = (d = romeNow()) => isoRome(d).slice(0, 10);
+const dayRome = (d = new Date()) => isoRome(d).slice(0, 10);
 const hourRome = () => Number(isoRome().slice(11, 13));
+const daysBetween = (a, b) => Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
 const round = (n, d) => Math.round(n * 10 ** d) / 10 ** d;
+const num = (x) => (typeof x === "number" && isFinite(x) ? x : null);
 const it = (n, d = 2) => {
+  if (num(n) == null) return "—";
   const s = Math.abs(n).toFixed(d).split(".");
-  return (n < 0 ? "−" : "") + s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (d ? "," + s[1] : "");
+  const neg = n < 0 && Number(s.join(".")) !== 0;
+  return (neg ? "−" : "") + s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (d ? "," + s[1] : "");
 };
-const csvRows = (txt) => {
-  const lines = txt.trim().split(/\r?\n/);
-  const sep = lines[0].includes(";") && !lines[0].includes(",") ? ";" : ",";
-  const head = lines[0].split(sep).map((h) => h.replace(/"/g, "").trim());
-  return lines.slice(1).map((l) => { const c = l.split(sep).map((x) => x.replace(/"/g, "").trim()); return Object.fromEntries(head.map((h, i) => [h, c[i]])); });
-};
+const segno = (n, d = 2) => (n > 0 ? "+" : "") + it(n, d);
+const dataIt = (iso) => { const [y, m, g] = iso.split("-"); return g ? `${+g}/${m}/${y}` : `${m}/${y}`; };
+const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+const meseIt = (t) => { const [y, m] = t.split("-"); return `${MESI[+m - 1]} ${y}`; };
 
-// ---------------------------------------------------------------- fonti
+// CSV conforme RFC 4180: gestisce virgole e virgolette dentro i campi (i file BCE ne contengono).
+function parseCsv(txt) {
+  const rows = []; let row = [], f = "", q = false;
+  for (let i = 0; i < txt.length; i++) {
+    const c = txt[i];
+    if (q) {
+      if (c === '"') { if (txt[i + 1] === '"') { f += '"'; i++; } else q = false; }
+      else f += c;
+    } else if (c === '"') q = true;
+    else if (c === ",") { row.push(f); f = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && txt[i + 1] === "\n") i++; row.push(f); rows.push(row); row = []; f = ""; }
+    else f += c;
+  }
+  if (f !== "" || row.length) { row.push(f); rows.push(row); }
+  const head = (rows.shift() || []).map((h) => h.trim());
+  return rows.filter((r) => r.length > 1).map((r) => Object.fromEntries(head.map((h, i) => [h, (r[i] ?? "").trim()])));
+}
 
-async function yahoo(sym) {
-  const j = await get(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=3mo&interval=1d`, { text: false });
+const inRange = (v, r) => num(v) != null && (!r || (v >= r[0] && v <= r[1]));
+
+// ================================================================ fonti
+
+async function yahoo(sym, range) {
+  let j, lastErr;
+  for (const host of ["query1", "query2"]) {
+    try { j = await get(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=3mo&interval=1d&includePrePost=false`, { json: true }); break; }
+    catch (e) { lastErr = e; }
+  }
+  if (!j) throw lastErr;
   const r = j?.chart?.result?.[0];
-  if (!r) throw new Error("risposta vuota");
+  if (!r) throw new Error(j?.chart?.error?.description || "risposta vuota");
   const ts = r.timestamp || [], cl = r.indicators?.quote?.[0]?.close || [];
-  const pts = ts.map((t, i) => [t, cl[i]]).filter((p) => typeof p[1] === "number");
-  if (pts.length < 2) throw new Error("serie troppo corta");
-  const live = r.meta?.regularMarketPrice;
-  const lastT = r.meta?.regularMarketTime || pts.at(-1)[0];
-  let last = typeof live === "number" ? live : pts.at(-1)[1];
-  // Se il prezzo live appartiene a una nuova seduta non ancora in serie, il precedente è l'ultima chiusura.
-  const sameDay = new Date(pts.at(-1)[0] * 1000).toISOString().slice(0, 10) === new Date(lastT * 1000).toISOString().slice(0, 10);
-  const prev = sameDay ? pts.at(-2)[1] : pts.at(-1)[1];
-  const serie = pts.slice(-60).map((p) => round(p[1], 4));
-  if (sameDay) serie[serie.length - 1] = round(last, 4); else serie.push(round(last, 4));
-  return { valore: last, var: (last / prev - 1) * 100, data: dayRome(new Date(lastT * 1000)), serie, mese: serie.length > 21 ? (last / serie.at(-22) - 1) * 100 : null };
+  let pts = ts.map((t, i) => [t, cl[i]]).filter((p) => num(p[1]) != null);
+  // ^TNX in alcune risposte è espresso in decimi di punto
+  if (sym === "^TNX" && pts.length && pts.at(-1)[1] > 20) pts = pts.map(([t, v]) => [t, v / 10]);
+  if (pts.length < 3) throw new Error("serie troppo corta");
+  let live = num(r.meta?.regularMarketPrice);
+  if (sym === "^TNX" && live > 20) live /= 10;
+  const liveT = num(r.meta?.regularMarketTime) || pts.at(-1)[0];
+  const day = (t) => dayRome(new Date(t * 1000));
+  const closes = pts.map((p) => p[1]);
+  let last = closes.at(-1), prev = closes.at(-2), lastDay = day(pts.at(-1)[0]);
+  if (live != null) {
+    if (day(liveT) === lastDay) last = live;                                  // seduta in corso o appena chiusa
+    else if (liveT > pts.at(-1)[0]) { prev = closes.at(-1); last = live; lastDay = day(liveT); closes.push(live); }
+  }
+  closes[closes.length - 1] = last;
+  if (!inRange(last, range) || !inRange(prev, range)) throw new Error(`valore fuori scala (${last})`);
+  const var1 = (last / prev - 1) * 100;
+  if (Math.abs(var1) > 35) throw new Error(`variazione implausibile (${var1.toFixed(1)}%)`);
+  const ago = closes.length > 22 ? closes.at(-23) : null;
+  return {
+    valore: last, var: var1, data: lastDay,
+    mese: ago ? (last / ago - 1) * 100 : null,
+    serie: closes.slice(-60).map((v) => round(v, 4)),
+  };
 }
 
-async function ecb(key, n = 13) {
-  const [flow, ...rest] = key.split(".");
-  const txt = await get(`https://data-api.ecb.europa.eu/service/data/${flow}/${rest.join(".")}?lastNObservations=${n}&format=csvdata`);
-  const rows = csvRows(txt).filter((r) => r.OBS_VALUE !== "" && r.OBS_VALUE != null && !isNaN(+r.OBS_VALUE));
-  if (!rows.length) throw new Error("nessun dato " + key);
-  return rows.map((r) => ({ t: r.TIME_PERIOD, v: +r.OBS_VALUE }));
+async function ecb(keys, n, range) {
+  let lastErr;
+  for (const key of keys) {
+    try {
+      const [flow, ...rest] = key.split(".");
+      const txt = await get(`https://data-api.ecb.europa.eu/service/data/${flow}/${rest.join(".")}?lastNObservations=${n}&format=csvdata`);
+      const rows = parseCsv(txt).map((r) => ({ t: r.TIME_PERIOD, v: Number(r.OBS_VALUE) })).filter((o) => o.t && r_ok(o.v, range));
+      if (rows.length) return rows.sort((a, b) => a.t.localeCompare(b.t));
+      lastErr = new Error("nessun dato valido per " + key);
+    } catch (e) { lastErr = new Error(`${key}: ${e.message}`); }
+  }
+  throw lastErr;
 }
+const r_ok = (v, range) => isFinite(v) && (!range || (v >= range[0] && v <= range[1]));
 
 async function eurostat(dataset, query) {
-  const j = await get(`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${dataset}?format=JSON&lang=it&${query}`, { text: false });
+  const j = await get(`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${dataset}?format=JSON&lang=EN&${query}`, { json: true });
   const idx = j?.dimension?.time?.category?.index || {};
-  const pts = Object.entries(idx).map(([t, i]) => ({ t, v: j.value?.[i] })).filter((o) => typeof o.v === "number").sort((a, b) => a.t.localeCompare(b.t));
+  const pts = Object.entries(idx).map(([t, i]) => ({ t, v: j.value?.[i] ?? j.value?.[String(i)] })).filter((o) => num(o.v) != null).sort((a, b) => a.t.localeCompare(b.t));
   if (!pts.length) throw new Error("nessun dato " + dataset);
   return pts.map((o) => ({ t: o.t.replace(/M(\d{2})$/, "-$1"), v: o.v }));
 }
 
 async function fred(id) {
   const txt = await get(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${id}`);
-  const rows = txt.trim().split(/\r?\n/).slice(1).map((l) => l.split(",")).filter((c) => c[1] && !isNaN(+c[1]));
+  const rows = parseCsv(txt).map((r) => Object.values(r)).filter((c) => c[1] !== "" && isFinite(Number(c[1])));
+  if (!rows.length) throw new Error("nessun dato " + id);
   const last = rows.at(-1);
-  return { t: last[0], v: +last[1] };
+  return { t: last[0], v: Number(last[1]) };
 }
 
 async function carburanti() {
-  const txt = await get("https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv", { timeout: 90000 });
+  const txt = await get("https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv", { timeout: 120000 });
   const lines = txt.split(/\r?\n/).filter(Boolean);
   const hIdx = lines.findIndex((l) => /descCarburante/i.test(l));
   if (hIdx < 0) throw new Error("formato CSV inatteso");
   const sep = lines[hIdx].includes("|") ? "|" : ";";
-  const head = lines[hIdx].split(sep);
-  const iC = head.indexOf("descCarburante"), iP = head.indexOf("prezzo"), iS = head.indexOf("isSelf"), iD = head.indexOf("dtComu");
-  const estr = (lines[0].match(/(\d{4}-\d{2}-\d{2})/) || [])[1] || dayRome();
-  const pick = (name) => {
+  const head = lines[hIdx].split(sep).map((h) => h.trim());
+  const iC = head.indexOf("descCarburante"), iP = head.indexOf("prezzo"), iS = head.indexOf("isSelf");
+  if (iC < 0 || iP < 0 || iS < 0) throw new Error("colonne mancanti");
+  const m = lines[0].match(/(\d{4}-\d{2}-\d{2})/) || lines[0].match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  const estr = !m ? dayRome() : m[0].includes("-") ? m[1] : `${m[3]}-${m[2]}-${m[1]}`;
+  const media = (name) => {
     const v = [];
     for (const l of lines.slice(hIdx + 1)) {
       const c = l.split(sep);
-      if (c[iC] === name && c[iS] === "1") { const p = parseFloat(c[iP]); if (p > 0.8 && p < 4) v.push(p); }
+      if (c[iC]?.trim() === name && c[iS]?.trim() === "1") { const p = parseFloat(String(c[iP]).replace(",", ".")); if (p > 0.8 && p < 4) v.push(p); }
     }
-    if (v.length < 500) throw new Error("troppi pochi prezzi per " + name);
+    if (v.length < 500) throw new Error(`troppi pochi prezzi per ${name} (${v.length})`);
     v.sort((a, b) => a - b);
-    const cut = Math.floor(v.length * 0.02); const trimmed = v.slice(cut, v.length - cut);
-    return trimmed.reduce((a, b) => a + b, 0) / trimmed.length;
+    const cut = Math.floor(v.length * 0.02), t = v.slice(cut, v.length - cut); // esclude il 2% di valori estremi
+    return { media: t.reduce((a, b) => a + b, 0) / t.length, n: v.length };
   };
-  return { benzina: pick("Benzina"), gasolio: pick("Gasolio"), data: estr };
+  return { benzina: media("Benzina"), gasolio: media("Gasolio"), data: estr };
 }
 
-async function notizieRss() {
+function decode(s) {
+  return s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;|&#8217;|&rsquo;/g, "'")
+    .replace(/&#8220;|&#8221;|&ldquo;|&rdquo;/g, '"').replace(/&#(\d+);/g, (_, c) => String.fromCharCode(+c))
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/\s+/g, " ").trim();
+}
+const breve = (s, max) => { if (s.length <= max) return s; const c = s.slice(0, max); return c.slice(0, c.lastIndexOf(" ")).replace(/[,;:.\s]+$/, "") + "…"; };
+
+async function notizieRss(giorno) {
   const out = [];
   for (const [fonte, url] of RSS) {
-    const xml = await safe("RSS " + fonte, () => get(url));
+    const xml = await safe("RSS " + url, () => get(url, { tries: 2 }));
     if (!xml) continue;
-    const items = xml.split(/<item[\s>]/i).slice(1, 12);
-    for (const it of items) {
-      const tag = (n) => { const m = it.match(new RegExp(`<${n}[^>]*>([\\s\\S]*?)</${n}>`, "i")); return m ? m[1].replace(/<!\[CDATA\[|\]\]>/g, "").replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/\s+/g, " ").trim() : ""; };
-      const titolo = tag("title"), link = tag("link"), data = tag("pubDate"), descr = tag("description").slice(0, 400);
-      if (titolo && /^https?:\/\//.test(link)) out.push({ titolo, url: link, fonte, data: data ? new Date(data).toISOString() : null, descr });
+    const atom = /<feed[\s>]/i.test(xml) && !/<rss[\s>]/i.test(xml);
+    const items = xml.split(atom ? /<entry[\s>]/i : /<item[\s>]/i).slice(1, 20);
+    for (const raw of items) {
+      const tag = (n) => { const m = raw.match(new RegExp(`<${n}(?:\\s[^>]*)?>([\\s\\S]*?)</${n}>`, "i")); return m ? decode(m[1]) : ""; };
+      const titolo = tag("title");
+      let link = tag("link");
+      if (!/^https?:\/\//.test(link)) { const m = raw.match(/<link[^>]*href="([^"]+)"/i); link = m ? m[1] : ""; }
+      const dRaw = tag("pubDate") || tag("published") || tag("updated") || tag("dc:date");
+      const d = dRaw ? new Date(dRaw) : null;
+      const data = d && !isNaN(d) ? d.toISOString() : null;
+      let descr = breve(tag("description") || tag("summary"), 220);
+      if (descr.length < 25) descr = "";
+      if (titolo && /^https?:\/\//.test(link)) out.push({ titolo: breve(titolo, 140), url: link, fonte, data, descr: descr && descr !== titolo ? descr : "" });
     }
   }
-  const seen = new Set();
-  return out.filter((n) => { const k = n.titolo.toLowerCase().slice(0, 60); if (seen.has(k)) return false; seen.add(k); return true; })
-    .sort((a, b) => (b.data || "").localeCompare(a.data || "")).slice(0, 25);
+  const limite = Date.parse(giorno) - 2 * 864e5;
+  const seen = new Set(), perFonte = {};
+  const pertinenti = out.filter((n) => PAROLE_CHIAVE.test(n.titolo + " " + n.descr)).length;
+  return out
+    .filter((n) => !n.data || Date.parse(n.data) >= limite)
+    .filter((n) => pertinenti === 0 || PAROLE_CHIAVE.test(n.titolo + " " + n.descr)) // solo notizie su economia e risparmio
+    .filter((n) => { const k = n.titolo.toLowerCase().replace(/[^a-zà-ù0-9 ]/g, "").slice(0, 50); if (seen.has(k)) return false; seen.add(k); return true; })
+    .map((n) => ({ ...n, peso: (PAROLE_CHIAVE.test(n.titolo + " " + n.descr) ? 1 : 0) }))
+    .sort((a, b) => b.peso - a.peso || (b.data ? 1 : 0) - (a.data ? 1 : 0) || (b.data || "").localeCompare(a.data || ""))
+    .filter((n) => { perFonte[n.fonte] = (perFonte[n.fonte] || 0) + 1; return perFonte[n.fonte] <= 3; })
+    .slice(0, 12);
 }
 
-// ---------------------------------------------------------------- intelligenza artificiale (gratuita)
+// ================================================================ testi calcolati dai dati (nessuna IA)
+
+function testiCalcolati(ctx, V) {
+  const f = V.ftsemib, sp = V.sp500, inf = V.infl_it, bce = V.bce, vix = num(V.vix?.valore);
+  const infl = num(inf?.valore) ?? 2;
+  const dep = num(V.dep_vincolati?.valore), depNet = dep != null ? dep * 0.74 - 0.2 : null;
+  const tassoMutuo = num(V.mutuo_medio?.valore) ?? 3.2;
+  const prossima = BCE_RIUNIONI.find((d) => d >= ctx.giorno);
+  const gg = prossima ? daysBetween(ctx.giorno, prossima) : null;
+  const rata = (P, r, y) => { const i = r / 1200, n = y * 12; return i === 0 ? P / n : P * i / (1 - (1 + i) ** -n); };
+  const dRata = rata(120000, tassoMutuo + 0.25, 20) - rata(120000, tassoMutuo, 20);
+  const fv = num(f?.var), spv = num(sp?.var);
+  const ultima = f && f.data === ctx.giorno ? "nella seduta di oggi" : "nell'ultima seduta";
+
+  // Clima dei mercati: media delle due borse, corretta dal VIX
+  const media = [fv, spv].filter((x) => x != null);
+  const mov = media.length ? media.reduce((a, b) => a + b, 0) / media.length : 0;
+  const scoreM = Math.max(5, Math.min(95, Math.round(50 + 12 * mov - (vix > 30 ? 18 : vix > 25 ? 12 : vix > 20 ? 5 : vix != null && vix < 15 ? -5 : 0))));
+  const labM = scoreM >= 62 ? "Positivo" : scoreM >= 45 ? "Variabile" : scoreM >= 30 ? "Negativo" : "Tempesta";
+  // Pressione sulle famiglie: inflazione, carburanti, disoccupazione
+  const benz = num(V.benzina?.valore), dis = num(V.disoccupazione?.valore);
+  const scoreF = Math.max(5, Math.min(95, Math.round(20 + 11 * infl + (benz > 1.9 ? 8 : benz > 1.75 ? 3 : 0) + (dis > 9 ? 6 : dis > 7.5 ? 3 : 0))));
+  const labF = scoreF >= 66 ? "Pressione alta" : scoreF >= 45 ? "Moderata" : "Bassa";
+
+  // Titolo
+  const mercFrase = fv == null ? "Mercati in attesa"
+    : fv >= 1.5 ? `Piazza Affari corre (${segno(fv)}%)`
+    : fv >= 0.3 ? `Piazza Affari in rialzo (${segno(fv)}%)`
+    : fv > -0.3 ? "Piazza Affari stabile"
+    : fv > -1.5 ? `Piazza Affari in calo (${segno(fv)}%)`
+    : `Piazza Affari in forte calo (${segno(fv)}%)`;
+  const famFrase = infl >= 4 ? `inflazione alta al ${it(infl, 1)}%`
+    : infl >= 2.5 ? `inflazione al ${it(infl, 1)}%`
+    : infl >= 1 ? `inflazione sotto controllo (${it(infl, 1)}%)`
+    : `prezzi quasi fermi (${it(infl, 1)}%)`;
+
+  // Sintesi
+  const sint = [];
+  if (f && fv != null) sint.push(`${f.data === ctx.giorno ? "Oggi il FTSE MIB" : "Nell'ultima seduta il FTSE MIB"} ${f.data === ctx.giorno && ctx.edizione === "sera" ? "chiude" : "ha chiuso"} a ${it(f.valore, 0)} punti (${segno(fv)}%)${sp && spv != null ? `, mentre l'S&P 500 di Wall Street segna ${segno(spv)}%` : ""}.`);
+  if (vix != null) sint.push(vix > 25 ? `Il VIX a ${it(vix, 1)} segnala mercati nervosi: oscillazioni ampie sono normali in queste fasi.` : vix < 15 ? `Il VIX a ${it(vix, 1)} indica mercati tranquilli.` : "");
+  if (inf) sint.push(`L'inflazione italiana è al ${it(infl, 1)}% (${meseIt(inf.data)})${infl > 3 ? ": è il fattore che pesa di più sul potere d'acquisto delle famiglie" : ""}.`);
+  if (V.spread && num(V.spread.valore) != null) sint.push(`Lo spread BTP-Bund è a ${it(V.spread.valore, 0)} punti base (media di ${meseIt(V.spread.data)}).`);
+
+  // Scheda Liquidità
+  const reale = depNet != null ? depNet - infl : null;
+  const perdita = 10000 * (1 - 1 / (1 + infl / 100));
+  const liq = {
+    tema: "Liquidità",
+    titolo: reale == null ? "Quanto rende davvero il conto" : reale < 0 ? "Il conto fermo perde valore" : "I depositi battono l'inflazione",
+    testo: `Con l'inflazione al ${it(infl, 1)}%, 10.000 € fermi a tasso zero perdono circa ${it(perdita, 0)} € di potere d'acquisto in un anno.` +
+      (dep != null ? ` In media le banche italiane pagano il ${it(dep)}% lordo sui depositi vincolati fino a un anno, circa ${it(depNet)}% netto: ${reale < 0 ? "proteggono solo in parte, e le offerte migliori vanno cercate e confrontate." : "oggi superano l'inflazione, ma conviene confrontare le offerte."}` : ""),
+    azione: "Calcola il rendimento netto", link: "#strumenti",
+  };
+
+  // Scheda Tassi e mutuo
+  const e3 = V.euribor3m, e3prev = e3 && /da ([\d,]+)/.exec(e3.delta || "");
+  const e3dir = e3 && e3prev ? Math.sign(e3.valore - Number(e3prev[1].replace(",", "."))) : 0;
+  const tassi = {
+    tema: "Tassi e mutuo",
+    titolo: gg != null && gg <= 14 ? `BCE tra ${gg === 0 ? "poche ore" : gg === 1 ? "un giorno" : gg + " giorni"}` : e3dir > 0 ? "Euribor in salita" : e3dir < 0 ? "Euribor in discesa" : bce ? `Tasso BCE al ${it(bce.valore)}%` : "Tassi e mutuo",
+    testo: [
+      bce ? `Il tasso BCE sui depositi è al ${it(bce.valore)}%${prossima ? ` e la prossima decisione è il ${dataIt(prossima)}` : ""}.` : "",
+      e3 ? `L'Euribor a 3 mesi, base dei mutui variabili, è al ${it(e3.valore)}% (${meseIt(e3.data)}).` : "",
+      `Su un mutuo da 120.000 € a 20 anni al tasso medio attuale del ${it(tassoMutuo)}%, ogni 0,25 punti in più valgono circa ${it(dRata)} € al mese.`,
+    ].filter(Boolean).join(" "),
+    azione: "Simula la tua rata", link: "#strumenti",
+  };
+
+  // Scheda Investimenti
+  const mo = V.mondo, mm = num(mo?.mese);
+  const invTitolo = fv == null ? "Il piano conta più della seduta"
+    : fv <= -2 || vix > 28 ? "Giornata pesante: niente scelte di panico"
+    : fv >= 2 ? "Giornata forte, piano invariato"
+    : "Il piano conta più della seduta";
+  const inv = {
+    tema: "Investimenti",
+    titolo: invTitolo,
+    testo: [
+      fv != null ? `Piazza Affari segna ${segno(fv)}% ${ultima}${num(f.mese) != null ? ` e ${segno(f.mese, 1)}% nell'ultimo mese` : ""}.` : "",
+      mm != null ? `L'azionario mondiale, riferimento di molti piani di accumulo, è a ${segno(mm, 1)}% in un mese.` : "",
+      fv != null && fv <= -2 ? "Vendere dopo un calo trasforma una perdita temporanea in definitiva: chi investe a lungo termine segue il piano." : "Per chi investe a lungo termine contano costi bassi, diversificazione e versamenti regolari.",
+    ].filter(Boolean).join(" "),
+    azione: "Simula un piano di accumulo", link: "#strumenti",
+  };
+
+  // Scheda Spese
+  const sb = (ctx.serie.benzina || []).filter((x) => num(x) != null);
+  const sett = sb.length >= 6 ? benz - sb.at(-6) : null;
+  const pieno = benz != null ? benz * 50 : null;
+  const ttf = V.ttf, ttfm = num(ttf?.mese);
+  const spe = {
+    tema: "Spese",
+    titolo: benz == null ? "Energia e carburanti" : sett != null && sett > 0.015 ? "Carburanti in aumento" : sett != null && sett < -0.015 ? "Carburanti in calo" : `Benzina a ${it(benz, 3)} €/l`,
+    testo: [
+      benz != null ? `La benzina self costa in media ${it(benz, 3)} €/l${sett != null ? ` (${segno(sett * 100, 1)} centesimi rispetto agli ultimi rilevamenti)` : ""}: un pieno da 50 litri vale circa ${it(pieno, 0)} €.` : "",
+      ttfm != null ? `Il gas all'ingrosso è ${ttfm >= 0 ? "salito" : "sceso"} del ${it(Math.abs(ttfm), 0)}% in un mese: ${ttfm >= 5 ? "le bollette a prezzo variabile tenderanno a salire" : ttfm <= -5 ? "è un buon momento per valutare un'offerta a prezzo fisso" : "le bollette dovrebbero restare stabili"}.` : "",
+      "Il Portale Offerte ARERA e l'Osservaprezzi del Mimit sono gratuiti e neutrali.",
+    ].filter(Boolean).join(" "),
+    azione: "Apri le fonti utili", link: "#fonti",
+  };
+
+  return {
+    titolo: `${mercFrase}, ${famFrase}`,
+    sintesi: sint.filter(Boolean).join(" "),
+    mercati: { valore: scoreM, etichetta: labM, nota: `Da Piazza Affari e Wall Street ${ultima}${vix != null ? `; VIX a ${it(vix, 1)}` : ""}.` },
+    famiglie: { valore: scoreF, etichetta: labF, nota: [`Inflazione al ${it(infl, 1)}%`, benz != null ? `benzina a ${it(benz, 3)} €/l` : "", dis != null ? `disoccupazione al ${it(dis, 1)}%` : ""].filter(Boolean).join(", ") + "." },
+    perTe: [liq, tassi, inv, spe],
+    notizie: ctx.notizie.slice(0, 6).map((n) => ({ titolo: n.titolo, testo: n.descr || "", impatto: null, fonte: n.fonte, url: n.url, data: n.data })),
+  };
+}
+
+// ================================================================ IA facoltativa (solo testi)
 
 async function gemini(prompt) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) return null;
-  const models = [process.env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"].filter(Boolean);
-  for (const m of models) {
+  for (const m of [process.env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-2.5-flash-lite"].filter(Boolean)) {
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.4, responseMimeType: "application/json" } }),
+        method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.3, responseMimeType: "application/json" } }),
       });
       if (!r.ok) { log("Gemini", m, "HTTP", r.status); continue; }
       const j = await r.json();
-      const txt = j?.candidates?.[0]?.content?.parts?.map((p) => p.text || "").join("") || "";
-      log("testi scritti con Gemini", m);
-      return txt;
+      const txt = j?.candidates?.[0]?.content?.parts?.map((p) => p.text || "").join("");
+      if (txt) { log("testi riscritti con Gemini", m); return txt; }
     } catch (e) { log("Gemini", m, e.message); }
   }
   return null;
@@ -194,18 +405,15 @@ async function gemini(prompt) {
 async function groq(prompt) {
   const key = process.env.GROQ_API_KEY;
   if (!key) return null;
-  const models = [process.env.GROQ_MODEL, "llama-3.3-70b-versatile", "llama-3.1-8b-instant"].filter(Boolean);
-  for (const m of models) {
+  for (const m of [process.env.GROQ_MODEL, "llama-3.3-70b-versatile", "llama-3.1-8b-instant"].filter(Boolean)) {
     try {
       const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-        body: JSON.stringify({ model: m, temperature: 0.4, response_format: { type: "json_object" }, messages: [{ role: "user", content: prompt }] }),
+        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+        body: JSON.stringify({ model: m, temperature: 0.3, response_format: { type: "json_object" }, messages: [{ role: "user", content: prompt }] }),
       });
       if (!r.ok) { log("Groq", m, "HTTP", r.status); continue; }
-      const j = await r.json();
-      log("testi scritti con Groq", m);
-      return j?.choices?.[0]?.message?.content || null;
+      const txt = (await r.json())?.choices?.[0]?.message?.content;
+      if (txt) { log("testi riscritti con Groq", m); return txt; }
     } catch (e) { log("Groq", m, e.message); }
   }
   return null;
@@ -213,186 +421,168 @@ async function groq(prompt) {
 
 function parseJson(txt) {
   if (!txt) return null;
-  const s = txt.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
+  const s = txt.replace(/^\s*```(?:json)?/i, "").replace(/```\s*$/, "").trim();
   try { return JSON.parse(s); } catch { const m = s.match(/\{[\s\S]*\}/); try { return m ? JSON.parse(m[0]) : null; } catch { return null; } }
 }
 
-function validAi(a, notizie) {
+// Accetta i testi dell'IA solo se ben formati e se ogni numero compare davvero nei dati (o nella notizia citata).
+// Gli indicatori di clima restano sempre calcolati: l'IA non decide valori.
+function numeriDi(s) {
+  return new Set((String(s).match(/\d+(?:[.,]\d+)*/g) || []).flatMap((x) => {
+    const a = x.replace(/\./g, "").replace(",", "."), b = x.replace(",", ".");
+    return [a, b, String(Number(a)), String(Number(b))];
+  }));
+}
+function numeriOk(testo, ammessi) {
+  const re = /(\d+(?:[.,]\d+)*)(\s*%)?/g; let m;
+  while ((m = re.exec(testo))) {
+    const x = m[1], pct = Boolean(m[2]);
+    const cand = [x.replace(/\./g, "").replace(",", "."), x.replace(",", ".")].map((v) => String(Number(v)));
+    if (cand.some((v) => ammessi.has(v))) continue;
+    const intero = /^\d+$/.test(x) && Number(x) <= 31;
+    const anno = /^(19|20)\d\d$/.test(x);
+    if (!pct && (intero || anno)) continue; // giorni, conteggi, anni
+    return false;
+  }
+  return true;
+}
+function validaIA(a, ctx) {
   if (!a || typeof a !== "object") return null;
-  const str = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
+  const str = (x, max) => (typeof x === "string" && x.trim() && x.trim().length <= max ? x.trim() : null);
+  const datiNum = numeriDi(JSON.stringify(ctx.dati));
   const out = {};
-  out.titolo = str(a.titolo, 70);
-  out.sintesi = str(a.sintesi, 520);
-  const clima = (c) => c && typeof c.valore === "number" && str(c.etichetta, 24) && str(c.nota, 160) ? { valore: Math.max(0, Math.min(100, Math.round(c.valore))), etichetta: c.etichetta.trim(), nota: c.nota.trim() } : null;
-  out.mercati = clima(a.climi?.mercati); out.famiglie = clima(a.climi?.famiglie);
+  out.titolo = str(a.titolo, 80); if (out.titolo && !numeriOk(out.titolo, datiNum)) out.titolo = null;
+  out.sintesi = str(a.sintesi, 600); if (out.sintesi && !numeriOk(out.sintesi, datiNum)) out.sintesi = null;
+  if (!out.titolo || !out.sintesi) { out.titolo = null; out.sintesi = null; } // titolo e sintesi vanno in coppia
   const links = new Set(["#strumenti", "#piano", "#tutela", "#fonti", "#oggi-agenda"]);
-  out.perTe = Array.isArray(a.perTe) ? a.perTe.filter((c) => str(c.tema, 20) && str(c.titolo, 70) && str(c.testo, 420)).slice(0, 4)
-    .map((c) => ({ tema: c.tema.trim(), titolo: c.titolo.trim(), testo: c.testo.trim(), azione: str(c.azione, 40) || "Apri gli strumenti", link: links.has(c.link) ? c.link : "#strumenti" })) : null;
-  if (out.perTe && out.perTe.length < 4) out.perTe = null;
-  out.notizie = Array.isArray(a.notizie) ? a.notizie.map((n) => {
-    const src = notizie[n.indice];
-    if (!src || !str(n.titolo, 110) || !str(n.testo, 360)) return null;
-    return { titolo: n.titolo.trim(), testo: n.testo.trim(), impatto: ["positivo", "negativo", "misto", "neutro"].includes(n.impatto) ? n.impatto : "neutro", fonte: src.fonte, url: src.url };
-  }).filter(Boolean).slice(0, 6) : null;
-  if (out.notizie && out.notizie.length < 3) out.notizie = null;
+  const pt = Array.isArray(a.perTe) ? a.perTe.filter((c) => c && str(c.tema, 24) && str(c.titolo, 70) && str(c.testo, 480) && numeriOk(c.titolo + " " + c.testo, datiNum)) : [];
+  out.perTe = pt.length === 4 ? pt.map((c) => ({ tema: c.tema.trim(), titolo: c.titolo.trim(), testo: c.testo.trim(), azione: str(c.azione, 40) || "Apri gli strumenti", link: links.has(c.link) ? c.link : "#strumenti" })) : null;
+  const usate = new Set();
+  const nz = Array.isArray(a.notizie) ? a.notizie.map((n) => {
+    const s = Number.isInteger(n?.indice) ? ctx.notizie[n.indice] : null;
+    if (!s || usate.has(n.indice) || !str(n.titolo, 120) || !str(n.testo, 400)) return null;
+    const amm = new Set([...datiNum, ...numeriDi(s.titolo + " " + s.descr)]);
+    if (!numeriOk(n.titolo + " " + n.testo, amm)) return null;
+    usate.add(n.indice);
+    return { titolo: n.titolo.trim(), testo: n.testo.trim(), impatto: ["positivo", "negativo", "misto", "neutro"].includes(n.impatto) ? n.impatto : "neutro", fonte: s.fonte, url: s.url, data: s.data };
+  }).filter(Boolean) : [];
+  out.notizie = nz.length >= Math.min(3, ctx.notizie.length) && nz.length ? nz.slice(0, 6) : null;
   return out;
 }
 
-function prompt(ctx) {
-  return `Sei la redazione di "Eco Bussola", un'app italiana di educazione finanziaria per famiglie e risparmiatori senza esperienza.
-Scrivi in italiano semplice e preciso, senza gergo, senza punti esclamativi, senza emoji.
-Regole inderogabili:
-- Usa SOLO i numeri forniti qui sotto; non inventare dati, date o fatti non presenti.
-- Non consigliare mai di comprare o vendere titoli, fondi o criptovalute specifici. Puoi spiegare effetti concreti e strumenti generali (fondo di emergenza, conti deposito, titoli di Stato, costi bassi, diversificazione).
-- Le notizie vanno riscritte con parole tue, mai copiando frasi dei titoli o delle descrizioni.
-- Numeri in formato italiano (virgola decimale).
+function promptIA(ctx) {
+  return `Sei la redazione di "Eco Bussola", app italiana di educazione finanziaria per famiglie senza esperienza.
+Italiano semplice e preciso, senza gergo, senza punti esclamativi, senza emoji. Numeri in formato italiano.
+Regole: usa SOLO i numeri forniti; non inventare fatti; mai consigliare di comprare o vendere strumenti specifici; riscrivi le notizie con parole tue senza copiare frasi.
 
 Edizione: ${ctx.edizione} del ${ctx.giorno}.
-
-DATI (fonte ufficiale, con data):
-${JSON.stringify(ctx.dati, null, 1)}
-
-NOTIZIE DISPONIBILI (indice, fonte, titolo, descrizione):
+DATI: ${JSON.stringify(ctx.dati)}
+NOTIZIE:
 ${ctx.notizie.map((n, i) => `${i}. [${n.fonte}] ${n.titolo} — ${n.descr}`).join("\n")}
 
-Rispondi SOLO con un oggetto JSON con questa forma:
-{
- "titolo": "max 60 caratteri, due parti separate da una virgola, la seconda è quella che pesa sulle famiglie",
- "sintesi": "2-3 frasi che collegano mercati e portafoglio di casa",
- "climi": {
-   "mercati": {"valore": 0-100 (alto = favorevole), "etichetta": "1-2 parole", "nota": "max 110 caratteri, motivata dai dati"},
-   "famiglie": {"valore": 0-100 (alto = pressione sui prezzi forte), "etichetta": "1-2 parole", "nota": "max 110 caratteri"}
- },
- "perTe": [4 oggetti {"tema": "Liquidità"|"Tassi e mutuo"|"Investimenti"|"Spese", "titolo": "max 50 caratteri", "testo": "2-3 frasi con un esempio numerico concreto calcolato dai dati", "azione": "max 35 caratteri", "link": "#strumenti"|"#piano"|"#tutela"|"#fonti"|"#oggi-agenda"}],
- "notizie": [da 4 a 6 oggetti {"indice": numero della notizia scelta, "titolo": "riscritto, max 90 caratteri", "testo": "1-2 frasi su cosa è successo e perché conta per chi risparmia", "impatto": "positivo"|"negativo"|"misto"|"neutro"}]
-}
-Scegli le notizie più rilevanti per mercati, prezzi, tasse, lavoro e risparmio delle famiglie italiane.`;
+Rispondi solo con JSON:
+{"titolo":"max 60 caratteri, due parti separate da virgola","sintesi":"2-3 frasi",
+"perTe":[4 oggetti {"tema":"Liquidità"|"Tassi e mutuo"|"Investimenti"|"Spese","titolo":"max 50","testo":"2-3 frasi; cita solo numeri presenti nei DATI, senza calcolarne di nuovi","azione":"max 35","link":"#strumenti"|"#piano"|"#tutela"|"#fonti"}],
+"notizie":[4-6 oggetti {"indice":n,"titolo":"riscritto max 90","testo":"1-2 frasi","impatto":"positivo"|"negativo"|"misto"|"neutro"}]}`;
 }
 
-// ---------------------------------------------------------------- testi di riserva (senza IA)
-
-function fallbackTesti(ctx, V) {
-  const f = V.ftsemib, inf = V.infl_it, bce = V.bce;
-  const parteMerc = f && typeof f.var === "number" ? `Piazza Affari ${f.var >= 0 ? "+" : ""}${it(f.var)}%` : "Mercati in attesa";
-  const parteFam = inf ? `inflazione al ${it(inf.valore, 1)}%` : "prezzi sotto osservazione";
-  const vix = V.vix?.valore;
-  const scoreM = Math.max(5, Math.min(95, Math.round(50 + 12 * (((f?.var || 0) + (V.sp500?.var || 0)) / 2) - (vix > 25 ? 12 : vix > 20 ? 5 : vix && vix < 15 ? -5 : 0))));
-  const scoreF = Math.max(5, Math.min(95, Math.round(20 + 11 * (inf?.valore || 2) + (V.benzina && V.benzina.valore > 1.9 ? 8 : 0) + (V.disoccupazione && V.disoccupazione.valore > 8 ? 5 : 0))));
-  const lab = (s, a) => (a ? (s >= 66 ? "Pressione alta" : s >= 40 ? "Moderata" : "Bassa") : (s >= 60 ? "Positivo" : s >= 40 ? "Variabile" : "Negativo"));
-  const dep = V.dep_vincolati?.valore, depNet = dep != null ? dep * 0.74 - 0.2 : null, infl = inf?.valore || 2;
-  const tassoMutuo = V.mutuo_medio?.valore || 3.2;
-  const perdita = 10000 * (1 - 1 / (1 + infl / 100));
-  const prossima = BCE_RIUNIONI.find((d) => d > ctx.giorno);
-  const rata = (P, r, y) => { const i = r / 1200, n = y * 12; return P * i / (1 - (1 + i) ** -n); };
-  const dRata = rata(120000, tassoMutuo + 0.25, 20) - rata(120000, tassoMutuo, 20);
-  const eur3 = V.euribor3m;
-  return {
-    titolo: `${parteMerc}, ${parteFam}`,
-    sintesi: [
-      f ? `Il FTSE MIB è a ${it(f.valore, 0)} punti (${f.var >= 0 ? "+" : ""}${it(f.var)}% nella seduta).` : "",
-      V.spread ? `Lo spread BTP-Bund è a ${it(V.spread.valore, 0)} punti base (media mensile).` : "",
-      inf ? `L'inflazione italiana è al ${it(inf.valore, 1)}%: è il dato che pesa di più sul potere d'acquisto delle famiglie.` : "",
-    ].filter(Boolean).join(" "),
-    mercati: { valore: scoreM, etichetta: lab(scoreM), nota: `Da Piazza Affari e Wall Street nell'ultima seduta${vix ? `; VIX a ${it(vix, 1)}` : ""}.` },
-    famiglie: { valore: scoreF, etichetta: lab(scoreF, true), nota: inf ? `Inflazione al ${it(infl, 1)}%${V.benzina ? `, benzina self a ${it(V.benzina.valore, 3)} €/l` : ""}.` : "Dati sui prezzi in aggiornamento." },
-    perTe: [
-      { tema: "Liquidità", titolo: "Il conto fermo perde valore", testo: `Con l'inflazione al ${it(infl, 1)}%, 10.000 € fermi a tasso zero perdono circa ${it(perdita, 0)} € di potere d'acquisto in un anno. ${dep != null ? `In media le banche italiane pagano il ${it(dep)}% lordo sui depositi vincolati fino a un anno (circa ${it(depNet)}% netto): le offerte migliori vanno cercate e confrontate.` : "Confronta i conti deposito: il tasso netto conta più di quello pubblicizzato."}`, azione: "Calcola il rendimento netto", link: "#strumenti" },
-      { tema: "Tassi e mutuo", titolo: bce ? `Tasso BCE sui depositi al ${it(bce.valore)}%` : "Tassi BCE", testo: `${prossima ? `La prossima riunione BCE è il ${prossima.split("-").reverse().join("/")}. ` : ""}${eur3 ? `L'Euribor a 3 mesi, base dei mutui variabili, è al ${it(eur3.valore)}%. ` : ""}Per un mutuo da 120.000 € a 20 anni al tasso medio attuale (${it(tassoMutuo)}%), un rialzo di 0,25 punti vale circa ${it(dRata)} € in più al mese.`, azione: "Simula la tua rata", link: "#strumenti" },
-      { tema: "Investimenti", titolo: "Il piano conta più della seduta", testo: `${f ? `Piazza Affari segna ${f.var >= 0 ? "+" : ""}${it(f.var)}% nella seduta${typeof f.mese === "number" ? ` e ${f.mese >= 0 ? "+" : ""}${it(f.mese, 1)}% in un mese` : ""}. ` : ""}Per chi investe a lungo termine contano costi bassi, diversificazione e versamenti regolari.`, azione: "Simula un piano di accumulo", link: "#strumenti" },
-      { tema: "Spese", titolo: "Energia e carburanti", testo: `${V.benzina ? `La benzina self è in media a ${it(V.benzina.valore, 3)} €/l. ` : ""}Confrontare le offerte luce e gas sul Portale Offerte ARERA e i distributori sull'Osservaprezzi del Mimit è gratuito.`, azione: "Apri le fonti utili", link: "#fonti" },
-    ],
-    notizie: ctx.notizie.slice(0, 5).map((n) => ({ titolo: n.titolo, testo: "", impatto: null, fonte: n.fonte, url: n.url })),
-  };
-}
-
-// ---------------------------------------------------------------- principale
+// ================================================================ principale
 
 async function main() {
-  const src = await readFile(FILE, "utf8");
-  const sandbox = { window: {} }; vm.runInNewContext(src, sandbox);
-  const prev = sandbox.window.ECO || {};
-  const prevVoce = (id) => { for (const g of prev.mercati || []) for (const v of g.voci) if (v.id === id) return v; return null; };
+  let prev = {};
+  try { const sb = { window: {} }; vm.runInNewContext(await readFile(FILE, "utf8"), sb, { timeout: 2000 }); prev = sb.window.ECO || {}; }
+  catch (e) { log("data.js precedente illeggibile, riparto da zero:", e.message); }
+  const prevVoce = (id) => { for (const g of prev.mercati || []) for (const v of g.voci || []) if (v.id === id) return v; return null; };
+
   const giorno = dayRome();
   const edizione = hourRome() < 13 ? "mattina" : "sera";
   const V = {};
   const serie = { ...(prev.serie || {}) };
+  const serieDate = { ...(prev.serieDate || {}) };
+  const esito = { ok: [], ko: [] };
 
-  for (const [id, sym, nome, unita, dec, buono] of YAHOO) {
-    const y = await safe("Yahoo " + sym, () => yahoo(sym));
-    if (!y) continue;
+  // --- quotazioni giornaliere
+  for (const [id, sym, nome, unita, dec, buono, range] of YAHOO) {
+    const y = await safe("Yahoo " + sym, () => yahoo(sym, range));
+    await sleep(400);
+    if (!y) { esito.ko.push(nome); continue; }
     V[id] = { nome, unita, decimali: dec, buono, valore: round(y.valore, dec), var: round(y.var, 2), data: y.data, mese: y.mese, fonte: "Yahoo Finance", url: `https://finance.yahoo.com/quote/${encodeURIComponent(sym)}` };
     serie[id] = y.serie;
+    esito.ok.push(nome);
   }
 
-  const dfr = await safe("BCE tasso depositi", () => ecb("FM.D.U2.EUR.4F.KR.DFR.LEV", 400));
+  // --- BCE: tasso sui depositi (serie giornaliera)
+  const dfr = await safe("BCE tasso depositi", () => ecb(["FM.D.U2.EUR.4F.KR.DFR.LEV"], 800, [-2, 20]));
   if (dfr) {
-    const last = dfr.at(-1), chg = [...dfr].reverse().find((o) => o.v !== last.v);
-    V.bce = { nome: "BCE depositi", unita: "%", decimali: 2, valore: last.v, var: null, delta: chg ? `da ${it(chg.v)}%` : "invariato", nota: `Tasso sui depositi in vigore dal ${(dfr[dfr.findLastIndex((o, i) => i > 0 && dfr[i - 1].v !== o.v)] || dfr[0]).t.split("-").reverse().join("/")}`, data: last.t, fonte: "BCE", url: "https://data.ecb.europa.eu/" };
-  }
-  const itY = await safe("BTP 10 anni", () => ecb("IRS.M.IT.L.L40.CI.0000.EUR.N.Z", 13));
-  const deY = await safe("Bund 10 anni", () => ecb("IRS.M.DE.L.L40.CI.0000.EUR.N.Z", 13));
+    const last = dfr.at(-1);
+    const iCambio = dfr.findLastIndex((o, i) => i > 0 && dfr[i - 1].v !== o.v);
+    const precedente = iCambio > 0 ? dfr[iCambio - 1].v : null;
+    V.bce = { nome: "BCE depositi", unita: "%", decimali: 2, buono: "neutro", valore: last.v, var: null, delta: precedente != null ? `da ${it(precedente)}%` : "invariato", nota: iCambio > 0 ? `In vigore dal ${dataIt(dfr[iCambio].t)}` : "Tasso sui depositi presso la BCE", data: last.t, fonte: "BCE", url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.it.html" };
+    esito.ok.push("BCE");
+  } else esito.ko.push("BCE");
+
+  // --- BTP, Bund e spread (medie mensili ufficiali)
+  const itY = await safe("BTP 10 anni", () => ecb(["IRS.M.IT.L.L40.CI.0000.EUR.N.Z"], 13, [-2, 20]));
+  const deY = await safe("Bund 10 anni", () => ecb(["IRS.M.DE.L.L40.CI.0000.EUR.N.Z"], 13, [-2, 20]));
   if (itY) {
     const l = itY.at(-1), p = itY.at(-2);
-    V.btp10 = { nome: "BTP 10 anni", unita: "%", decimali: 2, valore: l.v, var: null, delta: p ? `da ${it(p.v)}%` : "", buono: "giu", nota: `Media mensile (${l.t})`, data: l.t, fonte: "BCE", url: "https://data.ecb.europa.eu/" };
+    V.btp10 = { nome: "BTP 10 anni", unita: "%", decimali: 2, valore: l.v, var: null, delta: p ? `da ${it(p.v)}%` : "", buono: "giu", nota: `Rendimento medio di ${meseIt(l.t)}`, data: l.t, fonte: "BCE", url: "https://data.ecb.europa.eu/data/datasets/IRS" };
     serie.btp10 = itY.map((o) => o.v);
-  }
+    esito.ok.push("BTP");
+  } else esito.ko.push("BTP");
   if (itY && deY) {
-    const map = Object.fromEntries(deY.map((o) => [o.t, o.v]));
-    const sp = itY.filter((o) => map[o.t] != null).map((o) => ({ t: o.t, v: round((o.v - map[o.t]) * 100, 0) }));
+    const de = Object.fromEntries(deY.map((o) => [o.t, o.v]));
+    const sp = itY.filter((o) => de[o.t] != null).map((o) => ({ t: o.t, v: round((o.v - de[o.t]) * 100, 0) }));
     if (sp.length) {
       const l = sp.at(-1), p = sp.at(-2);
-      V.spread = { nome: "Spread BTP-Bund", unita: "pb", decimali: 0, valore: l.v, var: null, delta: p ? `da ${it(p.v, 0)}` : "", buono: "giu", nota: `Media mensile (${l.t}). Più basso è, meno costa il debito italiano`, data: l.t, fonte: "BCE", url: "https://data.ecb.europa.eu/" };
+      V.spread = { nome: "Spread BTP-Bund", unita: "pb", decimali: 0, valore: l.v, var: null, delta: p ? `da ${it(p.v, 0)}` : "", buono: "giu", nota: `Media di ${meseIt(l.t)}. Più basso è, meno costa il debito italiano`, data: l.t, fonte: "BCE", url: "https://data.ecb.europa.eu/data/datasets/IRS" };
       serie.spread = sp.map((o) => o.v);
     }
   }
+
+  // --- Fed
   const fu = await safe("Fed massimo", () => fred("DFEDTARU"));
   const fl = await safe("Fed minimo", () => fred("DFEDTARL"));
-  if (fu && fl) V.fed = { nome: "Fed (USA)", unita: "%", valore: `${it(fl.v)}–${it(fu.v)}`, var: null, delta: "", nota: "Intervallo obiettivo dei Fed Funds", data: fu.t, fonte: "FRED", url: "https://fred.stlouisfed.org/series/DFEDTARU" };
-  for (const [id, key, nome, nota] of [
-    ["infl_it", "ICP.M.IT.N.000000.4.ANR", "Inflazione Italia", "Indice armonizzato IPCA, variazione annua"],
-    ["infl_ez", "ICP.M.U2.N.000000.4.ANR", "Inflazione Eurozona", "Variazione annua, area euro"],
-  ]) {
-    const s = await safe(nome, () => ecb(key, 13));
-    if (!s) continue;
+  if (fu && fl && fu.v >= fl.v && fu.v < 25) {
+    V.fed = { nome: "Fed (USA)", unita: "%", valore: `${it(fl.v)}–${it(fu.v)}`, var: null, delta: "", nota: "Intervallo obiettivo dei tassi USA", data: fu.t, fonte: "FRED", url: "https://fred.stlouisfed.org/series/DFEDTARU" };
+    esito.ok.push("Fed");
+  } else esito.ko.push("Fed");
+
+  // --- inflazione, Euribor, tassi bancari medi
+  for (const [id, keys, nome, nota, buono, dec, n, range] of BCE_SERIE) {
+    const s = await safe(nome, () => ecb(keys, n, range));
+    if (!s) { esito.ko.push(nome); continue; }
     const l = s.at(-1), p = s.at(-2);
-    V[id] = { nome, unita: "%", decimali: 1, valore: l.v, var: null, delta: p ? `da ${it(p.v, 1)}%` : "", buono: "giu", nota: `${nota} (${l.t})`, data: l.t, fonte: "BCE / Eurostat", url: "https://data.ecb.europa.eu/" };
-    serie[id] = s.map((o) => o.v);
-  }
-  // Tassi medi praticati dalle banche italiane alle famiglie (statistiche MIR, Banca d'Italia / BCE)
-  for (const [id, key, nome, nota, buono] of [
-    ["euribor3m", "FM.M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA", "Euribor 3 mesi", "Parametro dei mutui variabili, media mensile", "giu"],
-    ["mutuo_medio", "MIR.M.IT.B.A2C.A.R.A.2250.EUR.N", "Tasso medio mutui casa", "Nuovi mutui alle famiglie in Italia", "giu"],
-    ["dep_vincolati", "MIR.M.IT.B.L22.F.R.A.2250.EUR.N", "Depositi vincolati", "Tasso lordo medio fino a 1 anno, nuovi depositi delle famiglie", undefined],
-    ["dep_conto", "MIR.M.IT.B.L21.A.R.A.2250.EUR.N", "Conti correnti", "Tasso lordo medio pagato sui conti delle famiglie", undefined],
-  ]) {
-    const s = await safe(nome, () => ecb(key, 13));
-    if (!s) continue;
-    const l = s.at(-1), p = s.at(-2);
-    V[id] = { nome, unita: "%", decimali: 2, valore: round(l.v, 2), var: null, delta: p ? `da ${it(p.v)}%` : "", buono, nota: `${nota} (${l.t})`, data: l.t, fonte: "BCE / Banca d'Italia", url: "https://data.ecb.europa.eu/" };
+    V[id] = { nome, unita: "%", decimali: dec, valore: round(l.v, dec), var: null, delta: p ? `da ${it(p.v, dec)}%` : "", buono, nota: `${nota} (${meseIt(l.t)})`, data: l.t, fonte: id.startsWith("infl") ? "Eurostat via BCE" : "Banca d'Italia / BCE", url: "https://data.ecb.europa.eu/" };
     serie[id] = s.map((o) => round(o.v, 3));
-  }
-  const dis = await safe("Disoccupazione", () => eurostat("une_rt_m", "geo=IT&s_adj=SA&age=TOTAL&sex=T&unit=PC_ACT&lastTimePeriod=13"));
-  if (dis) {
-    const l = dis.at(-1), p = dis.at(-2);
-    V.disoccupazione = { nome: "Disoccupazione Italia", unita: "%", decimali: 1, valore: l.v, var: null, delta: p ? `da ${it(p.v, 1)}%` : "", buono: "giu", nota: `Tasso destagionalizzato (${l.t})`, data: l.t, fonte: "Eurostat", url: "https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table" };
-    serie.disoccupazione = dis.map((o) => o.v);
+    esito.ok.push(nome);
   }
 
+  // --- disoccupazione
+  const dis = await safe("Disoccupazione", () => eurostat("une_rt_m", "geo=IT&s_adj=SA&age=TOTAL&sex=T&unit=PC_ACT&lastTimePeriod=13"));
+  if (dis && dis.at(-1).v > 0 && dis.at(-1).v < 40) {
+    const l = dis.at(-1), p = dis.at(-2);
+    V.disoccupazione = { nome: "Disoccupazione Italia", unita: "%", decimali: 1, valore: l.v, var: null, delta: p ? `da ${it(p.v, 1)}%` : "", buono: "giu", nota: `Tasso destagionalizzato (${meseIt(l.t)})`, data: l.t, fonte: "Eurostat", url: "https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table" };
+    serie.disoccupazione = dis.map((o) => o.v);
+    esito.ok.push("Disoccupazione");
+  } else esito.ko.push("Disoccupazione");
+
+  // --- carburanti (media dei distributori self, aggiornata ogni mattina dal Mimit)
   const carb = await safe("Carburanti Mimit", carburanti);
   if (carb) {
-    const old = serie.benzina || [];
-    const b = round(carb.benzina, 3);
-    const lastDay = (prev.serieDate || {}).benzina;
-    serie.benzina = lastDay === carb.data ? [...old.slice(0, -1), b] : [...old, b].slice(-60);
-    const prevB = lastDay === carb.data ? old.at(-2) : old.at(-1);
-    V.benzina = { nome: "Benzina self", unita: "€/l", decimali: 3, valore: b, var: prevB ? round((b / prevB - 1) * 100, 2) : null, buono: "giu", nota: "Media nazionale self service", data: carb.data, fonte: "Mimit", url: "https://carburanti.mise.gov.it/" };
-    const g = round(carb.gasolio, 3), oldG = serie.gasolio || [];
-    const prevG = lastDay === carb.data ? oldG.at(-2) : oldG.at(-1);
-    serie.gasolio = lastDay === carb.data ? [...oldG.slice(0, -1), g] : [...oldG, g].slice(-60);
-    V.gasolio = { nome: "Gasolio self", unita: "€/l", decimali: 3, valore: g, var: prevG ? round((g / prevG - 1) * 100, 2) : null, buono: "giu", nota: "Media nazionale self service", data: carb.data, fonte: "Mimit", url: "https://carburanti.mise.gov.it/" };
-  }
+    for (const [id, nome] of [["benzina", "Benzina self"], ["gasolio", "Gasolio self"]]) {
+      const val = round(carb[id].media, 3), old = (serie[id] || []).filter((x) => num(x) != null);
+      const stessoGiorno = serieDate[id] === carb.data;
+      const base = stessoGiorno ? old.slice(0, -1) : old;
+      serie[id] = [...base, val].slice(-60);
+      serieDate[id] = carb.data;
+      const prevVal = base.at(-1);
+      V[id] = { nome, unita: "€/l", decimali: 3, valore: val, var: prevVal ? round((val / prevVal - 1) * 100, 2) : null, buono: "giu", nota: `Media di ${it(carb[id].n, 0)} distributori self service`, data: carb.data, fonte: "Mimit", url: "https://carburanti.mise.gov.it/" };
+    }
+    esito.ok.push("Carburanti");
+  } else esito.ko.push("Carburanti");
 
-  // Le voci non aggiornate tengono il valore precedente con la sua data originale.
+  // --- composizione: le voci non aggiornate mantengono valore e data precedenti
   const GRUPPI = [
     ["Borse", ["ftsemib", "stoxx50", "dax", "mondo", "sp500", "dow", "nasdaq", "vix"]],
     ["Tassi", ["bce", "euribor3m", "btp10", "spread"]],
@@ -411,58 +601,59 @@ async function main() {
   const mercati = GRUPPI.map(([gruppo, ids]) => ({
     gruppo,
     voci: ids.map((id) => {
-      const v = V[id];
-      if (v) {
-        const { mese, ...rest } = v;
-        return { id, ...rest, nota: rest.nota || NOTE[id] || "" };
-      }
+      if (V[id]) { const { mese, ...rest } = V[id]; return { id, ...rest, nota: rest.nota || NOTE[id] || "" }; }
       return prevVoce(id);
     }).filter(Boolean),
   }));
-  const valOf = (id) => { for (const g of mercati) for (const v of g.voci) if (v.id === id) return v; return null; };
-  const updatedCount = Object.keys(V).length;
-  log("voci aggiornate:", updatedCount, Object.keys(V).join(", "));
-  if (updatedCount < 4) throw new Error("Troppe fonti non raggiungibili: dati precedenti lasciati invariati.");
+  const VV = Object.fromEntries(mercati.flatMap((g) => g.voci).map((v) => [v.id, { ...v, mese: V[v.id]?.mese ?? null }]));
 
-  const notizie = (await safe("notizie", notizieRss)) || [];
-  const ctx = { giorno, edizione, notizie };
-  ctx.dati =Object.fromEntries(mercati.flatMap((g) => g.voci).map((v) => [v.nome, { valore: v.valore, unita: v.unita, variazione_giornaliera_pct: v.var ?? null, confronto: v.delta || null, variazione_un_mese_pct: V[v.id]?.mese != null ? round(V[v.id].mese, 2) : null, data: v.data }]));
-  ctx.dati["Prossima riunione BCE"] = BCE_RIUNIONI.find((d) => d > giorno) || null;
+  log(`aggiornate ${esito.ok.length} fonti: ${esito.ok.join(", ")}`);
+  if (esito.ko.length) log(`non aggiornate (restano i valori precedenti): ${esito.ko.join(", ")}`);
+  if (Object.keys(V).length < 5) throw new Error("Troppe fonti non raggiungibili: data.js lasciato invariato.");
 
-  const VV = Object.fromEntries(mercati.flatMap((g) => g.voci).map((v) => [v.id, { ...v, mese: V[v.id]?.mese }]));
-  const base = fallbackTesti(ctx, VV);
-  let ai = null;
-  if (notizie.length || Object.keys(V).length) {
-    const p = prompt(ctx);
-    ai = validAi(parseJson(await gemini(p)), notizie) || validAi(parseJson(await groq(p)), notizie);
+  const notizie = (await safe("notizie", () => notizieRss(giorno))) || [];
+  log("notizie raccolte:", notizie.length);
+
+  const ctx = { giorno, edizione, notizie, serie };
+  ctx.dati = Object.fromEntries(Object.values(VV).map((v) => [v.nome, { valore: v.valore, unita: v.unita, var_giorno_pct: v.var ?? null, confronto: v.delta || null, var_mese_pct: v.mese != null ? round(v.mese, 1) : null, data: v.data }]));
+  ctx.dati["Prossima riunione BCE"] = BCE_RIUNIONI.find((d) => d >= giorno) || null;
+
+  const base = testiCalcolati(ctx, VV);
+  let ia = null;
+  if (process.env.GEMINI_API_KEY || process.env.GROQ_API_KEY) {
+    const p = promptIA(ctx);
+    ia = validaIA(parseJson(await gemini(p)), ctx);
+    if (!ia || !ia.perTe) ia = validaIA(parseJson(await groq(p)), ctx) || ia;
   }
-  if (!ai) log("IA non disponibile: uso i testi automatici di riserva");
+  log(ia ? "testi: IA dove valida, calcolati per il resto" : "testi: calcolati dai dati (nessuna IA)");
 
+  const lunedi = (iso) => { const d = new Date(iso + "T12:00:00Z"), w = d.getUTCDay(); if (w === 6) d.setUTCDate(d.getUTCDate() + 2); if (w === 0) d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
+  const anno = +giorno.slice(0, 4);
   const agenda = [
     ...BCE_RIUNIONI.map((d) => ({ data: d, evento: "Riunione BCE sui tassi", perche: "Conta per mutui variabili, conti deposito e titoli di Stato" })),
-    ...[0, 1].flatMap((k) => SCADENZE_FISCALI.map(([m, g, evento, perche]) => ({ data: `${+giorno.slice(0, 4) + k}-${String(m).padStart(2, "0")}-${String(g).padStart(2, "0")}`, evento, perche }))),
+    ...[anno, anno + 1].flatMap((y) => SCADENZE_FISCALI.map(([m, g, evento, perche]) => ({ data: lunedi(`${y}-${String(m).padStart(2, "0")}-${String(g).padStart(2, "0")}`), evento, perche }))),
   ].filter((a) => a.data >= giorno).sort((a, b) => a.data.localeCompare(b.data)).slice(0, 5);
-
-  const serieDate = { ...(prev.serieDate || {}) };
-  if (carb) serieDate.benzina = carb.data;
 
   const out = {
     aggiornato: isoRome(),
     edizione,
-    testiIA: Boolean(ai),
-    titolo: ai?.titolo || base.titolo,
-    sintesi: ai?.sintesi || base.sintesi,
-    climi: { mercati: ai?.mercati || base.mercati, famiglie: ai?.famiglie || base.famiglie },
-    perTe: ai?.perTe || base.perTe,
+    testiIA: Boolean(ia && (ia.titolo || ia.perTe || ia.notizie)),
+    fonti: { aggiornate: esito.ok, nonAggiornate: esito.ko },
+    titolo: ia?.titolo || base.titolo,
+    sintesi: ia?.sintesi || base.sintesi,
+    climi: { mercati: base.mercati, famiglie: base.famiglie },
+    perTe: ia?.perTe || base.perTe,
     mercati,
-    notizie: ai?.notizie || (base.notizie.length ? base.notizie : prev.notizie || []),
+    notizie: ia?.notizie || (base.notizie.length ? base.notizie : prev.notizie || []),
     agenda,
-    rendimenti: valOf("dep_vincolati") ? { mediaVincolati: valOf("dep_vincolati").valore, mediaConto: valOf("dep_conto")?.valore ?? null, mutuoMedio: valOf("mutuo_medio")?.valore ?? null, data: valOf("dep_vincolati").data, fonte: "BCE / Banca d'Italia" } : prev.rendimenti || null,
+    rendimenti: VV.dep_vincolati ? { mediaVincolati: VV.dep_vincolati.valore, mediaConto: VV.dep_conto?.valore ?? null, mutuoMedio: VV.mutuo_medio?.valore ?? null, data: VV.dep_vincolati.data, fonte: "Banca d'Italia / BCE" } : prev.rendimenti || null,
     serie,
     serieDate,
   };
-  await writeFile(FILE, "/* Dati del giorno, generati automaticamente due volte al giorno. */\nwindow.ECO = " + JSON.stringify(out, null, 2) + ";\n");
-  log("data.js scritto:", out.edizione, out.aggiornato, ai ? "(testi IA)" : "(testi automatici)");
+  const testo = "/* Dati del giorno, generati automaticamente due volte al giorno. */\nwindow.ECO = " + JSON.stringify(out, null, 2) + ";\n";
+  vm.runInNewContext(testo, { window: {} }); // verifica che il file sia valido prima di scriverlo
+  await writeFile(FILE, testo);
+  log("data.js scritto:", out.edizione, out.aggiornato);
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+main().catch((e) => { console.error("[aggiorna] ERRORE", e.message); process.exit(1); });

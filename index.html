@@ -216,6 +216,9 @@ select { appearance: auto; }
 
 .btn { font: inherit; font-weight: 700; border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer; background: var(--ink); color: var(--bg); }
 .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.stale-banner { background: var(--accent-soft); color: var(--ink); border-radius: 12px; padding: 12px 16px; font-size: .92rem; }
+.tile.old .t-src::after { content: " · non aggiornato"; color: var(--warn); font-weight: 600; }
+.news time { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); margin-left: 8px; }
 .disclaimer { font-size: .82rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; max-width: 80ch; }
 .foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
 .theme-toggle { display: inline-flex; gap: 4px; background: var(--surface-2); padding: 3px; border-radius: 10px; }
@@ -278,6 +281,7 @@ select { appearance: auto; }
 
   <!-- ===================== OGGI ===================== -->
   <div class="view" id="view-oggi">
+    <p class="stale-banner" id="staleBanner" hidden></p>
     <section aria-labelledby="h-pert">
       <div class="section-head">
         <h2 id="h-pert">Cosa significa per te</h2>
@@ -531,9 +535,17 @@ select { appearance: auto; }
   var timeShort = upd ? upd.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" }) : "";
   var ed = D.edizione === "mattina" ? "Edizione del mattino" : "Edizione della sera";
   $("#heroDate").textContent = ed + " · " + dateLong;
-  $("#heroTitle").innerHTML = esc(D.titolo || "").replace(/,\s*(.+)$/, ", <em>$1</em>");
+  $("#heroTitle").innerHTML = esc(D.titolo || "").replace(/,\s+(.+)$/, ", <em>$1</em>");
   $("#heroLede").textContent = D.sintesi || "";
   $("#editionPill").innerHTML = "Aggiornato alle <i>" + esc(timeShort) + "</i>";
+  if (upd) {
+    var ore = (Date.now() - upd.getTime()) / 36e5;
+    if (ore > 18) { var sb = $("#staleBanner"); sb.hidden = false; sb.textContent = "Attenzione: questi dati risalgono a " + (ore < 48 ? Math.round(ore) + " ore fa" : Math.round(ore / 24) + " giorni fa") + ". L'aggiornamento automatico potrebbe non essere andato a buon fine."; }
+  }
+  if (D.fonti && D.fonti.nonAggiornate && D.fonti.nonAggiornate.length) {
+    var nb = $("#staleBanner");
+    if (nb.hidden) { nb.hidden = false; nb.textContent = "In questa edizione non sono state aggiornate: " + D.fonti.nonAggiornate.join(", ") + ". Restano i valori precedenti, con la loro data."; }
+  }
   $("#footUpdated").textContent = "Ultimo aggiornamento: " + dateLong + ", " + timeShort + ". Prossimo: " + (D.edizione === "mattina" ? "stasera" : "domattina") + ".";
 
   function gauge(label, g, invert) {
@@ -573,6 +585,7 @@ select { appearance: auto; }
     return '<svg class="spark" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + area + '" fill="var(--teal)" fill-opacity=".12"/><path d="' + line + '" fill="none" stroke="var(--teal)" stroke-width="1.8" vector-effect="non-scaling-stroke"/><circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.6" fill="var(--teal)"/></svg>';
   }
   function chipFor(v) {
+    if (v.buono === "neutro") return v.delta ? '<span class="chip flat">' + esc(v.delta) + '</span>' : (typeof v.var === "number" ? '<span class="chip flat">' + (v.var > 0 ? "+" : "") + nf(v.var, 2) + '%</span>' : "");
     if (typeof v.var === "number") {
       var good = v.buono === "giu" ? v.var < 0 : v.var > 0;
       var cls = v.var === 0 ? "flat" : (good ? "up" : "down");
@@ -595,7 +608,9 @@ select { appearance: auto; }
   $("#markets").innerHTML = (D.mercati || []).map(function (g) {
     return '<div class="market-group"><h3>' + esc(g.gruppo) + '</h3><div class="tiles">' + g.voci.map(function (v) {
       var val = typeof v.valore === "number" ? nf(v.valore, v.decimali) : esc(v.valore);
-      return '<div class="tile"><div class="t-name"><span>' + esc(v.nome) + '</span>' + chipFor(v) + '</div>' +
+      var daily = /^\d{4}-\d{2}-\d{2}$/.test(String(v.data)) && ["bce", "fed"].indexOf(v.id) < 0;
+      var age = upd ? (upd - new Date(String(v.data).slice(0, 10) + "T12:00:00")) / 864e5 : 0;
+      return '<div class="tile' + (daily && age > 5 ? ' old' : '') + '"><div class="t-name"><span>' + esc(v.nome) + '</span>' + chipFor(v) + '</div>' +
         '<div class="t-val">' + val + '<small>' + esc(v.unita) + '</small></div>' +
         spark(v.id) +
         '<div class="t-note">' + esc(v.nota) + '</div>' +
@@ -605,7 +620,7 @@ select { appearance: auto; }
 
   $("#news").innerHTML = (D.notizie || []).map(function (n) {
     var dot = n.impatto ? '<i class="dot ' + esc(n.impatto) + '" aria-label="impatto ' + esc(n.impatto) + '"></i>' : '<i class="dot neutro" aria-hidden="true"></i>';
-    return '<article>' + dot + '<div><h3>' + esc(n.titolo) + '</h3>' + (n.testo ? '<p>' + esc(n.testo) + '</p>' : '') + '<a class="src" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.fonte) + '</a></div></article>';
+    return '<article>' + dot + '<div><h3>' + esc(n.titolo) + '</h3>' + (n.testo ? '<p>' + esc(n.testo) + '</p>' : '') + '<a class="src" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.fonte) + '</a>' + (n.data ? '<time datetime="' + esc(n.data) + '">' + new Date(n.data).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" }) + '</time>' : '') + '</div></article>';
   }).join("");
 
   if (!(D.notizie || []).some(function (n) { return n.impatto; })) $("#newsLegend").hidden = true;
