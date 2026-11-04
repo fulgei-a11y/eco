@@ -1,6 +1,6 @@
 /* Dati del giorno, generati automaticamente due volte al giorno. */
 window.ECO = {
-  "aggiornato": "2026-11-04T23:49:18+01:00",
+  "aggiornato": "2026-11-04T23:55:08+01:00",
   "edizione": "sera",
   "testiIA": false,
   "fonti": {
@@ -30,10 +30,11 @@ window.ECO = {
       "Disoccupazione",
       "Euro / Dollaro",
       "Euro / Sterlina",
-      "Euro / Franco svizzero"
+      "Euro / Franco svizzero",
+      "Carburanti (settimanale UE)"
     ],
     "nonAggiornate": [
-      "Carburanti"
+      "Inflazione per categoria"
     ]
   },
   "titolo": "Piazza Affari corre (+2,18%), inflazione alta al 5,6%",
@@ -47,7 +48,7 @@ window.ECO = {
     "famiglie": {
       "valore": 90,
       "etichetta": "Pressione alta",
-      "nota": "Inflazione al 5,6%, benzina a 2,010 €/l, disoccupazione al 6,3%."
+      "nota": "Inflazione al 5,6%, benzina a 2,006 €/l, disoccupazione al 6,3%."
     }
   },
   "perTe": [
@@ -74,8 +75,8 @@ window.ECO = {
     },
     {
       "tema": "Spese",
-      "titolo": "Benzina a 2,010 €/l",
-      "testo": "La benzina self costa in media 2,010 €/l: un pieno da 50 litri vale circa 100 €. Il petrolio è sceso del 6% in un mese: i prezzi alla pompa di solito lo seguono con qualche settimana di ritardo. Il Portale Offerte ARERA e l'Osservaprezzi del Mimit sono gratuiti e neutrali.",
+      "titolo": "Carburanti in calo",
+      "testo": "La benzina self costa in media 2,006 €/l (−13,5 centesimi rispetto agli ultimi rilevamenti): un pieno da 50 litri vale circa 100 €. Il petrolio è sceso del 6% in un mese: i prezzi alla pompa di solito lo seguono con qualche settimana di ritardo. Il Portale Offerte ARERA e l'Osservaprezzi del Mimit sono gratuiti e neutrali.",
       "azione": "Apri le fonti utili",
       "link": "#fonti"
     }
@@ -363,17 +364,31 @@ window.ECO = {
         },
         {
           "id": "benzina",
-          "nome": "Benzina self",
-          "valore": 2.01,
-          "decimali": 3,
+          "nome": "Benzina",
           "unita": "€/l",
-          "var": null,
-          "delta": "in lieve calo",
+          "decimali": 3,
+          "valore": 2.006,
+          "var": -0.5,
           "buono": "giu",
-          "nota": "Media nazionale Mimit. Gasolio a 2,241 €/l",
-          "data": "2026-11-01",
-          "fonte": "ANSA",
-          "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/01/mimit-carburanti-in-calo-prezzo-medio-self-benzina-a-2010-euro-gasolio_c7b14e0a-aec7-428d-a49d-c2f692324c2a.html"
+          "nota": "Media nazionale settimanale, Bollettino petrolifero UE",
+          "data": "2026-10-26",
+          "fonte": "Commissione europea via fuel-prices.eu",
+          "url": "https://www.fuel-prices.eu/research/",
+          "mese": null
+        },
+        {
+          "id": "gasolio",
+          "nome": "Gasolio",
+          "unita": "€/l",
+          "decimali": 3,
+          "valore": 2.247,
+          "var": 0.13,
+          "buono": "giu",
+          "nota": "Media nazionale settimanale, Bollettino petrolifero UE",
+          "data": "2026-10-26",
+          "fonte": "Commissione europea via fuel-prices.eu",
+          "url": "https://www.fuel-prices.eu/research/",
+          "mese": null
         }
       ]
     },
@@ -424,13 +439,13 @@ window.ECO = {
           "nome": "Oro al grammo",
           "unita": "€/g",
           "decimali": 2,
-          "valore": 116.51,
-          "var": 2.93,
+          "valore": 116.53,
+          "var": 2.95,
           "data": "2026-11-04",
-          "nota": "Oro puro. A 18 carati circa 87,38 €/g",
+          "nota": "Oro puro. A 18 carati circa 87,40 €/g",
           "fonte": "Calcolo su Yahoo Finance e BCE",
           "url": "https://finance.yahoo.com/quote/GC%3DF",
-          "mese": -1.88
+          "mese": -1.86
         }
       ]
     },
@@ -485,12 +500,12 @@ window.ECO = {
           "unita": "$",
           "decimali": 0,
           "buono": null,
-          "valore": 80847,
-          "var": 4.53,
+          "valore": 80765,
+          "var": 4.42,
           "data": "2026-11-04",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/BTC-USD",
-          "mese": -2.71,
+          "mese": -2.8,
           "nota": "Asset speculativo, molto volatile e non protetto"
         }
       ]
@@ -580,6 +595,7 @@ window.ECO = {
     "data": "2026-09",
     "fonte": "Banca d'Italia / BCE"
   },
+  "inflazioneCategorie": null,
   "serie": {
     "ftsemib": [
       53693,
@@ -1447,7 +1463,7 @@ window.ECO = {
       78248.4531,
       76677.2969,
       77345.0469,
-      80847.05
+      80764.59
     ],
     "btp10": [
       3.559,
@@ -1644,7 +1660,7 @@ window.ECO = {
       1.1183,
       1.1157,
       1.1192,
-      1.1237
+      1.1235
     ],
     "eurgbp": [
       0.8549,
@@ -1830,8 +1846,67 @@ window.ECO = {
       112.09,
       114.39,
       113.19,
-      116.51
+      116.53
+    ],
+    "benzina": [
+      1.789,
+      1.933,
+      1.937,
+      1.964,
+      1.952,
+      1.921,
+      1.895,
+      1.85,
+      1.812,
+      1.81,
+      1.864,
+      1.91,
+      1.961,
+      1.992,
+      1.993,
+      1.988,
+      2.003,
+      2.017,
+      2.035,
+      2.084,
+      2.141,
+      2.156,
+      2.073,
+      2.021,
+      2.016,
+      2.006
+    ],
+    "gasolio": [
+      2.046,
+      2.02,
+      1.983,
+      1.989,
+      2.019,
+      1.983,
+      2.005,
+      1.949,
+      1.897,
+      1.887,
+      1.957,
+      2.038,
+      2.141,
+      2.09,
+      2.081,
+      2.079,
+      2.115,
+      2.123,
+      2.142,
+      2.191,
+      2.281,
+      2.351,
+      2.273,
+      2.241,
+      2.244,
+      2.247
     ]
   },
-  "serieDate": {}
+  "serieDate": {
+    "benzina": "2026-10-26",
+    "gasolio": "2026-10-26"
+  }
 };
