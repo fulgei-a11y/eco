@@ -5,6 +5,7 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import vm from "node:vm";
+import { gunzipSync } from "node:zlib";
 
 const FILE = new URL("../data.js", import.meta.url);
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
@@ -243,6 +244,50 @@ async function inflazione(geos) {
   throw ultimoErrore;
 }
 
+// Inflazione italiana per categoria di spesa (ultimo mese disponibile), riconoscendo le voci dal nome.
+const CATEGORIE = [
+  ["alimentari", ["CP01"], /^food and non-alcoholic/i, "Alimentari e bevande"],
+  ["abbigliamento", ["CP03"], /^clothing and footwear/i, "Abbigliamento e calzature"],
+  ["casa", ["CP04"], /^housing, water, electricity/i, "Casa, acqua ed energia"],
+  ["energia", ["CP045"], /^electricity, gas and other fuels/i, "Luce, gas e combustibili"],
+  ["salute", ["CP06"], /^health/i, "Salute"],
+  ["trasporti", ["CP07"], /^transport$/i, "Trasporti"],
+  ["comunicazioni", ["CP08"], /^(information and )?communication/i, "Telefono e internet"],
+  ["svago", ["CP09"], /^recreation/i, "Svago e cultura"],
+  ["ristoranti", ["CP11"], /^restaurants/i, "Ristoranti e vacanze"],
+];
+async function inflazioneCategorie() {
+  for (const ds of ["prc_hicp_minr", "prc_hicp_manr"]) {
+    try {
+      const j = await get(`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${ds}?format=JSON&lang=EN&geo=IT&lastTimePeriod=1`, { json: true, timeout: 90000 });
+      const ids = j.id, size = j.size, dims = j.dimension;
+      const stride = size.map((_, i) => size.slice(i + 1).reduce((a, b) => a * b, 1));
+      const dCoicop = ids.find((d) => /^coicop/i.test(d)), dUnit = ids.find((d) => d === "unit");
+      if (!dCoicop) throw new Error("dimensione coicop assente");
+      const uCat = dims[dUnit].category, uCodes = Object.keys(uCat.index);
+      const uCode = uCodes.find((c) => c === "RCH_A") || uCodes.find((c) => /annual rate of change/i.test(uCat.label?.[c] || ""));
+      if (!uCode) throw new Error("unità RCH_A assente");
+      const cCat = dims[dCoicop].category, cCodes = Object.keys(cCat.index);
+      const periodo = Object.keys(dims.time.category.index)[0].replace(/M(\d{2})$/, "-$1");
+      if (!fresco(periodo, 4)) throw new Error(`${ds} fermo a ${periodo}`);
+      const out = {};
+      for (const [id, codici, etichetta, nome] of CATEGORIE) {
+        const code = cCodes.find((c) => codici.includes(c)) || cCodes.find((c) => etichetta.test(cCat.label?.[c] || ""));
+        if (!code) continue;
+        const flat = ids.reduce((acc, d, i) => {
+          const idx = d === dCoicop ? cCat.index[code] : d === dUnit ? uCat.index[uCode] : 0;
+          return acc + idx * stride[i];
+        }, 0);
+        const v = j.value?.[flat] ?? j.value?.[String(flat)];
+        if (num(v) != null && v > -30 && v < 80) out[id] = { nome, valore: v };
+      }
+      if (Object.keys(out).length < 5) throw new Error(`categorie riconosciute: ${Object.keys(out).length}; esempi ${cCodes.slice(0, 15).join(",")}`);
+      return { periodo, categorie: out };
+    } catch (e) { log("ATTENZIONE inflazione per categoria", ds, "-", motivo(e)); }
+  }
+  return null;
+}
+
 // Un dato mensile è "fresco" se non è più vecchio di N mesi rispetto a oggi.
 function fresco(periodo, mesi) {
   const [y, m] = periodo.split("-").map(Number);
@@ -300,6 +345,39 @@ async function carburanti() {
     return { media: t.reduce((a, b) => a + b, 0) / t.length, n: v.length };
   };
   return { benzina: media("Benzina"), gasolio: media("Gasolio"), data: estr };
+}
+
+// Bollettino petrolifero settimanale della Commissione europea (dati CC BY 4.0, compilati da fuel-prices.eu).
+// Usato quando il Mimit non è raggiungibile. Riconosce da solo colonne e unità.
+async function carburantiUE() {
+  const r = await fetch("https://www.fuel-prices.eu/research/data/d1-eu-weekly-bulletin/fp-d1-eu-weekly-panel.csv.gz", { headers: { "User-Agent": UA } });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  let buf = Buffer.from(await r.arrayBuffer());
+  try { buf = gunzipSync(buf); } catch { /* già decompresso */ }
+  const testo = buf.toString("utf8").split(/\r?\n/).filter((l) => l && !l.startsWith("#")).join("\n");
+  const righe = parseCsv(testo);
+  if (!righe.length) throw new Error("file vuoto");
+  const cols = Object.keys(righe[0]);
+  log("bollettino UE, colonne:", cols.join(", "));
+  const trova = (re) => cols.find((c) => re.test(c));
+  const cData = trova(/date|week|period/i), cPaese = trova(/country|iso|geo|nation/i);
+  const cBenz = trova(/euro.?super|petrol|gasoline|unleaded|95/i), cDies = trova(/diesel|gasoil|gas.?oil/i);
+  const cProd = trova(/fuel|product/i), cPrezzo = trova(/price|value|eur/i);
+  if (!cData || !cPaese) throw new Error("colonne data/paese non trovate");
+  const italia = righe.filter((x) => /^(IT|ITA|Italy|Italia)$/i.test(String(x[cPaese]).trim()));
+  if (!italia.length) throw new Error("nessuna riga per l'Italia");
+  const norm = (v) => { let n = Number(String(v).replace(",", ".")); if (!isFinite(n) || n <= 0) return null; if (n > 100) n /= 1000; return n > 0.8 && n < 4 ? n : null; };
+  const serieDi = (filtroProd, colWide) => {
+    const pts = italia.map((x) => ({ t: String(x[cData]).slice(0, 10), v: norm(colWide ? x[colWide] : (filtroProd.test(String(x[cProd])) ? x[cPrezzo] : NaN)) }))
+      .filter((o) => o.v != null && /^\d{4}-\d{2}-\d{2}$/.test(o.t)).sort((a, b) => a.t.localeCompare(b.t));
+    return pts;
+  };
+  const benz = cBenz && !cProd ? serieDi(null, cBenz) : serieDi(/super|petrol|gasoline|unleaded|95/i);
+  const dies = cDies && !cProd ? serieDi(null, cDies) : serieDi(/diesel|gasoil/i);
+  if (!benz.length || !dies.length) throw new Error("prezzi non riconosciuti");
+  const ultima = benz.at(-1).t;
+  if (daysBetween(ultima, dayRome()) > 16) throw new Error("bollettino fermo al " + ultima);
+  return { benzina: benz, gasolio: dies };
 }
 
 function decode(s) {
@@ -695,7 +773,18 @@ async function main() {
       V[id] = { nome, unita: "€/l", decimali: 3, valore: val, var: prevVal ? round((val / prevVal - 1) * 100, 2) : null, buono: "giu", nota: `Media di ${it(carb[id].n, 0)} distributori self service`, data: carb.data, fonte: "Mimit", url: "https://carburanti.mise.gov.it/" };
     }
     esito.ok.push("Carburanti");
-  } else esito.ko.push("Carburanti");
+  } else {
+    const ue = await safe("Carburanti (bollettino UE)", carburantiUE);
+    if (ue) {
+      for (const [id, nome] of [["benzina", "Benzina"], ["gasolio", "Gasolio"]]) {
+        const s = ue[id], l = s.at(-1), p = s.at(-2);
+        V[id] = { nome, unita: "€/l", decimali: 3, valore: round(l.v, 3), var: p ? round((l.v / p.v - 1) * 100, 2) : null, buono: "giu", nota: "Media nazionale settimanale, Bollettino petrolifero UE", data: l.t, fonte: "Commissione europea via fuel-prices.eu", url: "https://www.fuel-prices.eu/research/" };
+        serie[id] = s.slice(-26).map((o) => round(o.v, 3));
+        serieDate[id] = l.t;
+      }
+      esito.ok.push("Carburanti (settimanale UE)");
+    } else esito.ko.push("Carburanti");
+  }
 
   // --- composizione: le voci non aggiornate mantengono valore e data precedenti
   const GRUPPI = [
@@ -726,6 +815,10 @@ async function main() {
   log(`aggiornate ${esito.ok.length} fonti: ${esito.ok.join(", ")}`);
   if (esito.ko.length) log(`non aggiornate (restano i valori precedenti): ${esito.ko.join(", ")}`);
   if (Object.keys(V).length < 5) throw new Error("Troppe fonti non raggiungibili: data.js lasciato invariato.");
+
+  const inflCat = await inflazioneCategorie();
+  if (inflCat) { log("inflazione per categoria:", inflCat.periodo, Object.entries(inflCat.categorie).map(([k, v]) => `${k} ${v.valore}%`).join(", ")); esito.ok.push("Inflazione per categoria"); }
+  else esito.ko.push("Inflazione per categoria");
 
   const notizie = (await safe("notizie", () => notizieRss(giorno))) || [];
   log("notizie raccolte:", notizie.length);
@@ -763,6 +856,7 @@ async function main() {
     notizie: ia?.notizie || (base.notizie.length ? base.notizie : prev.notizie || []),
     agenda,
     rendimenti: VV.dep_vincolati ? { mediaVincolati: VV.dep_vincolati.valore, mediaConto: VV.dep_conto?.valore ?? null, mutuoMedio: VV.mutuo_medio?.valore ?? null, data: VV.dep_vincolati.data, fonte: "Banca d'Italia / BCE" } : prev.rendimenti || null,
+    inflazioneCategorie: inflCat || prev.inflazioneCategorie || null,
     serie,
     serieDate,
   };
