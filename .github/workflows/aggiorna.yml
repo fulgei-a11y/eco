@@ -1,0 +1,49 @@
+name: Aggiorna dati
+
+on:
+  schedule:
+    # Ore UTC: 6:10 e 18:10 (7:10 e 19:10 in inverno, 8:10 e 20:10 in estate a Roma)
+    - cron: "10 6 * * *"
+    - cron: "10 18 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aggiorna-dati
+  cancel-in-progress: false
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Scarica dati e scrivi i testi
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          TZ: Europe/Rome
+        run: node scripts/aggiorna.mjs
+
+      - name: Controlla il file generato
+        run: node --check data.js
+
+      - name: Salva se ci sono novità
+        run: |
+          if git diff --quiet -- data.js; then
+            echo "Nessuna novità."
+            exit 0
+          fi
+          git config user.name "eco"
+          git config user.email "eco@users.noreply.github.com"
+          git add data.js
+          git commit -m "Aggiorna dati: $(TZ=Europe/Rome date '+%d/%m/%Y %H:%M')"
+          git pull --rebase origin main
+          git push

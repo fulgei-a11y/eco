@@ -298,7 +298,7 @@ select { appearance: auto; }
       <div>
         <div class="section-head">
           <h2>Le notizie che contano</h2>
-          <div class="legend" aria-label="Legenda impatto">
+          <div class="legend" id="newsLegend" aria-label="Legenda impatto">
             <span><i class="dot positivo"></i>favorevole</span>
             <span><i class="dot negativo"></i>sfavorevole</span>
             <span><i class="dot misto"></i>misto</span>
@@ -502,7 +502,7 @@ select { appearance: auto; }
   var eur = function (n, d) { return nf(n, d == null ? 0 : d) + " €"; };
   var pct = function (n, d) { return nf(n, d == null ? 2 : d) + "%"; };
   var MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
-  var fmtDate = function (iso) { var p = String(iso).slice(0, 10).split("-"); return +p[2] + " " + MESI[+p[1] - 1]; };
+  var fmtDate = function (iso) { var p = String(iso).slice(0, 10).split("-"); return p.length < 3 ? MESI[+p[1] - 1] + " " + p[0] : +p[2] + " " + MESI[+p[1] - 1]; };
   var store = {
     get: function (k, def) { try { var v = localStorage.getItem("eco:" + k); return v == null ? def : JSON.parse(v); } catch (e) { return def; } },
     set: function (k, v) { try { localStorage.setItem("eco:" + k, JSON.stringify(v)); } catch (e) {} }
@@ -562,7 +562,8 @@ select { appearance: auto; }
   }).join("");
 
   function spark(id) {
-    var pts = (D.storico || []).filter(function (h) { return typeof h[id] === "number"; }).map(function (h) { return h[id]; });
+    var pts = (D.serie && D.serie[id]) ? D.serie[id].filter(function (v) { return typeof v === "number"; })
+      : (D.storico || []).filter(function (h) { return typeof h[id] === "number"; }).map(function (h) { return h[id]; });
     if (pts.length < 2) return "";
     var w = 160, h = 34, mn = Math.min.apply(null, pts), mx = Math.max.apply(null, pts), rg = mx - mn || 1;
     var xy = pts.map(function (v, i) { return [(i / (pts.length - 1)) * (w - 6) + 3, h - 4 - ((v - mn) / rg) * (h - 8)]; });
@@ -603,9 +604,11 @@ select { appearance: auto; }
   }).join("");
 
   $("#news").innerHTML = (D.notizie || []).map(function (n) {
-    return '<article><i class="dot ' + esc(n.impatto) + '" aria-label="impatto ' + esc(n.impatto) + '"></i><div><h3>' + esc(n.titolo) + '</h3><p>' + esc(n.testo) + '</p><a class="src" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.fonte) + '</a></div></article>';
+    var dot = n.impatto ? '<i class="dot ' + esc(n.impatto) + '" aria-label="impatto ' + esc(n.impatto) + '"></i>' : '<i class="dot neutro" aria-hidden="true"></i>';
+    return '<article>' + dot + '<div><h3>' + esc(n.titolo) + '</h3>' + (n.testo ? '<p>' + esc(n.testo) + '</p>' : '') + '<a class="src" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.fonte) + '</a></div></article>';
   }).join("");
 
+  if (!(D.notizie || []).some(function (n) { return n.impatto; })) $("#newsLegend").hidden = true;
   var today = upd ? new Date(upd.toISOString().slice(0, 10)) : new Date();
   $("#agenda").innerHTML = (D.agenda || []).map(function (a) {
     var dt = new Date(a.data), days = Math.round((dt - today) / 864e5);
