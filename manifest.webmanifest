@@ -1,0 +1,23 @@
+{
+  "name": "Eco Bussola",
+  "short_name": "Eco Bussola",
+  "description": "Il punto quotidiano su mercati, prezzi e risparmio, con strumenti per decidere dove spendere e come investire.",
+  "lang": "it",
+  "id": "./",
+  "start_url": "./?app=1",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#142238",
+  "theme_color": "#142238",
+  "categories": ["finance", "education", "news"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Il mio piano", "short_name": "Piano", "url": "./#piano", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Strumenti", "short_name": "Strumenti", "url": "./#strumenti", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

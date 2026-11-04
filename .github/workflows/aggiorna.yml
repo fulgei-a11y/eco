@@ -48,12 +48,15 @@ jobs:
           fi
           git config user.name "eco"
           git config user.email "eco@users.noreply.github.com"
-          git add data.js
-          git commit -m "Aggiorna dati: $(TZ=Europe/Rome date '+%d/%m/%Y %H:%M')"
+          # Commit senza messaggio; riallineato a main a ogni tentativo, includendo solo data.js
           for i in 1 2 3; do
-            git pull --rebase origin main && git push && break
+            git fetch -q origin main
+            git reset -q origin/main
+            git add data.js
+            git commit -q --allow-empty-message -m "" && git push -q origin HEAD:main && exit 0
             sleep 5
           done
+          exit 1
 
   pubblica:
     needs: aggiorna
@@ -71,7 +74,8 @@ jobs:
       - name: Prepara il sito
         run: |
           mkdir _site
-          cp index.html data.js _site/
+          cp index.html data.js manifest.webmanifest sw.js _site/
+          cp -r icons _site/
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5

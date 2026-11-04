@@ -6,6 +6,14 @@
 <title>Eco Bussola</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Il punto quotidiano su mercati, prezzi e risparmio, con strumenti per decidere dove spendere e come investire.">
+<meta name="theme-color" content="#142238">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Eco Bussola">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -78,6 +86,10 @@ p { margin: 0; }
 .brand b { font-family: var(--f-display); font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em; }
 .edition-pill { font-family: var(--f-mono); font-size: .75rem; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); color: var(--hero-muted); white-space: nowrap; }
 .edition-pill i { font-style: normal; color: var(--accent); }
+.top-actions { display: flex; align-items: center; gap: 10px; }
+.install-btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-weight: 700; font-size: .85rem; border: 0; border-radius: 999px; padding: 7px 14px; cursor: pointer; background: #E2A546; color: #142238; }
+.install-help { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: .92rem; display: grid; gap: 6px; }
+.install-help ol { margin: 0; padding-left: 20px; }
 .tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }
 .tabs a { color: var(--hero-muted); text-decoration: none; padding: 10px 14px; border-radius: 10px 10px 0 0; font-weight: 700; white-space: nowrap; font-size: .95rem; }
@@ -113,7 +125,8 @@ main { padding-block: 28px 96px; }
 .market-group h3 { font-size: .8rem; font-family: var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-weight: 500; }
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
-.tile .t-name { font-weight: 700; font-size: .95rem; display: flex; justify-content: space-between; gap: 8px; }
+.tile .t-name { font-weight: 700; font-size: .95rem; display: flex; justify-content: space-between; gap: 4px 8px; flex-wrap: wrap; min-width: 0; }
+.tile .t-name > span:first-child { min-width: 0; overflow-wrap: anywhere; }
 .tile .t-val { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: 1.45rem; font-weight: 600; letter-spacing: -.02em; }
 .tile .t-val small { font-size: .8rem; color: var(--muted); font-weight: 400; margin-left: 3px; }
 .chip { font-family: var(--f-mono); font-size: .78rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; white-space: nowrap; align-self: start; }
@@ -216,6 +229,25 @@ select { appearance: auto; }
 
 .btn { font: inherit; font-weight: 700; border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer; background: var(--ink); color: var(--bg); }
 .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.portfolio-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; background: var(--surface); border-radius: var(--r); padding: 18px 20px; box-shadow: var(--shadow); border-left: 5px solid var(--teal); }
+.portfolio-card .big { font-family: var(--f-mono); font-size: 1.8rem; font-weight: 600; letter-spacing: -.02em; }
+.portfolio-card .sub { color: var(--muted); font-size: .9rem; }
+.rank { display: grid; gap: 10px; }
+.rank-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr) auto; gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.rank-row b { display: block; }
+.rank-row small { color: var(--muted); font-size: .8rem; display: block; }
+.rank-bar { position: relative; height: 14px; background: var(--surface-2); border-radius: 99px; }
+.rank-bar i { position: absolute; top: 0; bottom: 0; border-radius: 99px; }
+.rank-bar .infl { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--down); }
+.rank-num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; font-size: .92rem; white-space: nowrap; }
+.rank-num span { display: block; font-size: .78rem; }
+.pos { color: var(--up); } .neg { color: var(--down); }
+.verdict { font-family: var(--f-display); font-weight: 800; font-size: 1.15rem; }
+@media (max-width: 560px) {
+  .rank-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .rank-row .rank-bar { grid-column: 1 / -1; grid-row: 2; }
+  .portfolio-card { grid-template-columns: minmax(0, 1fr); }
+}
 .stale-banner { background: var(--accent-soft); color: var(--ink); border-radius: 12px; padding: 12px 16px; font-size: .92rem; }
 .tile.old .t-src::after { content: " · non aggiornato"; color: var(--warn); font-weight: 600; }
 .news time { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); margin-left: 8px; }
@@ -235,7 +267,8 @@ select { appearance: auto; }
   .cards-4, .res-grid, .fields { grid-template-columns: minmax(0, 1fr); }
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .tile { padding: 11px; }
-  .tile .t-val { font-size: 1.15rem; }
+  .tile .t-val { font-size: 1.05rem; overflow-wrap: anywhere; }
+  .tile svg.spark { max-width: 100%; }
   .tile .t-note { display: none; }
   .scen { grid-template-columns: minmax(0, 1fr); }
   .edition-pill { display: none; }
@@ -257,7 +290,13 @@ select { appearance: auto; }
         </svg>
         <b>Eco Bussola</b>
       </a>
-      <span class="edition-pill" id="editionPill">—</span>
+      <div class="top-actions">
+        <button type="button" class="install-btn" id="installBtn" hidden>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Installa l'app
+        </button>
+        <span class="edition-pill" id="editionPill">—</span>
+      </div>
     </div>
     <section class="hero" id="hero" aria-labelledby="heroTitle">
       <div>
@@ -282,12 +321,23 @@ select { appearance: auto; }
   <!-- ===================== OGGI ===================== -->
   <div class="view" id="view-oggi">
     <p class="stale-banner" id="staleBanner" hidden></p>
+    <section id="portfolioToday" aria-label="Il tuo portafoglio oggi"></section>
+
     <section aria-labelledby="h-pert">
       <div class="section-head">
         <h2 id="h-pert">Cosa significa per te</h2>
         <p>Le notizie del giorno tradotte in effetti concreti su conto, mutuo, investimenti e spese.</p>
       </div>
       <div class="cards-4" id="perTe"></div>
+    </section>
+
+    <section aria-labelledby="h-rank">
+      <div class="section-head">
+        <h2 id="h-rank">Dove tenere i risparmi oggi</h2>
+        <p>Rendimento netto di tasse e bollo su 10.000 € per un anno, con i tassi medi ufficiali più recenti. La linea rossa è l'inflazione: chi sta a sinistra perde potere d'acquisto.</p>
+      </div>
+      <div class="rank" id="rank"></div>
+      <p class="callout" id="rankNote" style="margin-top:12px"></p>
     </section>
 
     <section aria-labelledby="h-merc">
@@ -360,6 +410,25 @@ select { appearance: auto; }
         </div>
       </div>
     </section>
+
+    <section>
+      <div class="grid-2">
+        <div class="panel">
+          <header><h3>Il tuo portafoglio</h3><p>Indica quanto hai in ciascuna categoria. Ogni volta che apri l'app vedrai in «Oggi» la variazione stimata in euro. Le cifre restano solo su questo dispositivo.</p></header>
+          <div class="fields" id="pfFields"></div>
+          <p class="callout">Stima basata sugli indici di riferimento: il tuo fondo o ETF può muoversi in modo leggermente diverso. Titoli di Stato e liquidità non hanno una variazione giornaliera qui.</p>
+        </div>
+        <div class="panel">
+          <header><h3>Il tuo stipendio contro l'inflazione</h3><p>Quanto dovrebbe crescere la busta paga per non perdere potere d'acquisto. Utile quando si discute un aumento o un rinnovo di contratto.</p></header>
+          <div class="fields">
+            <div class="field"><label for="sal-netto">Stipendio netto mensile</label><div class="input-wrap"><input id="sal-netto" type="number" inputmode="decimal" min="0" step="50" value="1700"><span class="unit">€</span></div></div>
+            <div class="field"><label for="sal-mens">Mensilità</label><div class="input-wrap"><select id="sal-mens"><option value="12">12</option><option value="13" selected>13</option><option value="14">14</option></select></div></div>
+            <div class="field"><label for="sal-aum">Aumento ricevuto quest'anno</label><div class="input-wrap"><input id="sal-aum" type="number" inputmode="decimal" min="0" max="50" step="0.5" value="0"><span class="unit">%</span></div></div>
+          </div>
+          <div class="result" id="salResult"></div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- ===================== STRUMENTI ===================== -->
@@ -424,6 +493,55 @@ select { appearance: auto; }
         <div class="result" id="mutResult"></div>
       </div>
     </section>
+
+    <section class="panel" aria-labelledby="h-sur">
+      <header><h3 id="h-sur">Conviene la surroga del mutuo?</h3><p>Spostare il mutuo in un'altra banca è gratuito per legge: niente penali, spese di istruttoria o notaio a tuo carico. Confronta il tuo tasso con quello medio dei nuovi mutui di questo periodo.</p></header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="sur-deb">Debito residuo</label><div class="input-wrap"><input id="sur-deb" type="number" min="0" step="1000" value="110000"><span class="unit">€</span></div></div>
+          <div class="field"><label for="sur-anni">Anni rimanenti</label><div class="input-wrap"><input id="sur-anni" type="number" min="1" max="40" step="1" value="18"><span class="unit">anni</span></div></div>
+          <div class="field"><label for="sur-mio">Il tuo tasso attuale</label><div class="input-wrap"><input id="sur-mio" type="number" min="0" max="15" step="0.05" value="4.2"><span class="unit">%</span></div></div>
+          <div class="field"><label for="sur-nuovo">Tasso della nuova offerta</label><div class="input-wrap"><input id="sur-nuovo" type="number" min="0" max="15" step="0.05" value="3.4"><span class="unit">%</span></div><span class="hint" id="sur-hint">Inserisci l'offerta ricevuta</span></div>
+        </div>
+        <div class="result" id="surResult"></div>
+      </div>
+    </section>
+
+    <div class="grid-2">
+      <section class="panel" aria-labelledby="h-oro">
+        <header><h3 id="h-oro">Quanto vale il tuo oro</h3><p>Valore teorico del metallo al prezzo di oggi. Utile prima di vendere gioielli o monete.</p></header>
+        <div class="fields">
+          <div class="field"><label for="oro-g">Peso</label><div class="input-wrap"><input id="oro-g" type="number" min="0" step="0.5" value="20"><span class="unit">grammi</span></div></div>
+          <div class="field"><label for="oro-k">Caratura</label><div class="input-wrap"><select id="oro-k">
+            <option value="24">24 carati (oro puro, lingotti)</option><option value="22">22 carati (alcune monete)</option>
+            <option value="18" selected>18 carati (gioielli, 750)</option><option value="14">14 carati (585)</option><option value="9">9 carati (375)</option>
+          </select></div></div>
+        </div>
+        <div class="result" id="oroResult"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-auto">
+        <header><h3 id="h-auto">Quanto ti costa l'auto in carburante</h3><p>Con il prezzo medio di oggi nei distributori self service.</p></header>
+        <div class="fields">
+          <div class="field"><label for="auto-km">Chilometri al mese</label><div class="input-wrap"><input id="auto-km" type="number" min="0" step="50" value="1000"><span class="unit">km</span></div></div>
+          <div class="field"><label for="auto-cons">Consumo</label><div class="input-wrap"><input id="auto-cons" type="number" min="1" max="40" step="0.5" value="15"><span class="unit">km/l</span></div></div>
+          <div class="field"><label for="auto-tipo">Carburante</label><div class="input-wrap"><select id="auto-tipo"><option value="benzina">Benzina</option><option value="gasolio">Gasolio</option></select></div></div>
+        </div>
+        <div class="result" id="autoResult"></div>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="h-fx">
+      <header><h3 id="h-fx">Cambio valute per viaggi e acquisti</h3><p>Al cambio ufficiale BCE. Banche, carte e cambiavalute aggiungono un margine: confronta quello che ti propongono con questo valore.</p></header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="fx-eur">Importo in euro</label><div class="input-wrap"><input id="fx-eur" type="number" min="0" step="10" value="500"><span class="unit">€</span></div></div>
+          <div class="field"><label for="fx-cur">Valuta</label><div class="input-wrap"><select id="fx-cur"><option value="eurusd">Dollaro USA</option><option value="eurgbp">Sterlina</option><option value="eurchf">Franco svizzero</option></select></div></div>
+          <div class="field"><label for="fx-off">Cambio che ti offrono</label><div class="input-wrap"><input id="fx-off" type="number" min="0" step="0.0001" placeholder="facoltativo"><span class="unit">per 1 €</span></div><span class="hint">Per scoprire quanto margine ti chiedono</span></div>
+        </div>
+        <div class="result" id="fxResult"></div>
+      </div>
+    </section>
   </div>
 
   <!-- ===================== TUTELA ===================== -->
@@ -482,6 +600,15 @@ select { appearance: auto; }
           <button type="button" data-theme-set="system">Auto</button>
           <button type="button" data-theme-set="dark">Scuro</button>
         </div>
+      </div>
+      <div class="install-help" id="installHelp" hidden>
+        <b>Installa Eco Bussola sul telefono</b>
+        <ol>
+          <li>Apri questa pagina con Chrome su Android.</li>
+          <li>Tocca il menu ⋮ in alto a destra.</li>
+          <li>Scegli «Installa app» oppure «Aggiungi a schermata Home».</li>
+        </ol>
+        <span style="color:var(--muted)">Su iPhone: Safari, tasto Condividi, «Aggiungi alla schermata Home».</span>
       </div>
       <p style="margin-top:12px">Eco Bussola ha scopo informativo ed educativo e non costituisce consulenza finanziaria personalizzata. Rendimenti passati e simulazioni non garantiscono risultati futuri; ogni investimento comporta il rischio di perdere parte del capitale. Le regole fiscali indicate possono cambiare: per decisioni importanti rivolgiti a un consulente abilitato iscritto all'albo OCF.</p>
     </div>
@@ -937,6 +1064,184 @@ select { appearance: auto; }
   if (D.rendimenti && D.rendimenti.url && !seen[D.rendimenti.url]) srcs.push([D.rendimenti.fonte, D.rendimenti.url]);
   var L = '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4H4v10h10v-3M10 3h5v5M15 3l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   $("#editionSources").innerHTML = srcs.map(function (s) { var host = s[1].replace(/^https?:\/\/(www\.)?/, "").split("/")[0]; return '<li>' + L + '<span><b>' + esc(s[0]) + '</b> · <a href="' + esc(s[1]) + '" target="_blank" rel="noopener">' + esc(host) + '</a></span></li>'; }).join("");
+
+  /* ---------- dati utili per gli strumenti ---------- */
+  var V = function (id) { var v = findVoce(id); return v && typeof v.valore === "number" ? v : null; };
+  var recente = function (v, giorni) { if (!v || !upd) return false; var d = new Date(String(v.data).slice(0, 10) + "T12:00:00"); return (upd - d) / 864e5 <= giorni; };
+  var meseDi = function (v) { var p = String(v.data).split("-"); return p.length >= 2 ? ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"][+p[1] - 1] + " " + p[0] : ""; };
+  var segnoEur = function (x) { return (x > 0 ? "+" : x < 0 ? "−" : "") + eur(Math.abs(x)); };
+
+  /* ---------- OGGI: dove tenere i risparmi ---------- */
+  (function () {
+    var infl = V("infl_it"), cc = V("dep_conto"), dv = V("dep_vincolati"), btp = V("btp10"), e3 = V("euribor3m");
+    var rows = [];
+    if (cc) rows.push({ n: "Conto corrente", d: "Tasso medio pagato dalle banche · bollo 34,20 € l'anno sopra i 5.000 €", g: cc.valore, tax: 0.26, bollo: 0.342, rif: cc });
+    if (dv) rows.push({ n: "Deposito vincolato fino a 1 anno", d: "Media delle banche italiane · garantito fino a 100.000 €", g: dv.valore, tax: 0.26, bollo: 0.2, rif: dv });
+    if (e3) rows.push({ n: "Titoli di Stato brevi (BOT)", d: "Stima sul tasso di mercato a 3 mesi · tassazione 12,5%", g: e3.valore, tax: 0.125, bollo: 0.2, rif: e3 });
+    if (btp) rows.push({ n: "BTP a 10 anni", d: "Rendimento medio · il prezzo oscilla se vendi prima della scadenza", g: btp.valore, tax: 0.125, bollo: 0.2, rif: btp });
+    if (!rows.length) { $("#rank").innerHTML = '<p class="callout">Tassi non disponibili in questa edizione.</p>'; return; }
+    var inf = infl ? infl.valore : null;
+    rows.forEach(function (r) { r.net = r.g * (1 - r.tax) - r.bollo; r.real = inf != null ? r.net - inf : null; });
+    rows.sort(function (a, b) { return b.net - a.net; });
+    var lo = Math.min(0, Math.min.apply(null, rows.map(function (r) { return r.net; }))), hi = Math.max(inf || 0, Math.max.apply(null, rows.map(function (r) { return r.net; }))) * 1.1 || 1;
+    var x = function (v) { return ((v - lo) / (hi - lo) * 100).toFixed(1); };
+    $("#rank").innerHTML = rows.map(function (r) {
+      var cls = r.real == null ? "" : r.real >= 0 ? "pos" : "neg";
+      var left = r.net >= 0 ? x(0) : x(r.net), w = Math.abs(x(r.net) - x(0));
+      return '<div class="rank-row"><div><b>' + esc(r.n) + '</b><small>' + esc(r.d) + '</small></div>' +
+        '<div class="rank-bar" aria-hidden="true"><i style="left:' + left + '%;width:' + w.toFixed(1) + '%;background:' + (r.real != null && r.real < 0 ? "var(--accent)" : "var(--teal)") + '"></i>' + (inf != null ? '<span class="infl" style="left:' + x(inf) + '%"></span>' : '') + '</div>' +
+        '<div class="rank-num">' + (r.net >= 0 ? "+" : "") + pct(r.net) + ' netto<span>' + segnoEur(10000 * r.net / 100) + ' l\'anno' + (r.real != null ? ' · <em class="' + cls + '" style="font-style:normal">reale ' + (r.real >= 0 ? "+" : "") + pct(r.real) + '</em>' : '') + '</span></div></div>';
+    }).join("");
+    var mesi = rows.map(function (r) { return r.rif.data; }).sort();
+    $("#rankNote").textContent = "Tassi medi ufficiali di Banca d'Italia e BCE (" + meseDi({ data: mesi[mesi.length - 1] }) + ")" + (infl ? ", inflazione italiana di " + meseDi(infl) + " al " + pct(inf, 1) : "") + ". Le offerte migliori online possono pagare più della media: usa la calcolatrice in Strumenti per confrontarle.";
+  })();
+
+  /* ---------- PIANO: portafoglio ---------- */
+  var PF = [
+    ["mondo", "ETF azionario mondiale", "mondo"],
+    ["italia", "Azioni italiane", "ftsemib"],
+    ["usa", "Azioni USA", "sp500"],
+    ["oro", "Oro", "oro_eur"],
+    ["btc", "Bitcoin e cripto", "btc"],
+    ["obbl", "Titoli di Stato e obbligazioni", null],
+    ["liq", "Liquidità e conti", null]
+  ];
+  var pf = store.get("portafoglio", {});
+  $("#pfFields").innerHTML = PF.map(function (c) {
+    return '<div class="field"><label for="pf-' + c[0] + '">' + esc(c[1]) + '</label><div class="input-wrap"><input id="pf-' + c[0] + '" data-pf="' + c[0] + '" type="number" inputmode="decimal" min="0" step="100" value="' + (pf[c[0]] || "") + '" placeholder="0"><span class="unit">€</span></div></div>';
+  }).join("");
+  function renderPortfolio() {
+    var tot = 0, giorno = 0, mese = 0, base = 0, usate = [];
+    PF.forEach(function (c) {
+      var a = pf[c[0]] || 0; tot += a;
+      if (!c[2] || !a) return;
+      var v = findVoce(c[2]);
+      if (v && typeof v.var === "number" && recente(v, 4)) { giorno += a * v.var / (100 + v.var); base += a; usate.push(c[1]); }
+      if (v && typeof v.mese === "number") mese += a * v.mese / (100 + v.mese);
+    });
+    var box = $("#portfolioToday");
+    if (tot <= 0) {
+      box.innerHTML = '<div class="portfolio-card"><div><div class="eyebrow">Il tuo portafoglio</div><p class="sub" style="margin-top:4px">Inserisci quanto hai investito e ogni giorno vedrai qui quanto è cambiato in euro.</p></div><a class="btn" href="#piano" style="text-decoration:none">Imposta</a></div>';
+      return;
+    }
+    box.innerHTML = '<div class="portfolio-card"><div><div class="eyebrow">Il tuo portafoglio oggi · stima</div><div class="big ' + (giorno >= 0 ? "pos" : "neg") + '">' + segnoEur(giorno) + '</div>' +
+      '<div class="sub">Su ' + eur(tot) + ' totali' + (mese ? ' · ultimo mese ' + segnoEur(mese) : '') + (base ? ' · ' + nf(base / tot * 100, 0) + '% del patrimonio si muove con i mercati' : '') + '</div></div>' +
+      '<a class="btn ghost" href="#piano" style="text-decoration:none">Modifica</a></div>';
+  }
+  document.querySelectorAll("[data-pf]").forEach(function (el) {
+    el.addEventListener("input", function () { pf[el.dataset.pf] = num(el.id); store.set("portafoglio", pf); renderPortfolio(); });
+  });
+  renderPortfolio();
+
+  /* ---------- PIANO: stipendio ---------- */
+  (function () {
+    var infl = V("infl_it");
+    var saved = store.get("stipendio", null);
+    if (saved) { $("#sal-netto").value = saved.n; $("#sal-mens").value = saved.m; $("#sal-aum").value = saved.a; }
+    function render() {
+      var n = num("sal-netto"), m = +$("#sal-mens").value, a = num("sal-aum");
+      store.set("stipendio", { n: n, m: String(m), a: a });
+      if (!infl) { $("#salResult").innerHTML = "<p>Dato sull'inflazione non disponibile.</p>"; return; }
+      var i = infl.valore, serve = n * i / 100, reale = (1 + a / 100) / (1 + i / 100) - 1;
+      var annuo = n * m * (reale);
+      $("#salResult").className = "result" + (reale < 0 ? " warn" : "");
+      $("#salResult").innerHTML =
+        '<div class="eyebrow">Per tenere il passo con l\'inflazione (' + pct(i, 1) + ', ' + meseDi(infl) + ')</div><div class="big">+' + eur(serve) + ' al mese</div>' +
+        '<div class="row"><span>Stipendio che servirebbe</span><span>' + eur(n + serve) + '</span></div>' +
+        '<div class="row"><span>Variazione reale con il tuo aumento</span><span class="' + (reale >= 0 ? "pos" : "neg") + '">' + (reale >= 0 ? "+" : "") + pct(reale * 100) + '</span></div>' +
+        '<div class="row"><b>' + (annuo >= 0 ? "Guadagno" : "Perdita") + ' di potere d\'acquisto in un anno</b><b>' + segnoEur(annuo) + '</b></div>';
+    }
+    ["sal-netto", "sal-mens", "sal-aum"].forEach(function (id) { document.getElementById(id).addEventListener("input", render); });
+    render();
+  })();
+
+  /* ---------- STRUMENTI: surroga ---------- */
+  (function () {
+    var mm = V("mutuo_medio");
+    if (mm) { $("#sur-nuovo").value = mm.valore; $("#sur-hint").textContent = "Precompilato con il tasso medio dei nuovi mutui (" + meseDi(mm) + "): sostituiscilo con l'offerta che ricevi"; }
+    function render() {
+      var P = num("sur-deb"), y = Math.max(1, num("sur-anni")), r1 = num("sur-mio"), r2 = num("sur-nuovo");
+      var a = rata(P, r1, y), b = rata(P, r2, y), d = a - b, tot = d * y * 12, diff = r1 - r2;
+      var verdetto = diff >= 0.5 ? "Vale la pena chiedere un'offerta" : diff >= 0.2 ? "Può convenire: chiedi più preventivi" : diff > 0 ? "Risparmio modesto" : "Il tuo tasso è già competitivo";
+      $("#surResult").className = "result" + (d > 0 ? "" : " warn");
+      $("#surResult").innerHTML = '<div class="verdict">' + verdetto + '</div>' +
+        '<div class="row"><span>Rata attuale</span><span>' + eur(a, 2) + '</span></div>' +
+        '<div class="row"><span>Rata con la nuova offerta</span><span>' + eur(b, 2) + '</span></div>' +
+        '<div class="row"><span>Risparmio al mese</span><span class="' + (d >= 0 ? "pos" : "neg") + '">' + segnoEur(d) + '</span></div>' +
+        '<div class="row"><b>Risparmio sugli anni rimanenti</b><b class="' + (tot >= 0 ? "pos" : "neg") + '">' + segnoEur(tot) + '</b></div>' +
+        '<p style="font-size:.86rem">La nuova banca valuta reddito e valore della casa. Puoi anche usare l\'offerta per chiedere alla tua banca di rinegoziare il tasso.</p>';
+    }
+    ["sur-deb", "sur-anni", "sur-mio", "sur-nuovo"].forEach(function (id) { document.getElementById(id).addEventListener("input", render); });
+    render();
+  })();
+
+  /* ---------- STRUMENTI: oro ---------- */
+  (function () {
+    var o = V("oro_eur");
+    function render() {
+      if (!o) { $("#oroResult").innerHTML = "<p>Quotazione dell'oro non disponibile in questa edizione.</p>"; return; }
+      var g = num("oro-g"), k = +$("#oro-k").value, perG = o.valore * k / 24, val = g * perG;
+      $("#oroResult").innerHTML = '<div class="eyebrow">Valore teorico del metallo</div><div class="big">' + eur(val) + '</div>' +
+        '<div class="row"><span>Prezzo al grammo a ' + k + ' carati</span><span>' + eur(perG, 2) + '</span></div>' +
+        '<div class="row"><span>Oro puro oggi</span><span>' + eur(o.valore, 2) + '/g</span></div>' +
+        '<p style="font-size:.86rem">Chi compra oro usato paga meno del valore teorico per coprire fusione e margine. Chiedi più preventivi scritti e verifica che il negozio sia iscritto al registro degli operatori compro oro dell\'OAM.</p>';
+    }
+    ["oro-g", "oro-k"].forEach(function (id) { document.getElementById(id).addEventListener("input", render); });
+    render();
+  })();
+
+  /* ---------- STRUMENTI: auto ---------- */
+  (function () {
+    function render() {
+      var tipo = $("#auto-tipo").value, f = V(tipo), km = num("auto-km"), kml = Math.max(1, num("auto-cons"));
+      if (!f) { $("#autoResult").innerHTML = "<p>Prezzo del carburante non disponibile in questa edizione.</p>"; return; }
+      var litri = km / kml, mese = litri * f.valore;
+      $("#autoResult").innerHTML = '<div class="eyebrow">Spesa al mese con ' + tipo + ' a ' + nf(f.valore, 3) + ' €/l</div><div class="big">' + eur(mese) + '</div>' +
+        '<div class="row"><span>In un anno</span><span>' + eur(mese * 12) + '</span></div>' +
+        '<div class="row"><span>Litri al mese</span><span>' + nf(litri, 0) + '</span></div>' +
+        '<div class="row"><span>Ogni 10 centesimi in più costano</span><span>' + eur(litri * 0.1 * 12) + ' l\'anno</span></div>';
+    }
+    ["auto-km", "auto-cons", "auto-tipo"].forEach(function (id) { document.getElementById(id).addEventListener("input", render); });
+    render();
+  })();
+
+  /* ---------- STRUMENTI: cambi ---------- */
+  (function () {
+    var SIMB = { eurusd: "$", eurgbp: "£", eurchf: "CHF" };
+    function render() {
+      var id = $("#fx-cur").value, fx = V(id), e = num("fx-eur"), off = num("fx-off");
+      if (!fx) { $("#fxResult").innerHTML = "<p>Cambio non disponibile in questa edizione.</p>"; return; }
+      var out = e * fx.valore;
+      var html = '<div class="eyebrow">Al cambio ufficiale BCE del ' + fmtDate(fx.data) + ' (1 € = ' + nf(fx.valore, 4) + ' ' + SIMB[id] + ')</div><div class="big">' + nf(out, 2) + ' ' + SIMB[id] + '</div>';
+      if (off > 0) {
+        var ricevi = e * off, margine = (1 - off / fx.valore) * 100, costo = e * (1 - off / fx.valore);
+        html += '<div class="row"><span>Con il cambio offerto ricevi</span><span>' + nf(ricevi, 2) + ' ' + SIMB[id] + '</span></div>' +
+          '<div class="row"><b>Margine applicato</b><b class="' + (margine > 2 ? "neg" : "") + '">' + pct(margine) + ' · ' + eur(costo, 2) + '</b></div>' +
+          (margine > 2 ? '<p style="font-size:.86rem">Margine alto: spesso conviene pagare con carta in valuta locale o prelevare all\'arrivo.</p>' : '');
+      }
+      $("#fxResult").innerHTML = html;
+    }
+    ["fx-eur", "fx-cur", "fx-off"].forEach(function (id) { document.getElementById(id).addEventListener("input", render); });
+    render();
+  })();
+
+  /* ---------- app installabile ---------- */
+  var standalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
+  var deferred = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); deferred = e; $("#installBtn").hidden = false;
+  });
+  $("#installBtn").addEventListener("click", function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function () { deferred = null; $("#installBtn").hidden = true; });
+  });
+  window.addEventListener("appinstalled", function () { $("#installBtn").hidden = true; $("#installHelp").hidden = true; });
+  if (!standalone && /^https?:$/.test(location.protocol)) $("#installHelp").hidden = false;
+  window.addEventListener("offline", function () { var b = $("#staleBanner"); b.hidden = false; b.textContent = "Sei offline: stai vedendo gli ultimi dati scaricati."; });
 
   /* ---------- navigazione ---------- */
   var VIEWS = ["oggi", "piano", "strumenti", "tutela", "fonti"];
