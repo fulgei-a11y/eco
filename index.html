@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eco Bussola</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Il punto quotidiano su mercati, prezzi e risparmio, con strumenti per decidere dove spendere e come investire.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: una "edizione" quotidiana in testa (barometri + cosa significa per te),
+   poi schede consultabili: Oggi, Il mio piano, Strumenti, Tutelarsi, Fonti. */
+:root {
+  --bg: #EEF2F1;
+  --surface: #FFFFFF;
+  --surface-2: #E3E9E8;
+  --ink: #142238;
+  --muted: #586579;
+  --line: #D3DBDB;
+  --accent: #B26A12;
+  --accent-soft: #F6E6CC;
+  --teal: #13756C;
+  --teal-soft: #D5ECE8;
+  --up: #1B7F48;
+  --down: #B8352A;
+  --warn: #A86A0B;
+  --hero-bg: #142238;
+  --hero-ink: #F2F5F8;
+  --hero-muted: #A9B6C9;
+  --shadow: 0 1px 2px rgba(20,34,56,.06), 0 8px 24px rgba(20,34,56,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1524; --surface: #161F33; --surface-2: #1F2A42; --ink: #E6EBF2; --muted: #9AA6BA;
+    --line: #2A3651; --accent: #E2A546; --accent-soft: #3A2E1A; --teal: #4DB6AA; --teal-soft: #173A3A;
+    --up: #4CC283; --down: #F0705F; --warn: #E2A546;
+    --hero-bg: #0A101C; --hero-ink: #F2F5F8; --hero-muted: #9AA6BA;
+    --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1524; --surface: #161F33; --surface-2: #1F2A42; --ink: #E6EBF2; --muted: #9AA6BA;
+  --line: #2A3651; --accent: #E2A546; --accent-soft: #3A2E1A; --teal: #4DB6AA; --teal-soft: #173A3A;
+  --up: #4CC283; --down: #F0705F; --warn: #E2A546;
+  --hero-bg: #0A101C; --hero-ink: #F2F5F8; --hero-muted: #9AA6BA;
+  --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--hero-bg); }
+a { color: var(--teal); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.12; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.45rem, 1.1rem + 1.3vw, 1.9rem); font-weight: 800; }
+h3 { font-size: 1.12rem; font-weight: 700; }
+p { margin: 0; }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* Testata */
+.masthead { background: var(--hero-bg); color: var(--hero-ink); }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.brand svg { flex: none; }
+.brand b { font-family: var(--f-display); font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em; }
+.edition-pill { font-family: var(--f-mono); font-size: .75rem; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); color: var(--hero-muted); white-space: nowrap; }
+.edition-pill i { font-style: normal; color: var(--accent); }
+.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a { color: var(--hero-muted); text-decoration: none; padding: 10px 14px; border-radius: 10px 10px 0 0; font-weight: 700; white-space: nowrap; font-size: .95rem; }
+.tabs a[aria-current="page"] { background: var(--bg); color: var(--ink); }
+.tabs a:hover:not([aria-current]) { color: var(--hero-ink); }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 32px; padding-block: 18px 30px; align-items: center; }
+.hero h1 { font-size: clamp(2rem, 1.2rem + 3.4vw, 3.4rem); font-weight: 800; letter-spacing: -.025em; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede { color: var(--hero-muted); margin-top: 14px; max-width: 60ch; font-size: 1.05rem; }
+.hero .eyebrow { color: var(--hero-muted); margin-bottom: 10px; }
+.gauges { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.gauge { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r); padding: 14px 14px 16px; text-align: center; }
+.gauge svg { width: 100%; max-width: 190px; height: auto; display: block; margin: 0 auto; }
+.gauge .g-label { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--hero-muted); }
+.gauge .g-value { font-family: var(--f-display); font-weight: 800; font-size: 1.2rem; margin-top: 2px; }
+.gauge .g-note { font-size: .82rem; color: var(--hero-muted); margin-top: 6px; line-height: 1.4; }
+
+/* Pagina */
+main { padding-block: 28px 96px; }
+.view { display: grid; gap: 36px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.section-head p { color: var(--muted); max-width: 62ch; }
+
+.cards-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.foryou { background: var(--surface); border-radius: var(--r); padding: 18px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); border-top: 4px solid var(--accent); }
+.foryou .tag { align-self: flex-start; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; background: var(--accent-soft); color: var(--ink); padding: 3px 8px; border-radius: 6px; }
+.foryou p { color: var(--muted); font-size: .95rem; flex: 1; }
+.foryou a { font-weight: 700; text-decoration: none; }
+.foryou a::after { content: " →"; }
+
+.market-group { margin-bottom: 22px; }
+.market-group h3 { font-size: .8rem; font-family: var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-weight: 500; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.tile .t-name { font-weight: 700; font-size: .95rem; display: flex; justify-content: space-between; gap: 8px; }
+.tile .t-val { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: 1.45rem; font-weight: 600; letter-spacing: -.02em; }
+.tile .t-val small { font-size: .8rem; color: var(--muted); font-weight: 400; margin-left: 3px; }
+.chip { font-family: var(--f-mono); font-size: .78rem; font-weight: 600; padding: 2px 7px; border-radius: 6px; white-space: nowrap; align-self: start; }
+.chip.up { color: var(--up); background: color-mix(in srgb, var(--up) 13%, transparent); }
+.chip.down { color: var(--down); background: color-mix(in srgb, var(--down) 13%, transparent); }
+.chip.flat { color: var(--muted); background: var(--surface-2); }
+.tile .t-note { font-size: .83rem; color: var(--muted); line-height: 1.4; }
+.tile .t-src { font-family: var(--f-mono); font-size: .7rem; color: var(--muted); margin-top: 4px; }
+.tile .t-src a { color: var(--muted); }
+.tile svg.spark { width: 100%; height: 34px; display: block; margin-top: 4px; }
+
+.two-col { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.news { display: grid; gap: 0; background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); }
+.news article { padding: 16px 18px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 14px; }
+.news article:last-child { border-bottom: 0; }
+.news .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; }
+.dot.positivo { background: var(--up); } .dot.negativo { background: var(--down); } .dot.misto { background: var(--warn); } .dot.neutro { background: var(--muted); }
+.news h3 { font-size: 1.02rem; }
+.news p { color: var(--muted); font-size: .94rem; margin-top: 4px; }
+.news .src { font-family: var(--f-mono); font-size: .72rem; margin-top: 6px; display: inline-block; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: .8rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+.agenda { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.agenda li { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 12px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.cal { text-align: center; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.cal b { display: block; font-family: var(--f-display); font-size: 1.35rem; line-height: 1.4; }
+.cal span { display: block; background: var(--teal); color: #fff; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; padding: 2px 0; }
+.agenda .when { font-family: var(--f-mono); font-size: .72rem; color: var(--accent); }
+.agenda strong { display: block; }
+.agenda small { color: var(--muted); font-size: .86rem; }
+
+/* Pannelli e form */
+.panel { background: var(--surface); border-radius: var(--r); padding: 20px; box-shadow: var(--shadow); display: grid; gap: 16px; align-content: start; min-width: 0; }
+.panel > header p { color: var(--muted); font-size: .94rem; margin-top: 6px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: .84rem; font-weight: 700; }
+.field .hint { font-size: .76rem; color: var(--muted); }
+.input-wrap { display: flex; align-items: center; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); overflow: hidden; }
+.input-wrap:focus-within { border-color: var(--teal); }
+.input-wrap input, .input-wrap select { border: 0; background: transparent; color: var(--ink); font-family: var(--f-mono); font-size: 1rem; padding: 10px 12px; width: 100%; min-width: 0; outline: none; }
+.input-wrap .unit { font-family: var(--f-mono); font-size: .82rem; color: var(--muted); padding-right: 12px; white-space: nowrap; }
+select { appearance: auto; }
+
+.result { background: var(--teal-soft); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; }
+.result .big { font-family: var(--f-mono); font-size: 1.7rem; font-weight: 600; letter-spacing: -.02em; }
+.result .row { display: flex; justify-content: space-between; gap: 12px; font-size: .92rem; border-top: 1px dashed color-mix(in srgb, var(--teal) 35%, transparent); padding-top: 6px; }
+.result .row span:last-child { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.result.warn { background: var(--accent-soft); }
+.callout { font-size: .9rem; color: var(--muted); border-left: 3px solid var(--accent); padding-left: 12px; }
+
+.bars { display: grid; gap: 12px; }
+.bar-row { display: grid; gap: 4px; }
+.bar-row .lbl { display: flex; justify-content: space-between; font-size: .9rem; gap: 8px; }
+.bar-row .lbl b { font-family: var(--f-mono); font-weight: 600; }
+.track { position: relative; height: 12px; background: var(--surface-2); border-radius: 99px; overflow: visible; }
+.track .fill { height: 100%; border-radius: 99px; transition: width .4s ease; }
+.track .target { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }
+
+.ladder { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: step; }
+.ladder li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.ladder li::before { counter-increment: step; content: counter(step); font-family: var(--f-display); font-weight: 800; font-size: 1.1rem; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); }
+.ladder li.done::before { content: "✓"; background: var(--up); color: #fff; }
+.ladder small { display: block; color: var(--muted); font-size: .84rem; }
+.ladder input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--teal); }
+
+.chart-box { position: relative; width: 100%; }
+.chart-box svg { width: 100%; height: auto; display: block; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .82rem; color: var(--muted); }
+.chart-legend i { display: inline-block; width: 14px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+
+.scen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.scen div { border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: var(--bg); }
+.scen small { display: block; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.scen b { font-family: var(--f-mono); font-size: 1.05rem; }
+
+.quiz fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.quiz legend { font-weight: 700; margin-bottom: 6px; padding: 0; }
+.opt { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; background: var(--bg); }
+.opt:has(input:checked) { border-color: var(--teal); background: var(--teal-soft); }
+.opt input { margin-top: 4px; accent-color: var(--teal); }
+.alloc { display: flex; height: 26px; border-radius: 8px; overflow: hidden; }
+.alloc span { display: grid; place-items: center; font-family: var(--f-mono); font-size: .74rem; color: #fff; min-width: 0; overflow: hidden; }
+
+.check-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.check-list li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; }
+.check-list li svg { margin-top: 3px; }
+.redflags li svg { color: var(--down); }
+.greenflags li svg { color: var(--up); }
+
+.res-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.res { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 4px; text-decoration: none; color: var(--ink); align-content: start; }
+.res:hover { border-color: var(--teal); }
+.res .k { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+.res b { font-family: var(--f-display); font-size: 1.05rem; }
+.res span { color: var(--muted); font-size: .88rem; }
+
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 10px; padding: 10px 14px; cursor: pointer; background: var(--ink); color: var(--bg); }
+.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.disclaimer { font-size: .82rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; max-width: 80ch; }
+.foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+.theme-toggle { display: inline-flex; gap: 4px; background: var(--surface-2); padding: 3px; border-radius: 10px; }
+.theme-toggle button { font: inherit; font-size: .82rem; border: 0; background: transparent; color: var(--muted); padding: 5px 10px; border-radius: 8px; cursor: pointer; }
+.theme-toggle button[aria-pressed="true"] { background: var(--surface); color: var(--ink); font-weight: 700; }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .cards-4, .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .two-col, .grid-2 { grid-template-columns: minmax(0, 1fr); }
+  .res-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .cards-4, .res-grid, .fields { grid-template-columns: minmax(0, 1fr); }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .tile { padding: 11px; }
+  .tile .t-val { font-size: 1.15rem; }
+  .tile .t-note { display: none; }
+  .scen { grid-template-columns: minmax(0, 1fr); }
+  .edition-pill { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="#oggi" aria-label="Eco Bussola, vai a Oggi">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <circle cx="17" cy="17" r="15.5" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
+          <path d="M17 4.5 L21 17 L17 29.5 L13 17 Z" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"/>
+          <path d="M17 4.5 L21 17 L13 17 Z" fill="#E2A546"/>
+          <circle cx="17" cy="17" r="2" fill="currentColor"/>
+        </svg>
+        <b>Eco Bussola</b>
+      </a>
+      <span class="edition-pill" id="editionPill">—</span>
+    </div>
+    <section class="hero" id="hero" aria-labelledby="heroTitle">
+      <div>
+        <p class="eyebrow" id="heroDate">—</p>
+        <h1 id="heroTitle">—</h1>
+        <p class="lede" id="heroLede"></p>
+      </div>
+      <div class="gauges" id="gauges"></div>
+    </section>
+    <nav class="tabs" aria-label="Sezioni">
+      <a href="#oggi" data-view="oggi">Oggi</a>
+      <a href="#piano" data-view="piano">Il mio piano</a>
+      <a href="#strumenti" data-view="strumenti">Strumenti</a>
+      <a href="#tutela" data-view="tutela">Tutelarsi</a>
+      <a href="#fonti" data-view="fonti">Fonti</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===================== OGGI ===================== -->
+  <div class="view" id="view-oggi">
+    <section aria-labelledby="h-pert">
+      <div class="section-head">
+        <h2 id="h-pert">Cosa significa per te</h2>
+        <p>Le notizie del giorno tradotte in effetti concreti su conto, mutuo, investimenti e spese.</p>
+      </div>
+      <div class="cards-4" id="perTe"></div>
+    </section>
+
+    <section aria-labelledby="h-merc">
+      <div class="section-head">
+        <h2 id="h-merc">Il cruscotto</h2>
+        <p>Ogni valore riporta la data e la fonte. Verde e rosso indicano se il movimento è favorevole per chi risparmia, non solo se il numero sale.</p>
+      </div>
+      <div id="markets"></div>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <div class="section-head">
+          <h2>Le notizie che contano</h2>
+          <div class="legend" aria-label="Legenda impatto">
+            <span><i class="dot positivo"></i>favorevole</span>
+            <span><i class="dot negativo"></i>sfavorevole</span>
+            <span><i class="dot misto"></i>misto</span>
+          </div>
+        </div>
+        <div class="news" id="news"></div>
+      </div>
+      <div id="oggi-agenda">
+        <div class="section-head"><h2>Da segnare</h2></div>
+        <ul class="agenda" id="agenda"></ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== PIANO ===================== -->
+  <div class="view" id="view-piano" hidden>
+    <section>
+      <div class="section-head">
+        <h2>Il tuo bilancio del mese</h2>
+        <p>Le cifre iniziali sono un esempio: sostituiscile con le tue. Restano salvate solo su questo dispositivo e non vengono inviate a nessuno.</p>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <header><h3>Entrate e uscite mensili</h3><p>La regola 50/30/20 è un punto di partenza: 50% bisogni, 30% desideri, 20% risparmio.</p></header>
+          <div class="fields" id="budgetFields"></div>
+        </div>
+        <div class="panel">
+          <header><h3>Come si divide il tuo stipendio</h3><p>La linea nera è l'obiettivo di riferimento.</p></header>
+          <div class="bars" id="budgetBars"></div>
+          <div class="result" id="budgetResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid-2">
+        <div class="panel">
+          <header><h3>Fondo di emergenza</h3><p>Il cuscinetto per imprevisti: auto, salute, perdita del lavoro. Va tenuto liquido e sicuro, non investito in borsa.</p></header>
+          <div class="fields">
+            <div class="field"><label for="em-spese">Spese essenziali al mese</label><div class="input-wrap"><input id="em-spese" type="number" inputmode="decimal" min="0" step="50"><span class="unit">€</span></div><span class="hint">Calcolato dal bilancio, puoi modificarlo</span></div>
+            <div class="field"><label for="em-situ">La tua situazione</label><div class="input-wrap"><select id="em-situ">
+              <option value="3">Dipendente stabile, due redditi in casa</option>
+              <option value="6" selected>Un solo reddito in famiglia</option>
+              <option value="9">Partita IVA o lavoro precario</option>
+              <option value="12">Figli a carico e reddito incerto</option>
+            </select></div></div>
+            <div class="field"><label for="em-have">Quanto hai già da parte</label><div class="input-wrap"><input id="em-have" type="number" inputmode="decimal" min="0" step="100"><span class="unit">€</span></div></div>
+          </div>
+          <div class="result" id="emResult"></div>
+        </div>
+
+        <div class="panel">
+          <header><h3>L'ordine giusto delle priorità</h3><p>Spunta i passi già fatti. Saltare un gradino di solito costa: investire in borsa senza fondo di emergenza obbliga a vendere nei momenti peggiori.</p></header>
+          <ol class="ladder" id="ladder"></ol>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== STRUMENTI ===================== -->
+  <div class="view" id="view-strumenti" hidden>
+    <section class="panel" aria-labelledby="h-pac">
+      <header>
+        <h3 id="h-pac">Piano di accumulo: quanto può diventare</h3>
+        <p>Simula versamenti mensili in un fondo o ETF. Il calcolo include costi annui, imposta di bollo 0,20%, tassazione del 26% sulla plusvalenza alla vendita e inflazione.</p>
+      </header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="pac-init">Capitale iniziale</label><div class="input-wrap"><input id="pac-init" type="number" min="0" step="500" value="2000"><span class="unit">€</span></div></div>
+          <div class="field"><label for="pac-mese">Versamento mensile</label><div class="input-wrap"><input id="pac-mese" type="number" min="0" step="25" value="200"><span class="unit">€</span></div></div>
+          <div class="field"><label for="pac-anni">Durata</label><div class="input-wrap"><input id="pac-anni" type="number" min="1" max="50" step="1" value="20"><span class="unit">anni</span></div></div>
+          <div class="field"><label for="pac-rend">Rendimento lordo atteso</label><div class="input-wrap"><input id="pac-rend" type="number" min="-5" max="15" step="0.5" value="6"><span class="unit">% annuo</span></div><span class="hint">Azionario globale storico: 5–7% di lungo periodo, con anni anche a −30%</span></div>
+          <div class="field"><label for="pac-ter">Costi annui del prodotto</label><div class="input-wrap"><input id="pac-ter" type="number" min="0" max="5" step="0.05" value="0.2"><span class="unit">%</span></div><span class="hint">ETF indicizzati 0,1–0,3%; fondi attivi in banca spesso 1,5–2,5%</span></div>
+          <div class="field"><label for="pac-infl">Inflazione media</label><div class="input-wrap"><input id="pac-infl" type="number" min="0" max="15" step="0.5" value="2.5"><span class="unit">% annuo</span></div></div>
+        </div>
+        <div class="result" id="pacResult"></div>
+      </div>
+      <div class="chart-box" id="pacChart" role="img" aria-label="Grafico del piano di accumulo"></div>
+      <div class="chart-legend"><span><i style="background:var(--muted)"></i>Soldi versati</span><span><i style="background:var(--teal)"></i>Valore stimato</span><span><i style="background:var(--accent)"></i>Valore in euro di oggi</span></div>
+      <div class="scen" id="pacScen"></div>
+      <p class="callout" id="pacCost"></p>
+    </section>
+
+    <div class="grid-2">
+      <section class="panel" aria-labelledby="h-dep">
+        <header><h3 id="h-dep">Conto deposito o titolo di Stato: quanto rende davvero</h3><p>Dal tasso lordo al netto in tasca, confrontato con l'inflazione di oggi.</p></header>
+        <div class="fields">
+          <div class="field"><label for="dep-cap">Somma</label><div class="input-wrap"><input id="dep-cap" type="number" min="0" step="500" value="10000"><span class="unit">€</span></div></div>
+          <div class="field"><label for="dep-tipo">Strumento</label><div class="input-wrap"><select id="dep-tipo">
+            <option value="0.26">Conto deposito (tassa 26%)</option>
+            <option value="0.125">Titolo di Stato italiano o UE (tassa 12,5%)</option>
+          </select></div></div>
+          <div class="field"><label for="dep-tasso">Tasso lordo annuo</label><div class="input-wrap"><input id="dep-tasso" type="number" min="0" max="15" step="0.05" value="4"><span class="unit">%</span></div><span class="hint" id="dep-hint"></span></div>
+          <div class="field"><label for="dep-mesi">Durata</label><div class="input-wrap"><input id="dep-mesi" type="number" min="1" max="360" step="1" value="12"><span class="unit">mesi</span></div></div>
+        </div>
+        <div class="result" id="depResult"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-inf">
+        <header><h3 id="h-inf">Quanto ti costa l'inflazione</h3><p>Il potere d'acquisto dei soldi lasciati fermi.</p></header>
+        <div class="fields">
+          <div class="field"><label for="inf-cap">Somma ferma</label><div class="input-wrap"><input id="inf-cap" type="number" min="0" step="500" value="10000"><span class="unit">€</span></div></div>
+          <div class="field"><label for="inf-rate">Inflazione</label><div class="input-wrap"><input id="inf-rate" type="number" min="0" max="20" step="0.1"><span class="unit">% annuo</span></div><span class="hint">Precompilato con il dato italiano più recente</span></div>
+          <div class="field"><label for="inf-anni">Anni</label><div class="input-wrap"><input id="inf-anni" type="number" min="1" max="40" step="1" value="5"><span class="unit">anni</span></div></div>
+        </div>
+        <div class="result warn" id="infResult"></div>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="h-mut">
+      <header><h3 id="h-mut">Mutuo: quanto cambia la rata se i tassi salgono</h3><p>Utile prima della riunione BCE del 17 dicembre. Calcolo con rata costante (ammortamento alla francese).</p></header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="mut-deb">Debito residuo</label><div class="input-wrap"><input id="mut-deb" type="number" min="0" step="1000" value="120000"><span class="unit">€</span></div></div>
+          <div class="field"><label for="mut-anni">Anni rimanenti</label><div class="input-wrap"><input id="mut-anni" type="number" min="1" max="40" step="1" value="20"><span class="unit">anni</span></div></div>
+          <div class="field"><label for="mut-tasso">Tasso attuale</label><div class="input-wrap"><input id="mut-tasso" type="number" min="0" max="15" step="0.05" value="3.2"><span class="unit">%</span></div></div>
+          <div class="field"><label for="mut-var">Variazione ipotizzata</label><div class="input-wrap"><input id="mut-var" type="number" min="-3" max="3" step="0.25" value="0.25"><span class="unit">punti %</span></div></div>
+        </div>
+        <div class="result" id="mutResult"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== TUTELA ===================== -->
+  <div class="view" id="view-tutela" hidden>
+    <section class="grid-2">
+      <div class="panel quiz" aria-labelledby="h-quiz">
+        <header><h3 id="h-quiz">Il tuo profilo di rischio</h3><p>Cinque domande per capire quanta oscillazione puoi sostenere. Il risultato è un esempio educativo, non una raccomandazione personalizzata.</p></header>
+        <form id="quiz"></form>
+        <div id="quizResult"></div>
+      </div>
+      <div class="panel">
+        <header><h3>Le protezioni che hai già</h3><p>Conoscerle evita scelte prese per paura.</p></header>
+        <ul class="check-list greenflags">
+          <li><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Depositi garantiti fino a 100.000 €</b> per persona e per banca dal Fondo Interbancario di Tutela dei Depositi. Marchi diversi della stessa banca condividono un unico limite.</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>ETF, fondi e titoli sono separati dal patrimonio della banca.</b> Se l'intermediario fallisce restano tuoi; il rischio è l'andamento del mercato, non la custodia.</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Reclami gratuiti o quasi:</b> Arbitro Bancario Finanziario per conti e prestiti, Arbitro per le Controversie Finanziarie (Consob) per investimenti. Prima si presenta reclamo scritto all'intermediario.</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Fondo pensione:</b> i versamenti sono deducibili fino a 5.164,57 € l'anno e la tassazione finale scende dal 15% al 9% con gli anni di adesione.</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Diritto di recesso:</b> per molti contratti finanziari firmati fuori sede hai 7 giorni per ripensarci senza costi.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="panel">
+        <header><h3>Segnali di truffa</h3><p>Se ne vedi anche uno solo, fermati e verifica.</p></header>
+        <ul class="check-list redflags" id="redflags"></ul>
+      </div>
+      <div class="panel">
+        <header><h3>Prima di firmare qualsiasi investimento</h3><p>Sette domande da fare sempre, a voce e per iscritto.</p></header>
+        <ol class="ladder" id="askList"></ol>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== FONTI ===================== -->
+  <div class="view" id="view-fonti" hidden>
+    <section>
+      <div class="section-head">
+        <h2>Le fonti affidabili</h2>
+        <p>Istituzioni pubbliche e servizi gratuiti per verificare, confrontare e imparare. Nessun link sponsorizzato.</p>
+      </div>
+      <div class="res-grid" id="resources"></div>
+    </section>
+    <section>
+      <div class="section-head"><h2>Fonti di questa edizione</h2></div>
+      <ul class="check-list" id="editionSources"></ul>
+    </section>
+  </div>
+
+  <footer class="view" style="margin-top:40px">
+    <div class="disclaimer">
+      <div class="foot">
+        <span id="footUpdated"></span>
+        <div class="theme-toggle" role="group" aria-label="Tema">
+          <button type="button" data-theme-set="light">Chiaro</button>
+          <button type="button" data-theme-set="system">Auto</button>
+          <button type="button" data-theme-set="dark">Scuro</button>
+        </div>
+      </div>
+      <p style="margin-top:12px">Eco Bussola ha scopo informativo ed educativo e non costituisce consulenza finanziaria personalizzata. Rendimenti passati e simulazioni non garantiscono risultati futuri; ogni investimento comporta il rischio di perdere parte del capitale. Le regole fiscali indicate possono cambiare: per decisioni importanti rivolgiti a un consulente abilitato iscritto all'albo OCF.</p>
+    </div>
+  </footer>
+</main>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  "use strict";
+  var D = window.ECO || {};
+
+  /* ---------- utilità ---------- */
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); };
+  var nf = function (n, d) {
+    d = d || 0; var x = Number(n); if (!isFinite(x)) return "—";
+    var neg = x < 0, s = Math.abs(x).toFixed(d).split(".");
+    var int = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return (neg && Number(s.join(".")) !== 0 ? "−" : "") + int + (d ? "," + s[1] : "");
+  };
+  var eur = function (n, d) { return nf(n, d == null ? 0 : d) + " €"; };
+  var pct = function (n, d) { return nf(n, d == null ? 2 : d) + "%"; };
+  var MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
+  var fmtDate = function (iso) { var p = String(iso).slice(0, 10).split("-"); return +p[2] + " " + MESI[+p[1] - 1]; };
+  var store = {
+    get: function (k, def) { try { var v = localStorage.getItem("eco:" + k); return v == null ? def : JSON.parse(v); } catch (e) { return def; } },
+    set: function (k, v) { try { localStorage.setItem("eco:" + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  var num = function (id) { var el = document.getElementById(id); var v = parseFloat(String(el.value).replace(",", ".")); return isFinite(v) ? v : 0; };
+  var findVoce = function (id) {
+    var out = null;
+    (D.mercati || []).forEach(function (g) { g.voci.forEach(function (v) { if (v.id === id) out = v; }); });
+    return out;
+  };
+  var inflIt = (function () { var v = findVoce("infl_it"); return v && typeof v.valore === "number" ? v.valore : 2; })();
+
+  /* ---------- tema ---------- */
+  function applyTheme(t) {
+    if (t === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", t);
+    document.querySelectorAll("[data-theme-set]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.themeSet === t)); });
+    store.set("theme", t);
+  }
+  document.querySelectorAll("[data-theme-set]").forEach(function (b) { b.addEventListener("click", function () { applyTheme(b.dataset.themeSet); }); });
+  applyTheme(store.get("theme", "system"));
+
+  /* ---------- testata ---------- */
+  var upd = D.aggiornato ? new Date(D.aggiornato) : null;
+  var dateLong = upd ? upd.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Rome" }) : "";
+  var timeShort = upd ? upd.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" }) : "";
+  var ed = D.edizione === "mattina" ? "Edizione del mattino" : "Edizione della sera";
+  $("#heroDate").textContent = ed + " · " + dateLong;
+  $("#heroTitle").innerHTML = esc(D.titolo || "").replace(/,\s*(.+)$/, ", <em>$1</em>");
+  $("#heroLede").textContent = D.sintesi || "";
+  $("#editionPill").innerHTML = "Aggiornato alle <i>" + esc(timeShort) + "</i>";
+  $("#footUpdated").textContent = "Ultimo aggiornamento: " + dateLong + ", " + timeShort + ". Prossimo: " + (D.edizione === "mattina" ? "stasera" : "domattina") + ".";
+
+  function gauge(label, g, invert) {
+    var v = Math.max(0, Math.min(100, g.valore));
+    var a0 = Math.PI, a = Math.PI * (1 - v / 100);
+    var cx = 100, cy = 96, r = 74;
+    var pt = function (ang, rr) { return [cx + rr * Math.cos(ang), cy - rr * Math.sin(ang)]; };
+    var p0 = pt(a0, r), p1 = pt(a, r), pEnd = pt(0, r);
+    var col = invert ? (v > 66 ? "#F0705F" : v > 40 ? "#E2A546" : "#4CC283") : (v > 60 ? "#4CC283" : v > 40 ? "#E2A546" : "#F0705F");
+    var needle = pt(a, r - 22);
+    var ticks = "";
+    for (var i = 0; i <= 10; i++) { var ta = Math.PI * (1 - i / 10); var t1 = pt(ta, r + 9), t2 = pt(ta, r + (i % 5 ? 13 : 16)); ticks += '<line x1="' + t1[0].toFixed(1) + '" y1="' + t1[1].toFixed(1) + '" x2="' + t2[0].toFixed(1) + '" y2="' + t2[1].toFixed(1) + '" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2"/>'; }
+    return '<div class="gauge"><div class="g-label">' + esc(label) + '</div>' +
+      '<svg viewBox="0 0 200 112" aria-hidden="true">' + ticks +
+      '<path d="M' + p0[0] + ' ' + p0[1] + ' A' + r + ' ' + r + ' 0 0 1 ' + pEnd[0] + ' ' + pEnd[1] + '" fill="none" stroke="currentColor" stroke-opacity=".14" stroke-width="12" stroke-linecap="round"/>' +
+      '<path d="M' + p0[0] + ' ' + p0[1] + ' A' + r + ' ' + r + ' 0 0 1 ' + p1[0].toFixed(2) + ' ' + p1[1].toFixed(2) + '" fill="none" stroke="' + col + '" stroke-width="12" stroke-linecap="round"/>' +
+      '<line x1="' + cx + '" y1="' + cy + '" x2="' + needle[0].toFixed(1) + '" y2="' + needle[1].toFixed(1) + '" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="currentColor"/></svg>' +
+      '<div class="g-value" style="color:' + col + '">' + esc(g.etichetta) + '</div><div class="g-note">' + esc(g.nota) + '</div></div>';
+  }
+  if (D.climi) $("#gauges").innerHTML = gauge("Clima dei mercati", D.climi.mercati, false) + gauge("Pressione sul portafoglio di casa", D.climi.famiglie, true);
+
+  /* ---------- OGGI ---------- */
+  $("#perTe").innerHTML = (D.perTe || []).map(function (c) {
+    return '<article class="foryou"><span class="tag">' + esc(c.tema) + '</span><h3>' + esc(c.titolo) + '</h3><p>' + esc(c.testo) + '</p><a href="' + esc(c.link) + '">' + esc(c.azione) + '</a></article>';
+  }).join("");
+
+  function spark(id) {
+    var pts = (D.storico || []).filter(function (h) { return typeof h[id] === "number"; }).map(function (h) { return h[id]; });
+    if (pts.length < 2) return "";
+    var w = 160, h = 34, mn = Math.min.apply(null, pts), mx = Math.max.apply(null, pts), rg = mx - mn || 1;
+    var xy = pts.map(function (v, i) { return [(i / (pts.length - 1)) * (w - 6) + 3, h - 4 - ((v - mn) / rg) * (h - 8)]; });
+    var line = xy.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+    var area = line + " L" + xy[xy.length - 1][0].toFixed(1) + " " + h + " L" + xy[0][0].toFixed(1) + " " + h + " Z";
+    var last = xy[xy.length - 1];
+    return '<svg class="spark" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + area + '" fill="var(--teal)" fill-opacity=".12"/><path d="' + line + '" fill="none" stroke="var(--teal)" stroke-width="1.8" vector-effect="non-scaling-stroke"/><circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.6" fill="var(--teal)"/></svg>';
+  }
+  function chipFor(v) {
+    if (typeof v.var === "number") {
+      var good = v.buono === "giu" ? v.var < 0 : v.var > 0;
+      var cls = v.var === 0 ? "flat" : (good ? "up" : "down");
+      return '<span class="chip ' + cls + '">' + (v.var > 0 ? "+" : "") + nf(v.var, 2) + '%</span>';
+    }
+    if (v.delta) {
+      var d = String(v.delta);
+      var m = d.match(/^da\s+([\d.,]+)/);
+      var cls2 = "flat";
+      if (m && typeof v.valore === "number") {
+        var prev = parseFloat(m[1].replace(/\./g, "").replace(",", "."));
+        var rising = v.valore > prev;
+        var good2 = v.buono === "giu" ? !rising : rising;
+        cls2 = v.valore === prev ? "flat" : (good2 ? "up" : "down");
+      } else if (/calo|−|-/.test(d) && v.buono === "giu") cls2 = "up";
+      return '<span class="chip ' + cls2 + '">' + esc(d) + '</span>';
+    }
+    return "";
+  }
+  $("#markets").innerHTML = (D.mercati || []).map(function (g) {
+    return '<div class="market-group"><h3>' + esc(g.gruppo) + '</h3><div class="tiles">' + g.voci.map(function (v) {
+      var val = typeof v.valore === "number" ? nf(v.valore, v.decimali) : esc(v.valore);
+      return '<div class="tile"><div class="t-name"><span>' + esc(v.nome) + '</span>' + chipFor(v) + '</div>' +
+        '<div class="t-val">' + val + '<small>' + esc(v.unita) + '</small></div>' +
+        spark(v.id) +
+        '<div class="t-note">' + esc(v.nota) + '</div>' +
+        '<div class="t-src">' + fmtDate(v.data) + ' · <a href="' + esc(v.url) + '" target="_blank" rel="noopener">' + esc(v.fonte) + '</a></div></div>';
+    }).join("") + '</div></div>';
+  }).join("");
+
+  $("#news").innerHTML = (D.notizie || []).map(function (n) {
+    return '<article><i class="dot ' + esc(n.impatto) + '" aria-label="impatto ' + esc(n.impatto) + '"></i><div><h3>' + esc(n.titolo) + '</h3><p>' + esc(n.testo) + '</p><a class="src" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.fonte) + '</a></div></article>';
+  }).join("");
+
+  var today = upd ? new Date(upd.toISOString().slice(0, 10)) : new Date();
+  $("#agenda").innerHTML = (D.agenda || []).map(function (a) {
+    var dt = new Date(a.data), days = Math.round((dt - today) / 864e5);
+    var when = days <= 0 ? "oggi" : days === 1 ? "domani" : "tra " + days + " giorni";
+    var p = a.data.split("-");
+    return '<li><div class="cal"><span>' + MESI[+p[1] - 1] + '</span><b>' + (+p[2]) + '</b></div><div><span class="when">' + when + '</span><strong>' + esc(a.evento) + '</strong><small>' + esc(a.perche) + '</small></div></li>';
+  }).join("");
+
+  /* ---------- PIANO: bilancio ---------- */
+  var BUDGET = [
+    { id: "reddito", label: "Entrate nette", hint: "Stipendio, pensione, altre entrate", def: 2200, kind: "in" },
+    { id: "casa", label: "Casa", hint: "Affitto o rata mutuo, condominio", def: 750, kind: "need" },
+    { id: "bollette", label: "Bollette e utenze", hint: "Luce, gas, acqua, telefono", def: 190, kind: "need" },
+    { id: "spesa", label: "Spesa alimentare", hint: "", def: 380, kind: "need" },
+    { id: "trasporti", label: "Trasporti", hint: "Carburante, mezzi, assicurazione auto", def: 180, kind: "need" },
+    { id: "salute", label: "Salute e figli", hint: "Farmaci, scuola, visite", def: 80, kind: "need" },
+    { id: "svago", label: "Svago e acquisti", hint: "Ristoranti, abbigliamento, viaggi", def: 320, kind: "want" },
+    { id: "abbon", label: "Abbonamenti", hint: "Streaming, palestra, app", def: 45, kind: "want" },
+    { id: "risp", label: "Risparmio e investimenti", hint: "Quanto metti da parte ogni mese", def: 200, kind: "save" }
+  ];
+  var bVals = store.get("budget", null) || {};
+  $("#budgetFields").innerHTML = BUDGET.map(function (b) {
+    var v = bVals[b.id] != null ? bVals[b.id] : b.def;
+    return '<div class="field"><label for="b-' + b.id + '">' + esc(b.label) + '</label><div class="input-wrap"><input id="b-' + b.id + '" data-b="' + b.id + '" type="number" inputmode="decimal" min="0" step="10" value="' + v + '"><span class="unit">€/mese</span></div>' + (b.hint ? '<span class="hint">' + esc(b.hint) + '</span>' : '') + '</div>';
+  }).join("");
+  var emEdited = store.get("emEdited", false);
+
+  function renderBudget() {
+    var vals = {}; BUDGET.forEach(function (b) { vals[b.id] = num("b-" + b.id); });
+    store.set("budget", vals);
+    var inc = vals.reddito || 0;
+    var need = 0, want = 0, save = vals.risp;
+    BUDGET.forEach(function (b) { if (b.kind === "need") need += vals[b.id]; if (b.kind === "want") want += vals[b.id]; });
+    var left = inc - need - want - save;
+    var share = function (x) { return inc > 0 ? x / inc * 100 : 0; };
+    var rows = [
+      { l: "Bisogni", v: need, t: 50, c: "var(--teal)", over: true },
+      { l: "Desideri", v: want, t: 30, c: "var(--accent)", over: true },
+      { l: "Risparmio", v: save + Math.max(0, left), t: 20, c: "var(--up)", over: false }
+    ];
+    $("#budgetBars").innerHTML = rows.map(function (r) {
+      var s = share(r.v);
+      return '<div class="bar-row"><div class="lbl"><span>' + r.l + ' <span style="color:var(--muted)">obiettivo ' + r.t + '%</span></span><b>' + nf(s, 0) + '% · ' + eur(r.v) + '</b></div><div class="track"><div class="fill" style="width:' + Math.min(100, s).toFixed(1) + '%;background:' + r.c + '"></div><div class="target" style="left:' + r.t + '%"></div></div></div>';
+    }).join("");
+    var msgs = [];
+    if (inc <= 0) msgs.push("Inserisci le entrate nette per vedere l'analisi.");
+    else {
+      if (left < 0) msgs.push("Stai spendendo <b>" + eur(-left) + "</b> in più di quanto entra. È la priorità numero uno da sistemare.");
+      else if (left > 0) msgs.push("Restano <b>" + eur(left) + "</b> non assegnati: decidi tu dove vanno, prima che spariscano in spese non pianificate.");
+      if (share(need) > 55) msgs.push("I bisogni superano il 55%: casa ed energia sono le voci dove una rinegoziazione (mutuo, offerta luce e gas, assicurazione) rende di più.");
+      if (share(want) > 30) msgs.push("I desideri superano il 30%: prova a fissare un tetto settimanale e a cancellare gli abbonamenti che non usi.");
+      if (share(save + Math.max(0, left)) >= 20 && left >= 0) msgs.push("Risparmi almeno il 20%: ottima base. Controlla che la liquidità in eccesso non resti ferma sul conto.");
+      var yearlyLoss = (vals.risp * 12) * inflIt / 100;
+      if (vals.risp > 0) msgs.push("Con l'inflazione al " + pct(inflIt, 1) + ", il risparmio di un anno lasciato fermo perde circa <b>" + eur(yearlyLoss) + "</b> di valore.");
+    }
+    $("#budgetResult").innerHTML = msgs.map(function (m) { return "<p>" + m + "</p>"; }).join("");
+    if (!emEdited) { $("#em-spese").value = Math.round(need); }
+    renderEmergency();
+  }
+  document.querySelectorAll("[data-b]").forEach(function (el) { el.addEventListener("input", renderBudget); });
+
+  /* ---------- PIANO: fondo emergenza ---------- */
+  var em = store.get("em", {});
+  if (em.spese != null) $("#em-spese").value = em.spese;
+  if (em.situ) $("#em-situ").value = em.situ;
+  $("#em-have").value = em.have != null ? em.have : 3000;
+  function renderEmergency() {
+    var spese = num("em-spese"), mesi = +$("#em-situ").value, have = num("em-have");
+    store.set("em", { spese: emEdited ? spese : null, situ: String(mesi), have: have });
+    var target = spese * mesi, gap = Math.max(0, target - have), prog = target > 0 ? Math.min(100, have / target * 100) : 0;
+    var vals = store.get("budget", {}) || {};
+    var monthly = vals.risp || 0;
+    var months = monthly > 0 ? Math.ceil(gap / monthly) : null;
+    $("#emResult").innerHTML =
+      '<div class="eyebrow">Obiettivo: ' + mesi + ' mesi di spese</div><div class="big">' + eur(target) + '</div>' +
+      '<div class="track" style="margin:6px 0 2px"><div class="fill" style="width:' + prog.toFixed(1) + '%;background:var(--teal)"></div></div>' +
+      '<div class="row"><span>Già accantonato</span><span>' + eur(have) + ' (' + nf(prog, 0) + '%)</span></div>' +
+      (gap > 0 ? '<div class="row"><span>Mancano</span><span>' + eur(gap) + '</span></div>' +
+        (months ? '<div class="row"><span>Con il risparmio mensile attuale</span><span>' + months + ' mesi</span></div>' : '') :
+        '<p><b>Fondo completo.</b> Da qui il risparmio in più può andare verso obiettivi di medio e lungo periodo.</p>') +
+      '<p style="font-size:.86rem;color:var(--muted)">Dove tenerlo: conto deposito libero o conto remunerato, entro i 100.000 € garantiti per banca.</p>';
+  }
+  $("#em-spese").addEventListener("input", function () { emEdited = true; store.set("emEdited", true); renderEmergency(); });
+  ["em-situ", "em-have"].forEach(function (id) { document.getElementById(id).addEventListener("input", renderEmergency); });
+
+  /* ---------- PIANO: scala priorità ---------- */
+  var LADDER = [
+    ["Bilancio in attivo", "Entrano più soldi di quanti ne escono, ogni mese."],
+    ["Fondo di emergenza completo", "3–12 mesi di spese essenziali, liquidi e garantiti."],
+    ["Zero debiti cari", "Carte revolving, prestiti al consumo e rateizzazioni con TAEG alto si estinguono prima di investire."],
+    ["Assicurazioni essenziali", "RC capofamiglia e, se qualcuno dipende dal tuo reddito, una polizza caso morte."],
+    ["Previdenza integrativa", "Fondo pensione, specie se c'è il contributo del datore di lavoro: è denaro che altrimenti perdi."],
+    ["Obiettivi a 2–5 anni", "Auto, casa, studi: titoli di Stato o conti vincolati con scadenza vicina alla spesa."],
+    ["Investimento di lungo periodo", "Oltre 10 anni: fondi o ETF diversificati a basso costo, con versamenti regolari."]
+  ];
+  var lad = store.get("ladder", []);
+  function renderLadder() {
+    $("#ladder").innerHTML = LADDER.map(function (s, i) {
+      var on = lad.indexOf(i) >= 0;
+      return '<li class="' + (on ? "done" : "") + '"><div><strong>' + esc(s[0]) + '</strong><small>' + esc(s[1]) + '</small></div><input type="checkbox" id="lad-' + i + '" data-l="' + i + '"' + (on ? " checked" : "") + ' aria-label="Fatto: ' + esc(s[0]) + '"></li>';
+    }).join("");
+    document.querySelectorAll("[data-l]").forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        var i = +cb.dataset.l; lad = lad.filter(function (x) { return x !== i; }); if (cb.checked) lad.push(i);
+        store.set("ladder", lad); renderLadder();
+      });
+    });
+  }
+  renderLadder();
+  renderBudget();
+
+  /* ---------- STRUMENTI: PAC ---------- */
+  function simulatePac(init, monthly, years, rGross, ter, infl) {
+    var mr = Math.pow(1 + (rGross - ter) / 100, 1 / 12) - 1;
+    var val = init, paid = init, bolloTot = 0, series = [{ y: 0, paid: paid, val: val, real: val }];
+    for (var m = 1; m <= years * 12; m++) {
+      val = val * (1 + mr) + monthly; paid += monthly;
+      if (m % 12 === 0) {
+        var b = val * 0.002; val -= b; bolloTot += b;
+        var y = m / 12;
+        series.push({ y: y, paid: paid, val: val, real: val / Math.pow(1 + infl / 100, y) });
+      }
+    }
+    var gain = Math.max(0, val - paid), tax = gain * 0.26, net = val - tax;
+    return { series: series, val: val, paid: paid, tax: tax, net: net, bollo: bolloTot, netReal: net / Math.pow(1 + infl / 100, years) };
+  }
+  function pacChart(series) {
+    var W = 760, H = 260, L = 64, R = 14, T = 12, B = 30;
+    var maxV = Math.max.apply(null, series.map(function (s) { return Math.max(s.val, s.paid); })) || 1;
+    var step = Math.pow(10, Math.floor(Math.log10(maxV)));
+    var nice = [1, 2, 2.5, 5, 10].map(function (k) { return k * step; }).find(function (s) { return maxV / s <= 5; }) || step * 10;
+    var top = Math.ceil(maxV / nice) * nice;
+    var n = series[series.length - 1].y || 1;
+    var x = function (y) { return L + (y / n) * (W - L - R); };
+    var yy = function (v) { return T + (1 - v / top) * (H - T - B); };
+    var grid = "";
+    for (var g = 0; g <= top + 1e-9; g += nice) {
+      grid += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy(g).toFixed(1) + '" y2="' + yy(g).toFixed(1) + '" stroke="var(--line)" stroke-width="1"/>' +
+        '<text x="' + (L - 8) + '" y="' + (yy(g) + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">' + (g >= 1000 ? nf(g / 1000, g % 1000 ? 1 : 0) + "k" : nf(g)) + '</text>';
+    }
+    var xt = "", stepX = n <= 10 ? 1 : n <= 20 ? 5 : 10;
+    for (var t = 0; t <= n; t += stepX) xt += '<text x="' + x(t).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (t === n ? "end" : t === 0 ? "start" : "middle") + '" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">' + t + (t === n ? " anni" : "") + '</text>';
+    var path = function (k) { return series.map(function (s, i) { return (i ? "L" : "M") + x(s.y).toFixed(1) + " " + yy(s[k]).toFixed(1); }).join(" "); };
+    var area = path("val") + " L" + x(n).toFixed(1) + " " + yy(0).toFixed(1) + " L" + x(0).toFixed(1) + " " + yy(0).toFixed(1) + " Z";
+    var last = series[series.length - 1];
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '">' + grid + xt +
+      '<path d="' + area + '" fill="var(--teal)" fill-opacity=".1"/>' +
+      '<path d="' + path("paid") + '" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 4"/>' +
+      '<path d="' + path("real") + '" fill="none" stroke="var(--accent)" stroke-width="2.2"/>' +
+      '<path d="' + path("val") + '" fill="none" stroke="var(--teal)" stroke-width="2.8"/>' +
+      '<circle cx="' + x(n).toFixed(1) + '" cy="' + yy(last.val).toFixed(1) + '" r="4.5" fill="var(--teal)"/></svg>';
+  }
+  var pacIds = ["pac-init", "pac-mese", "pac-anni", "pac-rend", "pac-ter", "pac-infl"];
+  var pacSaved = store.get("pac", null);
+  if (pacSaved) pacIds.forEach(function (id) { if (pacSaved[id] != null) document.getElementById(id).value = pacSaved[id]; });
+  function renderPac() {
+    var p = {}; pacIds.forEach(function (id) { p[id] = num(id); }); store.set("pac", p);
+    var yrs = Math.max(1, Math.min(50, Math.round(p["pac-anni"])));
+    var s = simulatePac(p["pac-init"], p["pac-mese"], yrs, p["pac-rend"], p["pac-ter"], p["pac-infl"]);
+    $("#pacResult").innerHTML =
+      '<div class="eyebrow">Netto dopo tasse, tra ' + yrs + ' anni</div><div class="big">' + eur(s.net) + '</div>' +
+      '<div class="row"><span>Hai versato</span><span>' + eur(s.paid) + '</span></div>' +
+      '<div class="row"><span>Valore lordo</span><span>' + eur(s.val) + '</span></div>' +
+      '<div class="row"><span>Tasse sulla plusvalenza (26%)</span><span>−' + eur(s.tax) + '</span></div>' +
+      '<div class="row"><span>Bollo pagato negli anni</span><span>−' + eur(s.bollo) + '</span></div>' +
+      '<div class="row"><b>In potere d\'acquisto di oggi</b><b>' + eur(s.netReal) + '</b></div>';
+    $("#pacChart").innerHTML = pacChart(s.series);
+    var sc = [["Prudente", p["pac-rend"] - 3], ["Centrale", p["pac-rend"]], ["Ottimista", p["pac-rend"] + 2]];
+    $("#pacScen").innerHTML = sc.map(function (c) {
+      var r = simulatePac(p["pac-init"], p["pac-mese"], yrs, c[1], p["pac-ter"], p["pac-infl"]);
+      return '<div><small>' + c[0] + ' · ' + pct(c[1], 1) + ' lordo</small><b>' + eur(r.net) + '</b></div>';
+    }).join("");
+    var cheap = simulatePac(p["pac-init"], p["pac-mese"], yrs, p["pac-rend"], 0.2, p["pac-infl"]);
+    var dear = simulatePac(p["pac-init"], p["pac-mese"], yrs, p["pac-rend"], 2.0, p["pac-infl"]);
+    $("#pacCost").innerHTML = "Il peso dei costi: con gli stessi versamenti, un prodotto allo 0,2% annuo arriva a <b>" + eur(cheap.net) + "</b>, uno al 2% a <b>" + eur(dear.net) + "</b>. La differenza, <b>" + eur(cheap.net - dear.net) + "</b>, va a chi vende il prodotto.";
+  }
+  pacIds.forEach(function (id) { document.getElementById(id).addEventListener("input", renderPac); });
+  renderPac();
+
+  /* ---------- STRUMENTI: deposito / titoli ---------- */
+  if (D.rendimenti) $("#dep-hint").textContent = "Migliori conti a 12 mesi: " + nf(D.rendimenti.contoDeposito12m.min, 2) + "–" + nf(D.rendimenti.contoDeposito12m.max, 2) + "% lordo";
+  function renderDep() {
+    var cap = num("dep-cap"), tax = +$("#dep-tipo").value, r = num("dep-tasso"), m = Math.max(1, num("dep-mesi"));
+    var gross = cap * r / 100 * m / 12, taxes = gross * tax, bollo = cap * 0.002 * m / 12, net = gross - taxes - bollo;
+    var netRate = cap > 0 ? net / cap * 12 / m * 100 : 0, real = netRate - inflIt;
+    $("#depResult").className = "result" + (real < 0 ? " warn" : "");
+    $("#depResult").innerHTML =
+      '<div class="eyebrow">Interessi netti in ' + m + ' mesi</div><div class="big">' + eur(net, 2) + '</div>' +
+      '<div class="row"><span>Interessi lordi</span><span>' + eur(gross, 2) + '</span></div>' +
+      '<div class="row"><span>Tasse (' + nf(tax * 100, 1) + '%)</span><span>−' + eur(taxes, 2) + '</span></div>' +
+      '<div class="row"><span>Imposta di bollo 0,20%</span><span>−' + eur(bollo, 2) + '</span></div>' +
+      '<div class="row"><span>Rendimento netto annuo</span><span>' + pct(netRate) + '</span></div>' +
+      '<div class="row"><b>Al netto dell\'inflazione (' + pct(inflIt, 1) + ')</b><b>' + (real >= 0 ? "+" : "") + pct(real) + '</b></div>' +
+      (real < 0 ? '<p style="font-size:.86rem">Con l\'inflazione attuale il rendimento reale è negativo: lo strumento limita la perdita, non la annulla. Resta comunque molto meglio del conto corrente a zero.</p>' : '');
+  }
+  ["dep-cap", "dep-tipo", "dep-tasso", "dep-mesi"].forEach(function (id) { document.getElementById(id).addEventListener("input", renderDep); });
+  renderDep();
+
+  /* ---------- STRUMENTI: inflazione ---------- */
+  $("#inf-rate").value = inflIt;
+  function renderInf() {
+    var c = num("inf-cap"), r = num("inf-rate"), y = Math.max(1, num("inf-anni"));
+    var pp = c / Math.pow(1 + r / 100, y), need = c * Math.pow(1 + r / 100, y);
+    $("#infResult").innerHTML =
+      '<div class="eyebrow">Tra ' + y + ' anni, ' + eur(c) + ' varranno come</div><div class="big">' + eur(pp) + '</div>' +
+      '<div class="row"><span>Potere d\'acquisto perso</span><span>−' + eur(c - pp) + ' (' + nf((1 - pp / c) * 100 || 0, 1) + '%)</span></div>' +
+      '<div class="row"><span>Per comprare le stesse cose servirebbero</span><span>' + eur(need) + '</span></div>';
+  }
+  ["inf-cap", "inf-rate", "inf-anni"].forEach(function (id) { document.getElementById(id).addEventListener("input", renderInf); });
+  renderInf();
+
+  /* ---------- STRUMENTI: mutuo ---------- */
+  var rata = function (P, annual, years) { var i = annual / 100 / 12, n = years * 12; return i === 0 ? P / n : P * i / (1 - Math.pow(1 + i, -n)); };
+  function renderMut() {
+    var P = num("mut-deb"), y = Math.max(1, num("mut-anni")), r = num("mut-tasso"), d = num("mut-var");
+    var a = rata(P, r, y), b = rata(P, Math.max(0, r + d), y), diff = b - a;
+    $("#mutResult").className = "result" + (diff > 0 ? " warn" : "");
+    $("#mutResult").innerHTML =
+      '<div class="eyebrow">Nuova rata mensile</div><div class="big">' + eur(b, 2) + '</div>' +
+      '<div class="row"><span>Rata attuale</span><span>' + eur(a, 2) + '</span></div>' +
+      '<div class="row"><span>Differenza al mese</span><span>' + (diff >= 0 ? "+" : "−") + eur(Math.abs(diff), 2) + '</span></div>' +
+      '<div class="row"><span>Differenza in un anno</span><span>' + (diff >= 0 ? "+" : "−") + eur(Math.abs(diff * 12)) + '</span></div>' +
+      '<p style="font-size:.86rem">Se hai un mutuo variabile, la portabilità (surroga) verso un\'altra banca è gratuita per legge.</p>';
+  }
+  ["mut-deb", "mut-anni", "mut-tasso", "mut-var"].forEach(function (id) { document.getElementById(id).addEventListener("input", renderMut); });
+  renderMut();
+
+  /* ---------- TUTELA: quiz ---------- */
+  var Q = [
+    ["Fra quanto ti serviranno questi soldi?", ["Entro 2 anni", "Fra 3 e 7 anni", "Fra più di 10 anni"]],
+    ["Il tuo investimento perde il 20% in pochi mesi. Cosa fai?", ["Vendo tutto per non perdere altro", "Aspetto, ma con molta ansia", "Resto investito e, se posso, aggiungo"]],
+    ["Hai già un fondo di emergenza separato?", ["No", "In parte", "Sì, completo"]],
+    ["Il tuo reddito nei prossimi anni è…", ["Incerto", "Abbastanza stabile", "Stabile e con margine"]],
+    ["Quanto conosci fondi, ETF e obbligazioni?", ["Poco o niente", "Le basi", "Bene, li ho già usati"]]
+  ];
+  var PROF = [
+    { n: "Prudente", d: "La priorità è non vedere oscillazioni forti. Hanno senso liquidità garantita, conti vincolati e titoli di Stato con scadenza vicina all'obiettivo. Una piccola quota azionaria solo per orizzonti lunghi.", a: [[35, "Liquidità"], [50, "Obbligazioni"], [15, "Azioni"]] },
+    { n: "Equilibrato", d: "Puoi tollerare cali temporanei per ottenere più crescita. Un mix bilanciato tra obbligazioni e azioni globali diversificate, ribilanciato una volta l'anno.", a: [[10, "Liquidità"], [45, "Obbligazioni"], [45, "Azioni"]] },
+    { n: "Dinamico", d: "Orizzonte lungo e nervi saldi: la parte azionaria globale può essere prevalente. Attenzione a non confondere tolleranza al rischio con fretta di guadagnare.", a: [[5, "Liquidità"], [20, "Obbligazioni"], [75, "Azioni"]] }
+  ];
+  var quizSaved = store.get("quiz", {});
+  $("#quiz").innerHTML = Q.map(function (q, i) {
+    return '<fieldset style="margin-bottom:14px"><legend>' + (i + 1) + '. ' + esc(q[0]) + '</legend>' + q[1].map(function (o, j) {
+      return '<label class="opt"><input type="radio" name="q' + i + '" id="q' + i + '-' + j + '" value="' + j + '"' + (quizSaved["q" + i] === j ? " checked" : "") + '><span>' + esc(o) + '</span></label>';
+    }).join("") + '</fieldset>';
+  }).join("");
+  function renderQuiz() {
+    var ans = {}, tot = 0, cnt = 0;
+    Q.forEach(function (_, i) { var c = document.querySelector('input[name="q' + i + '"]:checked'); if (c) { ans["q" + i] = +c.value; tot += +c.value; cnt++; } });
+    store.set("quiz", ans);
+    if (cnt < Q.length) { $("#quizResult").innerHTML = '<p class="callout">Rispondi a tutte le domande (' + cnt + ' di ' + Q.length + ').</p>'; return; }
+    var idx = tot <= 3 ? 0 : tot <= 7 ? 1 : 2;
+    if (ans.q0 === 0 || ans.q2 === 0) idx = 0; // orizzonte breve o niente cuscinetto: prudenza
+    var p = PROF[idx], cols = ["var(--muted)", "var(--teal)", "var(--accent)"];
+    $("#quizResult").innerHTML = '<div class="result"><div class="eyebrow">Il tuo profilo indicativo</div><div class="big" style="font-family:var(--f-display)">' + p.n + '</div><p>' + esc(p.d) + '</p>' +
+      '<div class="alloc" aria-label="Esempio di ripartizione">' + p.a.map(function (x, i) { return '<span style="width:' + x[0] + '%;background:' + cols[i] + '">' + x[0] + '%</span>'; }).join("") + '</div>' +
+      '<div class="chart-legend">' + p.a.map(function (x, i) { return '<span><i style="background:' + cols[i] + '"></i>' + x[1] + '</span>'; }).join("") + '</div>' +
+      ((ans.q0 === 0 || ans.q2 === 0) ? '<p style="font-size:.86rem">Il profilo è prudente perché l\'orizzonte è breve o manca il fondo di emergenza: prima di tutto viene il cuscinetto.</p>' : '') +
+      '<p style="font-size:.82rem;color:var(--muted)">Esempio educativo di ripartizione, non una raccomandazione personalizzata.</p></div>';
+  }
+  $("#quiz").addEventListener("change", renderQuiz);
+  renderQuiz();
+
+  var X = '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+  $("#redflags").innerHTML = [
+    "Rendimenti garantiti e alti, del tipo «10% al mese» o «senza rischi».",
+    "Fretta: «l'offerta scade stasera», «posti limitati».",
+    "Contatti non richiesti via WhatsApp, Telegram, social o telefono, spesso con volti noti usati senza permesso.",
+    "Richiesta di installare app di accesso remoto o di fare bonifici verso conti esteri o portafogli crypto.",
+    "Società non presente negli albi Consob o Banca d'Italia, oppure nella lista dei siti oscurati.",
+    "Ti chiedono di pagare «tasse» o «commissioni» per poter ritirare i tuoi guadagni.",
+    "Chi chiama dalla «banca» chiede codici, PIN o di spostare soldi su un «conto sicuro»: la banca non lo fa mai."
+  ].map(function (t) { return "<li>" + X + "<span>" + esc(t) + "</span></li>"; }).join("");
+
+  $("#askList").innerHTML = [
+    ["Quanto costa in tutto, ogni anno?", "Chiedi il costo totale in percentuale e in euro, compresi ingresso e uscita."],
+    ["Quanto posso perdere nel caso peggiore?", "Se la risposta è «niente», qualcosa non torna."],
+    ["Posso ritirare i soldi quando voglio, e con quali penali?", ""],
+    ["Chi guadagna se lo compro?", "Commissioni e incentivi del venditore vanno dichiarati."],
+    ["C'è un'alternativa più semplice ed economica?", "Per esempio un ETF indicizzato o un titolo di Stato."],
+    ["Il venditore è iscritto all'albo?", "Consulenti finanziari: albo OCF. Intermediari: Consob e Banca d'Italia."],
+    ["Posso avere tutto per iscritto e portarlo a casa?", "KID e prospetto si leggono con calma, mai firmare sul momento."]
+  ].map(function (q) { return '<li><div><strong>' + esc(q[0]) + '</strong>' + (q[1] ? '<small>' + esc(q[1]) + '</small>' : '') + '</div><span></span></li>'; }).join("");
+
+  /* ---------- FONTI ---------- */
+  var RES = [
+    ["Educazione", "L'economia per tutti", "Guide chiare della Banca d'Italia su conti, mutui, prestiti e risparmio.", "https://economiapertutti.bancaditalia.it/"],
+    ["Educazione", "Quello che conta", "Il portale pubblico di educazione finanziaria del Comitato Edufin.", "https://www.quellocheconta.gov.it/"],
+    ["Vigilanza", "Consob", "Verifica se un intermediario è autorizzato e consulta gli avvisi sui siti abusivi.", "https://www.consob.it/"],
+    ["Vigilanza", "Albo OCF", "Controlla che il consulente finanziario sia iscritto.", "https://www.organismocf.it/"],
+    ["Titoli di Stato", "Tesoro – MEF", "Aste, nuove emissioni di BTP e caratteristiche dei titoli.", "https://www.dt.mef.gov.it/it/debito_pubblico/"],
+    ["Mercati", "Borsa Italiana", "Quotazioni ufficiali di azioni, ETF e titoli di Stato.", "https://www.borsaitaliana.it/"],
+    ["Prezzi", "Istat", "Inflazione ufficiale e dati economici italiani.", "https://www.istat.it/"],
+    ["Tassi", "Banca Centrale Europea", "Decisioni di politica monetaria e calendario delle riunioni.", "https://www.ecb.europa.eu/"],
+    ["Risparmio sulle spese", "Portale Offerte ARERA", "Confronta in modo neutrale le offerte di luce e gas.", "https://www.ilportaleofferte.it/"],
+    ["Risparmio sulle spese", "Osservaprezzi carburanti", "Il distributore più conveniente vicino a te, dati del Mimit.", "https://carburanti.mise.gov.it/"],
+    ["Previdenza", "COVIP", "Confronta i costi dei fondi pensione con l'indicatore sintetico.", "https://www.covip.it/"],
+    ["Tutela", "Fondo Interbancario", "Come funziona la garanzia sui depositi fino a 100.000 €.", "https://www.fitd.it/"],
+    ["Tutela", "Arbitro Bancario Finanziario", "Reclami su conti, carte, mutui e prestiti.", "https://www.arbitrobancariofinanziario.it/"],
+    ["Tutela", "Arbitro Controversie Finanziarie", "Reclami su investimenti, gestito da Consob.", "https://www.acf.consob.it/"],
+    ["Confronto ETF", "justETF", "Cerca e confronta ETF per costi, dimensione e replica.", "https://www.justetf.com/it/"]
+  ];
+  $("#resources").innerHTML = RES.map(function (r) { return '<a class="res" href="' + r[3] + '" target="_blank" rel="noopener"><span class="k">' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b><span>' + esc(r[2]) + '</span></a>'; }).join("");
+
+  var seen = {}, srcs = [];
+  (D.mercati || []).forEach(function (g) { g.voci.forEach(function (v) { if (v.url && !seen[v.url]) { seen[v.url] = 1; srcs.push([v.fonte, v.url]); } }); });
+  (D.notizie || []).forEach(function (n) { if (n.url && !seen[n.url]) { seen[n.url] = 1; srcs.push([n.fonte, n.url]); } });
+  if (D.rendimenti && D.rendimenti.url && !seen[D.rendimenti.url]) srcs.push([D.rendimenti.fonte, D.rendimenti.url]);
+  var L = '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M7 4H4v10h10v-3M10 3h5v5M15 3l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  $("#editionSources").innerHTML = srcs.map(function (s) { var host = s[1].replace(/^https?:\/\/(www\.)?/, "").split("/")[0]; return '<li>' + L + '<span><b>' + esc(s[0]) + '</b> · <a href="' + esc(s[1]) + '" target="_blank" rel="noopener">' + esc(host) + '</a></span></li>'; }).join("");
+
+  /* ---------- navigazione ---------- */
+  var VIEWS = ["oggi", "piano", "strumenti", "tutela", "fonti"];
+  function route() {
+    var h = (location.hash || "#oggi").slice(1);
+    var anchor = null;
+    if (VIEWS.indexOf(h) < 0) { anchor = document.getElementById(h); h = anchor && anchor.closest(".view") ? anchor.closest(".view").id.replace("view-", "") : "oggi"; }
+    VIEWS.forEach(function (v) { var el = document.getElementById("view-" + v); if (el) el.hidden = v !== h; });
+    document.querySelectorAll(".tabs a").forEach(function (a) { if (a.dataset.view === h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    $("#hero").hidden = h !== "oggi";
+    if (anchor) anchor.scrollIntoView({ block: "start" });
+    else window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  route();
+})();
+</script>
+</body>
+</html>
