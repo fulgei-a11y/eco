@@ -25,32 +25,32 @@ const SCADENZE_FISCALI = [ // [mese, giorno, evento, perché]
   [12, 16, "Saldo IMU", "Seconde case e immobili non esenti"],
 ];
 
-// Tassi dei conti deposito: non esiste una fonte gratuita aggiornata in automatico.
-// Si aggiornano a mano qui quando cambiano sensibilmente.
-const RENDIMENTI = {
-  contoDepositoLibero: { min: 2.35, max: 2.5 },
-  contoDeposito12m: { min: 3.15, max: 4.0 },
-  nota: "Tassi lordi rilevati a metà ottobre 2026. Verifica sempre il foglio informativo della banca.",
-  fonte: "Economia Italia",
-  url: "https://finanza.economia-italia.com/migliori-conti-deposito-novembre-dicembre-2026",
-};
-
 const YAHOO = [ // id, simbolo, nome, unità, decimali, buono
   ["ftsemib", "FTSEMIB.MI", "FTSE MIB", "pt", 0],
+  ["stoxx50", "^STOXX50E", "Euro Stoxx 50", "pt", 0],
+  ["dax", "^GDAXI", "DAX", "pt", 0],
+  ["mondo", "SWDA.MI", "Azionario mondiale", "€", 2],
   ["sp500", "^GSPC", "S&P 500", "pt", 2],
   ["dow", "^DJI", "Dow Jones", "pt", 2],
   ["nasdaq", "^IXIC", "Nasdaq", "pt", 2],
+  ["vix", "^VIX", "Indice della paura (VIX)", "pt", 2, "giu"],
+  ["us10y", "^TNX", "Treasury USA 10 anni", "%", 2],
   ["eurusd", "EURUSD=X", "Euro / Dollaro", "$", 4],
   ["oro", "GC=F", "Oro", "$/oz", 0],
+  ["argento", "SI=F", "Argento", "$/oz", 2],
   ["brent", "BZ=F", "Petrolio Brent", "$/bbl", 2, "giu"],
-  ["btc", "BTC-USD", "Bitcoin", "$", 0],
   ["ttf", "TTF=F", "Gas TTF", "€/MWh", 2, "giu"],
+  ["btc", "BTC-USD", "Bitcoin", "$", 0],
 ];
 
 const RSS = [
   ["ANSA Economia", "https://www.ansa.it/sito/notizie/economia/economia_rss.xml"],
   ["ANSA Borsa", "https://www.ansa.it/sito/notizie/economia/borsa/borsa_rss.xml"],
   ["Il Sole 24 Ore", "https://www.ilsole24ore.com/rss/finanza.xml"],
+  ["Il Sole 24 Ore", "https://www.ilsole24ore.com/rss/economia.xml"],
+  ["Rai News", "https://www.rainews.it/rss/economia"],
+  ["Istat", "https://www.istat.it/feed/"],
+  ["BCE", "https://www.ecb.europa.eu/rss/press.html"],
 ];
 
 // ---------------------------------------------------------------- utilità
@@ -111,6 +111,14 @@ async function ecb(key, n = 13) {
   const rows = csvRows(txt).filter((r) => r.OBS_VALUE !== "" && r.OBS_VALUE != null && !isNaN(+r.OBS_VALUE));
   if (!rows.length) throw new Error("nessun dato " + key);
   return rows.map((r) => ({ t: r.TIME_PERIOD, v: +r.OBS_VALUE }));
+}
+
+async function eurostat(dataset, query) {
+  const j = await get(`https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/${dataset}?format=JSON&lang=it&${query}`, { text: false });
+  const idx = j?.dimension?.time?.category?.index || {};
+  const pts = Object.entries(idx).map(([t, i]) => ({ t, v: j.value?.[i] })).filter((o) => typeof o.v === "number").sort((a, b) => a.t.localeCompare(b.t));
+  if (!pts.length) throw new Error("nessun dato " + dataset);
+  return pts.map((o) => ({ t: o.t.replace(/M(\d{2})$/, "-$1"), v: o.v }));
 }
 
 async function fred(id) {
@@ -267,14 +275,17 @@ function fallbackTesti(ctx, V) {
   const f = V.ftsemib, inf = V.infl_it, bce = V.bce;
   const parteMerc = f && typeof f.var === "number" ? `Piazza Affari ${f.var >= 0 ? "+" : ""}${it(f.var)}%` : "Mercati in attesa";
   const parteFam = inf ? `inflazione al ${it(inf.valore, 1)}%` : "prezzi sotto osservazione";
-  const scoreM = Math.max(5, Math.min(95, Math.round(50 + 12 * (((f?.var || 0) + (V.sp500?.var || 0)) / 2))));
-  const scoreF = Math.max(5, Math.min(95, Math.round(20 + 11 * (inf?.valore || 2) + (V.benzina && V.benzina.valore > 1.9 ? 8 : 0))));
+  const vix = V.vix?.valore;
+  const scoreM = Math.max(5, Math.min(95, Math.round(50 + 12 * (((f?.var || 0) + (V.sp500?.var || 0)) / 2) - (vix > 25 ? 12 : vix > 20 ? 5 : vix && vix < 15 ? -5 : 0))));
+  const scoreF = Math.max(5, Math.min(95, Math.round(20 + 11 * (inf?.valore || 2) + (V.benzina && V.benzina.valore > 1.9 ? 8 : 0) + (V.disoccupazione && V.disoccupazione.valore > 8 ? 5 : 0))));
   const lab = (s, a) => (a ? (s >= 66 ? "Pressione alta" : s >= 40 ? "Moderata" : "Bassa") : (s >= 60 ? "Positivo" : s >= 40 ? "Variabile" : "Negativo"));
-  const dep = RENDIMENTI.contoDeposito12m.max, depNet = dep * 0.74 - 0.2, infl = inf?.valore || 2;
+  const dep = V.dep_vincolati?.valore, depNet = dep != null ? dep * 0.74 - 0.2 : null, infl = inf?.valore || 2;
+  const tassoMutuo = V.mutuo_medio?.valore || 3.2;
   const perdita = 10000 * (1 - 1 / (1 + infl / 100));
   const prossima = BCE_RIUNIONI.find((d) => d > ctx.giorno);
   const rata = (P, r, y) => { const i = r / 1200, n = y * 12; return P * i / (1 - (1 + i) ** -n); };
-  const dRata = rata(120000, 3.45, 20) - rata(120000, 3.2, 20);
+  const dRata = rata(120000, tassoMutuo + 0.25, 20) - rata(120000, tassoMutuo, 20);
+  const eur3 = V.euribor3m;
   return {
     titolo: `${parteMerc}, ${parteFam}`,
     sintesi: [
@@ -282,11 +293,11 @@ function fallbackTesti(ctx, V) {
       V.spread ? `Lo spread BTP-Bund è a ${it(V.spread.valore, 0)} punti base (media mensile).` : "",
       inf ? `L'inflazione italiana è al ${it(inf.valore, 1)}%: è il dato che pesa di più sul potere d'acquisto delle famiglie.` : "",
     ].filter(Boolean).join(" "),
-    mercati: { valore: scoreM, etichetta: lab(scoreM), nota: "Calcolato dall'andamento di Piazza Affari e Wall Street nell'ultima seduta." },
+    mercati: { valore: scoreM, etichetta: lab(scoreM), nota: `Da Piazza Affari e Wall Street nell'ultima seduta${vix ? `; VIX a ${it(vix, 1)}` : ""}.` },
     famiglie: { valore: scoreF, etichetta: lab(scoreF, true), nota: inf ? `Inflazione al ${it(infl, 1)}%${V.benzina ? `, benzina self a ${it(V.benzina.valore, 3)} €/l` : ""}.` : "Dati sui prezzi in aggiornamento." },
     perTe: [
-      { tema: "Liquidità", titolo: "Il conto fermo perde valore", testo: `Con l'inflazione al ${it(infl, 1)}%, 10.000 € fermi a tasso zero perdono circa ${it(perdita, 0)} € di potere d'acquisto in un anno. I migliori conti deposito a 12 mesi rendono fino al ${it(dep)}% lordo, circa ${it(depNet)}% netto.`, azione: "Calcola il rendimento netto", link: "#strumenti" },
-      { tema: "Tassi e mutuo", titolo: bce ? `Tasso BCE sui depositi al ${it(bce.valore)}%` : "Tassi BCE", testo: `${prossima ? `La prossima riunione BCE è il ${prossima.split("-").reverse().join("/")}. ` : ""}Per un mutuo variabile da 120.000 € a 20 anni, un rialzo di 0,25 punti vale circa ${it(dRata)} € in più al mese.`, azione: "Simula la tua rata", link: "#strumenti" },
+      { tema: "Liquidità", titolo: "Il conto fermo perde valore", testo: `Con l'inflazione al ${it(infl, 1)}%, 10.000 € fermi a tasso zero perdono circa ${it(perdita, 0)} € di potere d'acquisto in un anno. ${dep != null ? `In media le banche italiane pagano il ${it(dep)}% lordo sui depositi vincolati fino a un anno (circa ${it(depNet)}% netto): le offerte migliori vanno cercate e confrontate.` : "Confronta i conti deposito: il tasso netto conta più di quello pubblicizzato."}`, azione: "Calcola il rendimento netto", link: "#strumenti" },
+      { tema: "Tassi e mutuo", titolo: bce ? `Tasso BCE sui depositi al ${it(bce.valore)}%` : "Tassi BCE", testo: `${prossima ? `La prossima riunione BCE è il ${prossima.split("-").reverse().join("/")}. ` : ""}${eur3 ? `L'Euribor a 3 mesi, base dei mutui variabili, è al ${it(eur3.valore)}%. ` : ""}Per un mutuo da 120.000 € a 20 anni al tasso medio attuale (${it(tassoMutuo)}%), un rialzo di 0,25 punti vale circa ${it(dRata)} € in più al mese.`, azione: "Simula la tua rata", link: "#strumenti" },
       { tema: "Investimenti", titolo: "Il piano conta più della seduta", testo: `${f ? `Piazza Affari segna ${f.var >= 0 ? "+" : ""}${it(f.var)}% nella seduta${typeof f.mese === "number" ? ` e ${f.mese >= 0 ? "+" : ""}${it(f.mese, 1)}% in un mese` : ""}. ` : ""}Per chi investe a lungo termine contano costi bassi, diversificazione e versamenti regolari.`, azione: "Simula un piano di accumulo", link: "#strumenti" },
       { tema: "Spese", titolo: "Energia e carburanti", testo: `${V.benzina ? `La benzina self è in media a ${it(V.benzina.valore, 3)} €/l. ` : ""}Confrontare le offerte luce e gas sul Portale Offerte ARERA e i distributori sull'Osservaprezzi del Mimit è gratuito.`, azione: "Apri le fonti utili", link: "#fonti" },
     ],
@@ -347,23 +358,56 @@ async function main() {
     V[id] = { nome, unita: "%", decimali: 1, valore: l.v, var: null, delta: p ? `da ${it(p.v, 1)}%` : "", buono: "giu", nota: `${nota} (${l.t})`, data: l.t, fonte: "BCE / Eurostat", url: "https://data.ecb.europa.eu/" };
     serie[id] = s.map((o) => o.v);
   }
+  // Tassi medi praticati dalle banche italiane alle famiglie (statistiche MIR, Banca d'Italia / BCE)
+  for (const [id, key, nome, nota, buono] of [
+    ["euribor3m", "FM.M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA", "Euribor 3 mesi", "Parametro dei mutui variabili, media mensile", "giu"],
+    ["mutuo_medio", "MIR.M.IT.B.A2C.A.R.A.2250.EUR.N", "Tasso medio mutui casa", "Nuovi mutui alle famiglie in Italia", "giu"],
+    ["dep_vincolati", "MIR.M.IT.B.L22.F.R.A.2250.EUR.N", "Depositi vincolati", "Tasso lordo medio fino a 1 anno, nuovi depositi delle famiglie", undefined],
+    ["dep_conto", "MIR.M.IT.B.L21.A.R.A.2250.EUR.N", "Conti correnti", "Tasso lordo medio pagato sui conti delle famiglie", undefined],
+  ]) {
+    const s = await safe(nome, () => ecb(key, 13));
+    if (!s) continue;
+    const l = s.at(-1), p = s.at(-2);
+    V[id] = { nome, unita: "%", decimali: 2, valore: round(l.v, 2), var: null, delta: p ? `da ${it(p.v)}%` : "", buono, nota: `${nota} (${l.t})`, data: l.t, fonte: "BCE / Banca d'Italia", url: "https://data.ecb.europa.eu/" };
+    serie[id] = s.map((o) => round(o.v, 3));
+  }
+  const dis = await safe("Disoccupazione", () => eurostat("une_rt_m", "geo=IT&s_adj=SA&age=TOTAL&sex=T&unit=PC_ACT&lastTimePeriod=13"));
+  if (dis) {
+    const l = dis.at(-1), p = dis.at(-2);
+    V.disoccupazione = { nome: "Disoccupazione Italia", unita: "%", decimali: 1, valore: l.v, var: null, delta: p ? `da ${it(p.v, 1)}%` : "", buono: "giu", nota: `Tasso destagionalizzato (${l.t})`, data: l.t, fonte: "Eurostat", url: "https://ec.europa.eu/eurostat/databrowser/view/une_rt_m/default/table" };
+    serie.disoccupazione = dis.map((o) => o.v);
+  }
+
   const carb = await safe("Carburanti Mimit", carburanti);
   if (carb) {
     const old = serie.benzina || [];
     const b = round(carb.benzina, 3);
     const lastDay = (prev.serieDate || {}).benzina;
     serie.benzina = lastDay === carb.data ? [...old.slice(0, -1), b] : [...old, b].slice(-60);
-    V.benzina = { nome: "Benzina self", unita: "€/l", decimali: 3, valore: b, var: old.length ? round((b / old.at(-1) - 1) * 100, 2) : null, buono: "giu", nota: `Media nazionale self. Gasolio a ${it(carb.gasolio, 3)} €/l`, data: carb.data, fonte: "Mimit", url: "https://carburanti.mise.gov.it/" };
+    const prevB = lastDay === carb.data ? old.at(-2) : old.at(-1);
+    V.benzina = { nome: "Benzina self", unita: "€/l", decimali: 3, valore: b, var: prevB ? round((b / prevB - 1) * 100, 2) : null, buono: "giu", nota: "Media nazionale self service", data: carb.data, fonte: "Mimit", url: "https://carburanti.mise.gov.it/" };
+    const g = round(carb.gasolio, 3), oldG = serie.gasolio || [];
+    const prevG = lastDay === carb.data ? oldG.at(-2) : oldG.at(-1);
+    serie.gasolio = lastDay === carb.data ? [...oldG.slice(0, -1), g] : [...oldG, g].slice(-60);
+    V.gasolio = { nome: "Gasolio self", unita: "€/l", decimali: 3, valore: g, var: prevG ? round((g / prevG - 1) * 100, 2) : null, buono: "giu", nota: "Media nazionale self service", data: carb.data, fonte: "Mimit", url: "https://carburanti.mise.gov.it/" };
   }
 
   // Le voci non aggiornate tengono il valore precedente con la sua data originale.
   const GRUPPI = [
-    ["Borse", ["ftsemib", "sp500", "dow", "nasdaq"]],
-    ["Tassi", ["bce", "btp10", "spread", "fed"]],
-    ["Prezzi in Italia", ["infl_it", "infl_ez", "benzina", "ttf"]],
-    ["Valute e beni rifugio", ["eurusd", "oro", "brent", "btc"]],
+    ["Borse", ["ftsemib", "stoxx50", "dax", "mondo", "sp500", "dow", "nasdaq", "vix"]],
+    ["Tassi", ["bce", "euribor3m", "btp10", "spread"]],
+    ["Banche e lavoro in Italia", ["mutuo_medio", "dep_vincolati", "dep_conto", "disoccupazione"]],
+    ["Prezzi in Italia", ["infl_it", "infl_ez", "benzina", "gasolio"]],
+    ["Mondo e materie prime", ["fed", "us10y", "eurusd", "oro", "argento", "brent", "ttf", "btc"]],
   ];
-  const NOTE = { ftsemib: "Indice principale di Piazza Affari", sp500: "Le 500 maggiori società USA", dow: "Indice storico di Wall Street", nasdaq: "Indice dei tecnologici USA", eurusd: "Un euro forte rende più economici gli acquisti in dollari", oro: "Bene rifugio, quotazione future", brent: "Riferimento per carburanti ed energia", btc: "Asset speculativo, molto volatile e non protetto", ttf: "Riferimento europeo per le bollette del gas" };
+  const NOTE = {
+    ftsemib: "Indice principale di Piazza Affari", stoxx50: "Le 50 maggiori società dell'area euro", dax: "Borsa di Francoforte",
+    mondo: "ETF iShares Core MSCI World quotato a Milano: misura l'azionario globale", sp500: "Le 500 maggiori società USA",
+    dow: "Indice storico di Wall Street", nasdaq: "Indice dei tecnologici USA", vix: "Sopra 25 i mercati sono nervosi, sotto 15 tranquilli",
+    us10y: "Rendimento del decennale USA, riferimento mondiale", eurusd: "Un euro forte rende più economici gli acquisti in dollari",
+    oro: "Bene rifugio, quotazione future", argento: "Metallo prezioso e industriale", brent: "Riferimento per carburanti ed energia",
+    btc: "Asset speculativo, molto volatile e non protetto", ttf: "Riferimento europeo per le bollette del gas",
+  };
   const mercati = GRUPPI.map(([gruppo, ids]) => ({
     gruppo,
     voci: ids.map((id) => {
@@ -383,7 +427,6 @@ async function main() {
   const notizie = (await safe("notizie", notizieRss)) || [];
   const ctx = { giorno, edizione, notizie };
   ctx.dati =Object.fromEntries(mercati.flatMap((g) => g.voci).map((v) => [v.nome, { valore: v.valore, unita: v.unita, variazione_giornaliera_pct: v.var ?? null, confronto: v.delta || null, variazione_un_mese_pct: V[v.id]?.mese != null ? round(V[v.id].mese, 2) : null, data: v.data }]));
-  ctx.dati["Conti deposito 12 mesi (lordo)"] = { min: RENDIMENTI.contoDeposito12m.min, max: RENDIMENTI.contoDeposito12m.max, unita: "%" };
   ctx.dati["Prossima riunione BCE"] = BCE_RIUNIONI.find((d) => d > giorno) || null;
 
   const VV = Object.fromEntries(mercati.flatMap((g) => g.voci).map((v) => [v.id, { ...v, mese: V[v.id]?.mese }]));
@@ -414,7 +457,7 @@ async function main() {
     mercati,
     notizie: ai?.notizie || (base.notizie.length ? base.notizie : prev.notizie || []),
     agenda,
-    rendimenti: RENDIMENTI,
+    rendimenti: valOf("dep_vincolati") ? { mediaVincolati: valOf("dep_vincolati").valore, mediaConto: valOf("dep_conto")?.valore ?? null, mutuoMedio: valOf("mutuo_medio")?.valore ?? null, data: valOf("dep_vincolati").data, fonte: "BCE / Banca d'Italia" } : prev.rendimenti || null,
     serie,
     serieDate,
   };

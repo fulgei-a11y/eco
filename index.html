@@ -414,7 +414,7 @@ select { appearance: auto; }
         <div class="fields">
           <div class="field"><label for="mut-deb">Debito residuo</label><div class="input-wrap"><input id="mut-deb" type="number" min="0" step="1000" value="120000"><span class="unit">€</span></div></div>
           <div class="field"><label for="mut-anni">Anni rimanenti</label><div class="input-wrap"><input id="mut-anni" type="number" min="1" max="40" step="1" value="20"><span class="unit">anni</span></div></div>
-          <div class="field"><label for="mut-tasso">Tasso attuale</label><div class="input-wrap"><input id="mut-tasso" type="number" min="0" max="15" step="0.05" value="3.2"><span class="unit">%</span></div></div>
+          <div class="field"><label for="mut-tasso">Tasso attuale</label><div class="input-wrap"><input id="mut-tasso" type="number" min="0" max="15" step="0.05" value="3.2"><span class="unit">%</span></div><span class="hint" id="mut-hint">Inserisci il tasso del tuo mutuo</span></div>
           <div class="field"><label for="mut-var">Variazione ipotizzata</label><div class="input-wrap"><input id="mut-var" type="number" min="-3" max="3" step="0.25" value="0.25"><span class="unit">punti %</span></div></div>
         </div>
         <div class="result" id="mutResult"></div>
@@ -789,7 +789,10 @@ select { appearance: auto; }
   renderPac();
 
   /* ---------- STRUMENTI: deposito / titoli ---------- */
-  if (D.rendimenti) $("#dep-hint").textContent = "Migliori conti a 12 mesi: " + nf(D.rendimenti.contoDeposito12m.min, 2) + "–" + nf(D.rendimenti.contoDeposito12m.max, 2) + "% lordo";
+  var R = D.rendimenti || {};
+  if (typeof R.mediaVincolati === "number") $("#dep-hint").textContent = "Media banche italiane, vincolati fino a 1 anno: " + nf(R.mediaVincolati, 2) + "% lordo (" + fmtDate(R.data) + "). Le offerte online migliori pagano di più.";
+  else if (R.contoDeposito12m) $("#dep-hint").textContent = "Migliori conti a 12 mesi: " + nf(R.contoDeposito12m.min, 2) + "–" + nf(R.contoDeposito12m.max, 2) + "% lordo";
+  if (typeof R.mutuoMedio === "number") { $("#mut-tasso").value = R.mutuoMedio; $("#mut-hint").textContent = "Precompilato con il tasso medio dei nuovi mutui in Italia: sostituiscilo con il tuo"; }
   function renderDep() {
     var cap = num("dep-cap"), tax = +$("#dep-tipo").value, r = num("dep-tasso"), m = Math.max(1, num("dep-mesi"));
     var gross = cap * r / 100 * m / 12, taxes = gross * tax, bollo = cap * 0.002 * m / 12, net = gross - taxes - bollo;
