@@ -28,6 +28,8 @@ const SCADENZE_FISCALI = [
   [9, 30, "Termine per il 730", "Ultimo giorno per la dichiarazione precompilata"],
   [11, 30, "Seconda rata dell'acconto Irpef", "Per chi ha un acconto dovuto"],
   [12, 16, "Saldo IMU", "Seconde case e immobili non esenti"],
+  [12, 31, "Ultimo giorno per i versamenti al fondo pensione", "Contano per la deduzione dell'anno, fino a 5.300 €", true],
+  [12, 31, "Scade l'ISEE dell'anno", "Dal 1° gennaio serve una nuova DSU per assegno unico, bonus e agevolazioni", true],
 ];
 
 // Quotazioni giornaliere: id, simbolo Yahoo, nome, unità, decimali, buono ("giu" = scendere è favorevole), [min, max] plausibili
@@ -1117,8 +1119,8 @@ async function main() {
   const anno = +giorno.slice(0, 4);
   const agenda = [
     ...BCE_RIUNIONI.map((d) => ({ data: d, evento: "Riunione BCE sui tassi", perche: "Conta per mutui variabili, conti deposito e titoli di Stato" })),
-    ...[anno, anno + 1].flatMap((y) => SCADENZE_FISCALI.map(([m, g, evento, perche]) => ({ data: lunedi(`${y}-${String(m).padStart(2, "0")}-${String(g).padStart(2, "0")}`), evento, perche }))),
-  ].filter((a) => a.data >= giorno).sort((a, b) => a.data.localeCompare(b.data)).slice(0, 5);
+    ...[anno, anno + 1].flatMap((y) => SCADENZE_FISCALI.map(([m, g, evento, perche, fissa]) => { const d = `${y}-${String(m).padStart(2, "0")}-${String(g).padStart(2, "0")}`; return { data: fissa ? d : lunedi(d), evento, perche }; })),
+  ].filter((a) => a.data >= giorno).sort((a, b) => a.data.localeCompare(b.data)).slice(0, 7);
 
   const out = {
     aggiornato: isoRome(),

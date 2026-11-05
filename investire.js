@@ -134,7 +134,7 @@ window.ECO_INV = {
       guadagno: "Rendimento del comparto scelto, più il vantaggio fiscale e, nei fondi negoziali, il contributo del datore di lavoro.",
       rischi: ["I soldi sono vincolati fino alla pensione, salvo anticipi per casa, spese mediche e altri casi previsti", "Comparti azionari oscillano molto", "I PIP costano spesso molto più dei fondi negoziali"],
       costi: "Confrontali con l'Indicatore sintetico dei costi (ISC) pubblicato dalla COVIP: le differenze tra fondi sono grandi.",
-      tasse: "Versamenti deducibili fino a 5.164,57 € l'anno. Rendimenti tassati al 20% (12,5% per i titoli di Stato). Prestazione finale al 15%, che scende fino al 9% con gli anni di adesione.",
+      tasse: "Versamenti deducibili fino a 5.300 € l'anno. Rendimenti tassati al 20% (12,5% per i titoli di Stato). Prestazione finale al 15%, che scende fino al 9% con gli anni di adesione.",
       tutela: "Patrimonio separato e vigilanza COVIP.",
       domanda: "Il mio contratto di lavoro prevede un contributo del datore se aderisco al fondo negoziale?"
     },
