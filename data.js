@@ -1,6 +1,6 @@
 /* Dati del giorno, generati automaticamente due volte al giorno. */
 window.ECO = {
-  "aggiornato": "2026-11-05T06:34:50+01:00",
+  "aggiornato": "2026-11-05T06:41:21+01:00",
   "edizione": "mattina",
   "testiIA": false,
   "fonti": {
@@ -226,19 +226,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 61239,
-          "var": -1.53,
+          "valore": 61142,
+          "var": -1.68,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5EN225",
           "rend": {
-            "m1": -13.36,
-            "m3": -6.77,
-            "ytd": 21.65,
-            "y1": 21.96
+            "m1": -13.5,
+            "m3": -6.91,
+            "ytd": 21.46,
+            "y1": 21.77
           },
           "inizio": "2026-04-23",
-          "mese": -13.36,
+          "mese": -13.5,
           "nota": "Borsa di Tokyo, in yen"
         },
         {
@@ -294,16 +294,16 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 24368,
-          "var": 1.7,
+          "valore": 24369,
+          "var": 1.71,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5ENSEI",
           "rend": {
             "m1": 6.99,
-            "m3": -1.09,
+            "m3": -1.08,
             "ytd": -6.74,
-            "y1": -4.48
+            "y1": -4.47
           },
           "inizio": "2026-04-30",
           "mese": 6.99,
@@ -315,19 +315,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 3677,
-          "var": -0.25,
+          "valore": 3674,
+          "var": -0.33,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/000001.SS",
           "rend": {
-            "m1": -4.31,
-            "m3": -5.73,
-            "ytd": -7.36,
-            "y1": -7.37
+            "m1": -4.38,
+            "m3": -5.81,
+            "ytd": -7.43,
+            "y1": -7.44
           },
           "inizio": "2026-04-24",
-          "mese": -4.31,
+          "mese": -4.38,
           "nota": "Borsa di Shanghai, in yuan"
         },
         {
@@ -554,25 +554,25 @@ window.ECO = {
           "nome": "Oro al grammo",
           "unita": "€/g",
           "decimali": 2,
-          "valore": 118.16,
-          "var": 1.12,
+          "valore": 118.08,
+          "var": 1.05,
           "data": "2026-11-05",
-          "nota": "Oro puro. A 18 carati circa 88,62 €/g",
+          "nota": "Oro puro. A 18 carati circa 88,56 €/g",
           "fonte": "Calcolo su Yahoo Finance e BCE",
           "url": "https://finance.yahoo.com/quote/GC%3DF",
           "rend": {
-            "m1": -1.54,
-            "m3": -1.21,
-            "ytd": -0.54,
-            "y1": 5.71,
-            "dalMax": -18.6,
-            "dalMin": 5.9,
-            "ma200": -5.7,
+            "m1": -1.6,
+            "m3": -1.27,
+            "ytd": -0.62,
+            "y1": 5.65,
+            "dalMax": -18.7,
+            "dalMin": 5.8,
+            "ma200": -5.8,
             "vol": 27.3,
             "calo1a": -22.8
           },
           "inizio": "2026-05-04",
-          "mese": -1.54
+          "mese": -1.61
         },
         {
           "id": "argento",
@@ -580,19 +580,19 @@ window.ECO = {
           "unita": "$/oz",
           "decimali": 2,
           "buono": null,
-          "valore": 52.88,
-          "var": 1.46,
+          "valore": 52.79,
+          "var": 1.28,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/SI%3DF",
           "rend": {
-            "m1": -13.55,
-            "m3": -13.93,
-            "ytd": -24.6,
-            "y1": 10.48
+            "m1": -13.7,
+            "m3": -14.09,
+            "ytd": -24.74,
+            "y1": 10.28
           },
           "inizio": "2026-05-04",
-          "mese": -13.55,
+          "mese": -13.7,
           "nota": "Metallo prezioso e industriale, più volatile dell'oro"
         },
         {
@@ -601,19 +601,19 @@ window.ECO = {
           "unita": "$/oz",
           "decimali": 0,
           "buono": null,
-          "valore": 1526,
-          "var": 1.63,
+          "valore": 1524,
+          "var": 1.53,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/PL%3DF",
           "rend": {
-            "m1": -9.88,
-            "m3": -11.77,
-            "ytd": -25.02,
-            "y1": -1.8
+            "m1": -9.97,
+            "m3": -11.86,
+            "ytd": -25.09,
+            "y1": -1.9
           },
           "inizio": "2026-05-04",
-          "mese": -9.88,
+          "mese": -9.97,
           "nota": "Usato in gioielleria e catalizzatori auto"
         },
         {
@@ -622,19 +622,19 @@ window.ECO = {
           "unita": "$/lb",
           "decimali": 2,
           "buono": null,
-          "valore": 6.42,
-          "var": 0.23,
+          "valore": 6.41,
+          "var": 0.09,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/HG%3DF",
           "rend": {
-            "m1": -2.68,
-            "m3": -4.02,
-            "ytd": 14,
-            "y1": 29.32
+            "m1": -2.81,
+            "m3": -4.16,
+            "ytd": 13.84,
+            "y1": 29.14
           },
           "inizio": "2026-05-04",
-          "mese": -2.68,
+          "mese": -2.81,
           "nota": "Termometro dell'economia mondiale: sale quando l'industria cresce"
         }
       ]
@@ -687,19 +687,19 @@ window.ECO = {
           "unita": "$",
           "decimali": 0,
           "buono": null,
-          "valore": 80383,
-          "var": 3.93,
+          "valore": 80421,
+          "var": 3.98,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/BTC-USD",
           "rend": {
-            "m1": -6.05,
-            "m3": 25.09,
-            "ytd": -9.41,
-            "y1": -22.63
+            "m1": -6,
+            "m3": 25.15,
+            "ytd": -9.37,
+            "y1": -22.59
           },
           "inizio": "2026-06-28",
-          "mese": -6.05,
+          "mese": -6,
           "nota": "Asset speculativo, molto volatile e non protetto"
         }
       ]
@@ -769,19 +769,19 @@ window.ECO = {
           "unita": "$/bbl",
           "decimali": 2,
           "buono": "giu",
-          "valore": 93.86,
-          "var": -0.8,
+          "valore": 93.9,
+          "var": -0.76,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/BZ%3DF",
           "rend": {
-            "m1": -6.68,
-            "m3": 13.78,
-            "ytd": 54.25,
-            "y1": 47.76
+            "m1": -6.64,
+            "m3": 13.83,
+            "ytd": 54.31,
+            "y1": 47.83
           },
           "inizio": "2026-05-04",
-          "mese": -6.68,
+          "mese": -6.64,
           "nota": "Riferimento per carburanti ed energia"
         }
       ]
@@ -913,17 +913,17 @@ window.ECO = {
     }
   },
   "bitcoin": {
-    "prezzoEur": 71394,
-    "prezzoUsd": 80408,
-    "var24h": 3.92606,
-    "var7g": 0.30254,
-    "var30g": -6.06231,
-    "var1a": -21.14498,
+    "prezzoEur": 71479,
+    "prezzoUsd": 80492,
+    "var24h": 3.79445,
+    "var7g": 0.40709,
+    "var30g": -5.9644,
+    "var1a": -21.06279,
     "athEur": 107662,
     "athData": "2025-10-06",
-    "daAth": -33.68671,
-    "capEur": 1435281440864,
-    "aggiornatoPrezzo": "2026-11-05T05:32:54.000Z",
+    "daAth": -33.60727,
+    "capEur": 1437047823387,
+    "aggiornatoPrezzo": "2026-11-05T05:38:56.000Z",
     "dominanza": 59.5,
     "paura": {
       "valore": 50,
@@ -975,7 +975,7 @@ window.ECO = {
     },
     "commissioni": {
       "veloce": 2,
-      "mezzora": 1,
+      "mezzora": 2,
       "ora": 1,
       "minima": 1
     },
@@ -1014,7 +1014,7 @@ window.ECO = {
     ],
     "difficolta": {
       "avanzamento": 44.7,
-      "variazione": -2.59,
+      "variazione": -2.66,
       "data": "2026-11-13",
       "tempoMedio": 10.28
     },
@@ -1601,7 +1601,7 @@ window.ECO = {
       ],
       [
         "2026-11",
-        71419.77
+        71511.35
       ]
     ],
     "giornaliero": [
@@ -1734,21 +1734,21 @@ window.ECO = {
       70136.4375,
       68503.5,
       69015.6797,
-      71419.77
+      71511.35
     ],
     "giornalieroInizio": "2026-06-28",
     "rend": {
-      "m1": -6.07,
-      "m3": 28.08,
-      "ytd": -5.42,
-      "y1": -20.97
+      "m1": -5.94,
+      "m3": 28.24,
+      "ytd": -5.3,
+      "y1": -20.87
     },
     "caloMassimo": {
       "valore": -74.4,
       "da": "2017-12",
       "a": "2019-01"
     },
-    "data": "2026-11-05T06:34:42+01:00"
+    "data": "2026-11-05T06:41:12+01:00"
   },
   "classifica": {
     "data": "2026-11-05",
@@ -1841,24 +1841,24 @@ window.ECO = {
         "id": "giappone",
         "nome": "Giappone",
         "valuta": "¥",
-        "m1": -13.36,
-        "m3": -6.77,
-        "ytd": 21.65,
-        "y1": 21.96,
-        "dalMax": -15.4,
-        "dalMin": 26.2,
-        "ma200": -1.1,
-        "vol": 28.4,
-        "calo1a": -15.4
+        "m1": -13.5,
+        "m3": -6.91,
+        "ytd": 21.46,
+        "y1": 21.77,
+        "dalMax": -15.5,
+        "dalMin": 26,
+        "ma200": -1.3,
+        "vol": 28.5,
+        "calo1a": -15.5
       },
       {
         "id": "india",
         "nome": "India",
         "valuta": "₹",
         "m1": 6.99,
-        "m3": -1.09,
+        "m3": -1.08,
         "ytd": -6.74,
-        "y1": -4.48,
+        "y1": -4.47,
         "dalMax": -7.4,
         "dalMin": 9.6,
         "ma200": 1.5,
@@ -1869,12 +1869,12 @@ window.ECO = {
         "id": "cina",
         "nome": "Cina",
         "valuta": "¥",
-        "m1": -4.31,
-        "m3": -5.73,
-        "ytd": -7.36,
-        "y1": -7.37,
-        "dalMax": -13.3,
-        "dalMin": 2.2,
+        "m1": -4.38,
+        "m3": -5.81,
+        "ytd": -7.43,
+        "y1": -7.44,
+        "dalMax": -13.4,
+        "dalMin": 2.1,
         "ma200": -7.8,
         "vol": 14.5,
         "calo1a": -15.2
@@ -1897,13 +1897,13 @@ window.ECO = {
         "id": "oro_eur",
         "nome": "Oro",
         "valuta": "€",
-        "m1": -1.54,
-        "m3": -1.21,
-        "ytd": -0.54,
-        "y1": 5.71,
-        "dalMax": -18.6,
-        "dalMin": 5.9,
-        "ma200": -5.7,
+        "m1": -1.6,
+        "m3": -1.27,
+        "ytd": -0.62,
+        "y1": 5.65,
+        "dalMax": -18.7,
+        "dalMin": 5.8,
+        "ma200": -5.8,
         "vol": 27.3,
         "calo1a": -22.8
       },
@@ -1911,13 +1911,13 @@ window.ECO = {
         "id": "argento",
         "nome": "Argento",
         "valuta": "$",
-        "m1": -13.55,
-        "m3": -13.93,
-        "ytd": -24.6,
-        "y1": 10.48,
-        "dalMax": -54,
-        "dalMin": 10.6,
-        "ma200": -24.5,
+        "m1": -13.7,
+        "m3": -14.09,
+        "ytd": -24.74,
+        "y1": 10.28,
+        "dalMax": -54.1,
+        "dalMin": 10.4,
+        "ma200": -24.7,
         "vol": 69,
         "calo1a": -57.3
       },
@@ -1925,12 +1925,12 @@ window.ECO = {
         "id": "platino",
         "nome": "Platino",
         "valuta": "$",
-        "m1": -9.88,
-        "m3": -11.77,
-        "ytd": -25.02,
-        "y1": -1.8,
-        "dalMax": -46.5,
-        "dalMin": 6.5,
+        "m1": -9.97,
+        "m3": -11.86,
+        "ytd": -25.09,
+        "y1": -1.9,
+        "dalMax": -46.6,
+        "dalMin": 6.4,
         "ma200": -18.5,
         "vol": 55.4,
         "calo1a": -49.8
@@ -1939,13 +1939,13 @@ window.ECO = {
         "id": "rame",
         "nome": "Rame",
         "valuta": "$",
-        "m1": -2.68,
-        "m3": -4.02,
-        "ytd": 14,
-        "y1": 29.32,
-        "dalMax": -5.7,
-        "dalMin": 30,
-        "ma200": 3.2,
+        "m1": -2.81,
+        "m3": -4.16,
+        "ytd": 13.84,
+        "y1": 29.14,
+        "dalMax": -5.8,
+        "dalMin": 29.8,
+        "ma200": 3.1,
         "vol": 27.2,
         "calo1a": -13.5
       },
@@ -1953,12 +1953,12 @@ window.ECO = {
         "id": "brent",
         "nome": "Petrolio",
         "valuta": "$",
-        "m1": -6.68,
-        "m3": 13.78,
-        "ytd": 54.25,
-        "y1": 47.76,
+        "m1": -6.64,
+        "m3": 13.83,
+        "ytd": 54.31,
+        "y1": 47.83,
         "dalMax": -20.7,
-        "dalMin": 59.3,
+        "dalMin": 59.4,
         "ma200": 0.8,
         "vol": 56.9,
         "calo1a": -39.5
@@ -1967,13 +1967,13 @@ window.ECO = {
         "id": "btc",
         "nome": "Bitcoin",
         "valuta": "$",
-        "m1": -6.05,
-        "m3": 25.09,
-        "ytd": -9.41,
-        "y1": -22.63,
-        "dalMax": -24.2,
+        "m1": -6,
+        "m3": 25.15,
+        "ytd": -9.37,
+        "y1": -22.59,
+        "dalMax": -24.1,
         "dalMin": 37.3,
-        "ma200": 9.8,
+        "ma200": 9.9,
         "vol": 44.1,
         "calo1a": -44.8
       }
@@ -2879,7 +2879,7 @@ window.ECO = {
           "ritorno": "2024-02",
           "mesi": 410
         },
-        "dalMassimo": -12.6,
+        "dalMassimo": -12.9,
         "finestre": [
           {
             "anni": 1,
@@ -3050,6 +3050,175 @@ window.ECO = {
           [
             2025,
             26.2
+          ]
+        ]
+      },
+      {
+        "id": "oro",
+        "nome": "Oro (in dollari)",
+        "nota": "Prezzo del metallo, che non paga interessi né dividendi",
+        "inizio": "2000-08",
+        "fine": "2026-11",
+        "anni": 26.3,
+        "cagr": 10.8,
+        "calo": {
+          "valore": -42,
+          "picco": "2011-08",
+          "minimo": "2015-12",
+          "ritorno": "2020-07",
+          "mesi": 107
+        },
+        "dalMassimo": -13.1,
+        "finestre": [
+          {
+            "anni": 1,
+            "n": 217,
+            "positivi": 75,
+            "peggiore": -26.9,
+            "mediana": 11.4,
+            "migliore": 68.7
+          },
+          {
+            "anni": 3,
+            "n": 199,
+            "positivi": 83,
+            "peggiore": -14.3,
+            "mediana": 13.2,
+            "migliore": 34.6
+          },
+          {
+            "anni": 5,
+            "n": 191,
+            "positivi": 82,
+            "peggiore": -7.7,
+            "mediana": 11.2,
+            "migliore": 23.9
+          },
+          {
+            "anni": 10,
+            "n": 138,
+            "positivi": 99,
+            "peggiore": -0.6,
+            "mediana": 7.4,
+            "migliore": 20.9
+          },
+          {
+            "anni": 15,
+            "n": 98,
+            "positivi": 100,
+            "peggiore": 4.3,
+            "mediana": 7.7,
+            "migliore": 11.1
+          },
+          {
+            "anni": 20,
+            "n": 55,
+            "positivi": 100,
+            "peggiore": 8.2,
+            "mediana": 9.7,
+            "migliore": 11.4
+          }
+        ],
+        "annuali": [
+          [
+            2001,
+            2.5
+          ],
+          [
+            2002,
+            13.7
+          ],
+          [
+            2003,
+            31.2
+          ],
+          [
+            2004,
+            5.2
+          ],
+          [
+            2005,
+            18.2
+          ],
+          [
+            2006,
+            22.8
+          ],
+          [
+            2007,
+            31.4
+          ],
+          [
+            2008,
+            5.8
+          ],
+          [
+            2009,
+            23.9
+          ],
+          [
+            2010,
+            29.8
+          ],
+          [
+            2011,
+            10.2
+          ],
+          [
+            2012,
+            7
+          ],
+          [
+            2013,
+            -25.3
+          ],
+          [
+            2014,
+            -5.3
+          ],
+          [
+            2015,
+            -10.4
+          ],
+          [
+            2016,
+            8.5
+          ],
+          [
+            2017,
+            13.6
+          ],
+          [
+            2018,
+            -2.1
+          ],
+          [
+            2019,
+            14.7
+          ],
+          [
+            2020,
+            29.3
+          ],
+          [
+            2021,
+            -3.5
+          ],
+          [
+            2022,
+            -0.1
+          ],
+          [
+            2023,
+            13.4
+          ],
+          [
+            2024,
+            28.2
+          ],
+          [
+            2025,
+            63.4
           ]
         ]
       }
@@ -4436,7 +4605,7 @@ window.ECO = {
       3969.6001,
       3940.3999,
       4073,
-      4140
+      4137.1
     ],
     "argento": [
       73.072,
@@ -4568,7 +4737,7 @@ window.ECO = {
       50.72,
       49.587,
       52.12,
-      52.88
+      52.785
     ],
     "brent": [
       114.44,
@@ -4700,7 +4869,7 @@ window.ECO = {
       104.77,
       103.6,
       94.62,
-      93.86
+      93.9
     ],
     "btc": [
       59532.3398,
@@ -4832,7 +5001,7 @@ window.ECO = {
       78248.4531,
       76677.2969,
       77345.0469,
-      80383.26
+      80421.12
     ],
     "btp10": [
       3.559,
@@ -5099,7 +5268,7 @@ window.ECO = {
       1.1157,
       1.1192,
       1.1207,
-      1.1265
+      1.1264
     ],
     "eurgbp": [
       0.8549,
@@ -5355,7 +5524,7 @@ window.ECO = {
       114.39,
       113.19,
       116.85,
-      118.16
+      118.08
     ],
     "benzina": [
       1.789,
@@ -5543,7 +5712,7 @@ window.ECO = {
       1459,
       1432.4,
       1501.1,
-      1525.5
+      1524
     ],
     "rame": [
       5.795,
@@ -5675,7 +5844,7 @@ window.ECO = {
       6.5435,
       6.3785,
       6.403,
-      6.418
+      6.409
     ],
     "emergenti": [
       46.75,
@@ -5939,7 +6108,7 @@ window.ECO = {
       63290.1094,
       63081.8594,
       62188.6289,
-      61239.22
+      61141.7
     ],
     "india": [
       23997.5508,
@@ -6071,7 +6240,7 @@ window.ECO = {
       23440.8008,
       23810.8496,
       23960.5996,
-      24367.55
+      24369.2
     ],
     "cina": [
       4079.8999,
@@ -6203,7 +6372,7 @@ window.ECO = {
       3638.031,
       3608.0979,
       3686.1731,
-      3676.784
+      3673.865
     ],
     "brasile": [
       187318,
