@@ -79,7 +79,19 @@ p { margin: 0; }
 .eyebrow { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
 /* Testata */
-.masthead { background: var(--hero-bg); color: var(--hero-ink); }
+.masthead { background: var(--hero-bg); color: var(--hero-ink); position: relative; overflow: hidden; }
+.masthead > .wrap { position: relative; z-index: 1; }
+.masthead::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .9; transition: opacity .6s; }
+.masthead.mattina::before { background:
+  radial-gradient(120% 70% at 12% 120%, rgba(242,166,90,.42), transparent 60%),
+  radial-gradient(70% 50% at 85% 110%, rgba(240,112,95,.22), transparent 65%),
+  linear-gradient(180deg, #10203A 0%, #1B2E4F 100%); }
+.masthead.sera::before { background:
+  radial-gradient(110% 70% at 88% 115%, rgba(150,110,220,.30), transparent 60%),
+  radial-gradient(60% 45% at 10% 105%, rgba(226,165,70,.20), transparent 65%),
+  linear-gradient(180deg, #0B1324 0%, #141E36 100%); }
+.edition-mark { display: inline-flex; align-items: center; gap: 8px; }
+.edition-mark svg { flex: none; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 14px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
 .brand svg { flex: none; }
@@ -276,6 +288,61 @@ select { appearance: auto; }
   .sig { grid-template-columns: auto minmax(0, 1fr); }
   .sig .input-wrap { grid-column: 2; }
 }
+.tile { cursor: pointer; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; text-align: left; font: inherit; color: inherit; }
+.tile:hover { border-color: var(--teal); box-shadow: var(--shadow); transform: translateY(-1px); }
+.tile:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+dialog.sheet { border: 0; padding: 0; margin: auto auto 0; width: min(720px, 100%); max-height: 92vh; border-radius: 22px 22px 0 0; background: var(--surface); color: var(--ink); box-shadow: 0 -10px 40px rgba(0,0,0,.25); }
+@media (min-width: 760px) { dialog.sheet { margin: auto; border-radius: 22px; } }
+dialog.sheet::backdrop { background: rgba(10,16,28,.55); backdrop-filter: blur(3px); }
+dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
+@keyframes sheet-in { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sheet-in { padding: 22px max(20px, env(safe-area-inset-left, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 16px; overflow-y: auto; max-height: 92vh; }
+.sheet-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.sheet-top .x { border: 0; background: var(--surface-2); color: var(--ink); width: 38px; height: 38px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; flex: none; }
+.sheet .big-val { font-family: var(--f-mono); font-size: clamp(1.9rem, 1.4rem + 2vw, 2.6rem); font-weight: 600; letter-spacing: -.03em; }
+.sheet .big-val small { font-size: 1rem; color: var(--muted); margin-left: 6px; }
+.rend-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.rend-chips div { background: var(--bg); border-radius: 10px; padding: 8px 10px; }
+.rend-chips small { display: block; font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.rend-chips b { font-family: var(--f-mono); font-size: 1rem; }
+.explain { display: grid; gap: 10px; }
+.explain h4 { margin: 0; font-family: var(--f-display); font-size: 1rem; }
+.explain p { color: var(--muted); }
+.daily { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.pill-card { background: var(--hero-bg); color: var(--hero-ink); border-radius: var(--r); padding: 20px; display: grid; gap: 10px; align-content: start; position: relative; overflow: hidden; }
+.pill-card::after { content: ""; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, rgba(226,165,70,.35), transparent 70%); pointer-events: none; }
+.pill-card .eyebrow { color: var(--hero-muted); }
+.pill-card h3 { font-size: 1.3rem; }
+.pill-card p { color: var(--hero-muted); }
+.quiz-card { background: var(--surface); border-radius: var(--r); padding: 20px; box-shadow: var(--shadow); display: grid; gap: 10px; align-content: start; }
+.quiz-card .q { font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; }
+.quiz-opts { display: grid; gap: 8px; }
+.quiz-opts button { font: inherit; text-align: left; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.quiz-opts button:hover:not(:disabled) { border-color: var(--teal); }
+.quiz-opts button.giusta { border-color: var(--up); background: color-mix(in srgb, var(--up) 14%, transparent); }
+.quiz-opts button.sbagliata { border-color: var(--down); background: color-mix(in srgb, var(--down) 12%, transparent); }
+.quiz-opts button:disabled { cursor: default; }
+.streak { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: .78rem; color: var(--accent); font-weight: 600; }
+@media (max-width: 760px) { .daily { grid-template-columns: minmax(0, 1fr); } }
+.goals { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 12px; }
+.goal { position: relative; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 12px; align-items: center; overflow: hidden; }
+.goal .ring { width: 74px; height: 74px; }
+.goal .ring text { font-family: var(--f-mono); font-weight: 600; }
+.goal b { font-family: var(--f-display); font-size: 1.05rem; display: block; }
+.goal small { display: block; color: var(--muted); font-size: .82rem; line-height: 1.4; }
+.goal-actions { grid-column: 1 / -1; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.goal-actions .input-wrap { flex: 1 1 120px; }
+.mini-btn { font: inherit; font-size: .84rem; font-weight: 700; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 9px; padding: 7px 11px; cursor: pointer; }
+.mini-btn.danger { color: var(--down); }
+.goal.done { border-color: var(--up); }
+.confetti { position: absolute; inset: 0; pointer-events: none; }
+.confetti i { position: absolute; top: -10px; width: 7px; height: 11px; border-radius: 2px; animation: fall 1.6s ease-in forwards; }
+@keyframes fall { to { transform: translateY(180px) rotate(540deg); opacity: 0; } }
+.goal-strip { display: flex; gap: 12px; align-items: center; background: var(--surface); border-radius: 12px; padding: 12px 16px; box-shadow: var(--shadow); text-decoration: none; color: var(--ink); }
+.goal-strip .bar { flex: 1; height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.goal-strip .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--accent)); border-radius: 99px; }
+.toggle { display: flex; align-items: center; gap: 10px; font-size: .9rem; }
+.toggle input { width: 20px; height: 20px; accent-color: var(--teal); }
 .stale-banner { background: var(--accent-soft); color: var(--ink); border-radius: 12px; padding: 12px 16px; font-size: .92rem; }
 .tile.old .t-src::after { content: " · non aggiornato"; color: var(--warn); font-weight: 600; }
 .news time { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); margin-left: 8px; }
@@ -328,7 +395,7 @@ select { appearance: auto; }
     </div>
     <section class="hero" id="hero" aria-labelledby="heroTitle">
       <div>
-        <p class="eyebrow" id="heroDate">—</p>
+        <p class="eyebrow edition-mark" id="heroDate">—</p>
         <h1 id="heroTitle">—</h1>
         <p class="lede" id="heroLede"></p>
       </div>
@@ -351,6 +418,7 @@ select { appearance: auto; }
     <p class="stale-banner" id="staleBanner" hidden></p>
     <section class="alerts" id="alertHits" aria-label="I tuoi segnali" hidden></section>
     <section id="portfolioToday" aria-label="Il tuo portafoglio oggi"></section>
+    <a class="goal-strip" id="goalStrip" href="#piano-obiettivi" hidden></a>
 
     <section aria-labelledby="h-pert">
       <div class="section-head">
@@ -358,6 +426,11 @@ select { appearance: auto; }
         <p>Le notizie del giorno tradotte in effetti concreti su conto, mutuo, investimenti e spese.</p>
       </div>
       <div class="cards-4" id="perTe"></div>
+    </section>
+
+    <section class="daily" aria-label="Pillola e domanda del giorno">
+      <article class="pill-card" id="pill"></article>
+      <article class="quiz-card" id="dquiz"></article>
     </section>
 
     <section aria-labelledby="h-perf">
@@ -383,7 +456,7 @@ select { appearance: auto; }
     <section aria-labelledby="h-merc">
       <div class="section-head">
         <h2 id="h-merc">Il cruscotto</h2>
-        <p>Ogni valore riporta la data e la fonte. Verde e rosso indicano se il movimento è favorevole per chi risparmia, non solo se il numero sale.</p>
+        <p>Tocca un valore per vedere grafico, rendimenti e cosa significa. Verde e rosso indicano se il movimento è favorevole per chi risparmia, non solo se il numero sale.</p>
       </div>
       <div id="markets"></div>
     </section>
@@ -464,7 +537,8 @@ select { appearance: auto; }
         <div class="panel">
           <header><h3>Il tuo portafoglio</h3><p>Indica quanto hai in ciascuna categoria. Ogni volta che apri l'app vedrai in «Oggi» la variazione stimata in euro. Le cifre restano solo su questo dispositivo.</p></header>
           <div class="fields" id="pfFields"></div>
-          <p class="callout">Stima basata sugli indici di riferimento: il tuo fondo o ETF può muoversi in modo leggermente diverso. Titoli di Stato e liquidità non hanno una variazione giornaliera qui.</p>
+          <label class="toggle"><input type="checkbox" id="pfAuto"> Aggiorna da solo i valori con l'andamento dei mercati</label>
+          <p class="callout">Stima basata sugli indici di riferimento: il tuo fondo o ETF può muoversi in modo leggermente diverso. Le azioni USA sono rivalutate in dollari, senza l'effetto del cambio. Titoli di Stato e liquidità restano come li inserisci.</p>
         </div>
         <div class="panel">
           <header><h3>Il tuo stipendio contro l'inflazione</h3><p>Quanto dovrebbe crescere la busta paga per non perdere potere d'acquisto. Utile quando si discute un aumento o un rinnovo di contratto.</p></header>
@@ -478,6 +552,23 @@ select { appearance: auto; }
       </div>
     </section>
 
+    <section class="panel" id="piano-obiettivi" aria-labelledby="h-goal">
+      <header><h3 id="h-goal">I tuoi obiettivi di risparmio</h3><p>Dai un nome a ciò per cui risparmi: è il modo più efficace per non mollare. Ti diciamo quanto mettere da parte ogni mese.</p></header>
+      <div class="goals" id="goals"></div>
+      <form id="goalForm" class="fields" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));align-items:end">
+        <div class="field"><label for="g-nome">Obiettivo</label><div class="input-wrap"><input id="g-nome" type="text" maxlength="40" placeholder="Vacanza, auto, casa…" required></div></div>
+        <div class="field"><label for="g-tot">Cifra da raggiungere</label><div class="input-wrap"><input id="g-tot" type="number" min="1" step="any" inputmode="decimal" required><span class="unit">€</span></div></div>
+        <div class="field"><label for="g-gia">Già da parte</label><div class="input-wrap"><input id="g-gia" type="number" min="0" step="any" inputmode="decimal" value="0"><span class="unit">€</span></div></div>
+        <div class="field"><label for="g-data">Entro il</label><div class="input-wrap"><input id="g-data" type="date"></div></div>
+        <button class="btn" type="submit">Aggiungi obiettivo</button>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="h-patr">
+      <header><h3 id="h-patr">Il tuo patrimonio nel tempo</h3><p>Ogni giorno in cui apri l'app viene salvato il totale del tuo portafoglio. Con il tempo vedrai la tua curva di crescita.</p></header>
+      <div class="chart-box" id="patrChart"></div>
+    </section>
+
     <section class="grid-2">
       <div class="panel">
         <header><h3>I tuoi segnali</h3><p>Scegli cosa vuoi tenere d'occhio. Quando una soglia viene superata, te lo segnaliamo in cima a «Oggi».</p></header>
@@ -485,6 +576,7 @@ select { appearance: auto; }
       </div>
       <div class="panel">
         <header><h3>I tuoi dati</h3><p>Bilancio, portafoglio, segnali e impostazioni restano solo su questo dispositivo. Salva una copia per non perderli se cambi telefono o cancelli i dati del browser.</p></header>
+        <div class="field"><label for="mioNome">Come ti chiami? <span style="font-weight:400;color:var(--muted)">(facoltativo, per il saluto)</span></label><div class="input-wrap"><input id="mioNome" type="text" maxlength="30" autocomplete="given-name"></div></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button type="button" class="btn" id="bkSave">Salva una copia</button>
           <label class="btn ghost" for="bkFile" style="cursor:pointer">Ripristina da copia</label>
@@ -656,6 +748,20 @@ select { appearance: auto; }
     </section>
   </div>
 
+  <dialog class="sheet" id="sheet" aria-labelledby="sheetTitle">
+    <div class="sheet-in">
+      <div class="sheet-top">
+        <div><div class="eyebrow" id="sheetGroup"></div><h2 id="sheetTitle"></h2></div>
+        <button type="button" class="x" id="sheetClose" aria-label="Chiudi">✕</button>
+      </div>
+      <div><div class="big-val" id="sheetVal"></div><div id="sheetChg" style="margin-top:4px"></div></div>
+      <div class="chart-box" id="sheetChart" role="img"></div>
+      <div class="rend-chips" id="sheetRend"></div>
+      <div class="explain" id="sheetExplain"></div>
+      <p class="t-src" id="sheetSrc" style="font-family:var(--f-mono);font-size:.75rem;color:var(--muted)"></p>
+    </div>
+  </dialog>
+
   <footer class="view" style="margin-top:40px">
     <div class="disclaimer">
       <div class="foot">
@@ -681,6 +787,7 @@ select { appearance: auto; }
 </main>
 
 <script src="data.js"></script>
+<script src="pillole.js"></script>
 <script>
 (function () {
   "use strict";
@@ -726,7 +833,12 @@ select { appearance: auto; }
   var dateLong = upd ? upd.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Rome" }) : "";
   var timeShort = upd ? upd.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" }) : "";
   var ed = D.edizione === "mattina" ? "Edizione del mattino" : "Edizione della sera";
-  $("#heroDate").textContent = ed + " · " + dateLong;
+  var ora = new Date().getHours(), nome = store.get("nome", "");
+  var saluto = ora >= 5 && ora < 12 ? "Buongiorno" : ora < 18 && ora >= 12 ? "Buon pomeriggio" : "Buonasera";
+  var sole = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="10" r="3.4" fill="#E2A546"/><path d="M8 2.5v2M2.8 6.2l1.5 1M13.2 6.2l-1.5 1M1.5 13.5h13" stroke="#E2A546" stroke-width="1.4" stroke-linecap="round"/></svg>';
+  var luna = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.5 10.8A5.5 5.5 0 0 1 6.2 2.6a5.6 5.6 0 1 0 7.2 7.3 5.4 5.4 0 0 1-1.9.9z" fill="#C9B8F0"/></svg>';
+  document.querySelector(".masthead").classList.add(D.edizione === "mattina" ? "mattina" : "sera");
+  $("#heroDate").innerHTML = (D.edizione === "mattina" ? sole : luna) + '<span>' + esc(saluto + (nome ? ", " + nome : "")) + ' · ' + esc(ed) + ' · ' + esc(dateLong) + '</span>';
   $("#heroTitle").innerHTML = esc(D.titolo || "").replace(/,\s+(.+)$/, ", <em>$1</em>");
   $("#heroLede").textContent = D.sintesi || "";
   $("#editionPill").innerHTML = "Aggiornato alle <i>" + esc(timeShort) + "</i>";
@@ -802,7 +914,7 @@ select { appearance: auto; }
       var val = typeof v.valore === "number" ? nf(v.valore, v.decimali) : esc(v.valore);
       var daily = /^\d{4}-\d{2}-\d{2}$/.test(String(v.data)) && ["bce", "fed"].indexOf(v.id) < 0;
       var age = upd ? (upd - new Date(String(v.data).slice(0, 10) + "T12:00:00")) / 864e5 : 0;
-      return '<div class="tile' + (daily && age > (v.id === "benzina" || v.id === "gasolio" ? 10 : 5) ? ' old' : '') + '"><div class="t-name"><span>' + esc(v.nome) + '</span>' + chipFor(v) + '</div>' +
+      return '<div class="tile' + (daily && age > (v.id === "benzina" || v.id === "gasolio" ? 10 : 5) ? ' old' : '') + '" role="button" tabindex="0" data-id="' + esc(v.id) + '" aria-label="Dettagli: ' + esc(v.nome) + '"><div class="t-name"><span>' + esc(v.nome) + '</span>' + chipFor(v) + '</div>' +
         '<div class="t-val">' + val + '<small>' + esc(v.unita) + '</small></div>' +
         spark(v.id) +
         '<div class="t-note">' + esc(v.nota) + '</div>' +
@@ -943,7 +1055,7 @@ select { appearance: auto; }
     return { series: series, val: val, paid: paid, tax: tax, net: net, bollo: bolloTot, netReal: net / Math.pow(1 + infl / 100, years) };
   }
   function pacChart(series) {
-    var W = 760, H = 260, L = 64, R = 14, T = 12, B = 30;
+    var W = Math.max(300, Math.round($("#pacChart").clientWidth || 760)), H = W < 500 ? 220 : 260, L = 52, R = 14, T = 12, B = 30;
     var maxV = Math.max.apply(null, series.map(function (s) { return Math.max(s.val, s.paid); })) || 1;
     var step = Math.pow(10, Math.floor(Math.log10(maxV)));
     var nice = [1, 2, 2.5, 5, 10].map(function (k) { return k * step; }).find(function (s) { return maxV / s <= 5; }) || step * 10;
@@ -1162,42 +1274,161 @@ select { appearance: auto; }
     $("#rankNote").textContent = "Tassi medi ufficiali di Banca d'Italia e BCE (" + (da === a ? a : da + " – " + a) + ")" + (infl ? ", inflazione italiana di " + meseDi(infl) + " al " + pct(inf, 1) : "") + ". Le offerte migliori online possono pagare più della media: usa la calcolatrice in Strumenti per confrontarle.";
   })();
 
-  /* ---------- PIANO: portafoglio ---------- */
+  /* ---------- PIANO: portafoglio vivo ---------- */
   var PF = [
     ["mondo", "ETF azionario mondiale", "mondo"],
     ["italia", "Azioni italiane", "ftsemib"],
     ["usa", "Azioni USA", "sp500"],
+    ["emergenti", "Mercati emergenti", "emergenti"],
     ["oro", "Oro", "oro_eur"],
     ["btc", "Bitcoin e cripto", "btc"],
     ["obbl", "Titoli di Stato e obbligazioni", null],
     ["liq", "Liquidità e conti", null]
   ];
-  var pf = store.get("portafoglio", {});
+  var pf = store.get("portafoglio", {}), pfRif = store.get("portafoglioPrezzi", {}), pfAuto = store.get("portafoglioAuto", true);
+  var prezzo = function (id) { var v = findVoce(id); return v && typeof v.valore === "number" && v.valore > 0 ? v.valore : null; };
+  // Rivaluta ogni categoria con il rapporto tra il prezzo di oggi e quello dell'ultima volta: corretto anche se salti dei giorni.
+  if (pfAuto) PF.forEach(function (c) {
+    if (!c[2] || !pf[c[0]]) return;
+    var p = prezzo(c[2]), r = pfRif[c[0]];
+    if (!p) return;
+    if (r && r > 0 && p !== r) {
+      var k = p / r;
+      if (k > 0.4 && k < 2.5) pf[c[0]] = Math.round(pf[c[0]] * k * 100) / 100; // scarta salti anomali dovuti a dati errati
+    }
+    pfRif[c[0]] = p;
+  });
+  store.set("portafoglio", pf); store.set("portafoglioPrezzi", pfRif);
+  $("#pfAuto").checked = pfAuto;
+  $("#pfAuto").addEventListener("change", function () { pfAuto = this.checked; store.set("portafoglioAuto", pfAuto); if (pfAuto) PF.forEach(function (c) { if (c[2] && prezzo(c[2])) pfRif[c[0]] = prezzo(c[2]); }); store.set("portafoglioPrezzi", pfRif); });
   $("#pfFields").innerHTML = PF.map(function (c) {
-    return '<div class="field"><label for="pf-' + c[0] + '">' + esc(c[1]) + '</label><div class="input-wrap"><input id="pf-' + c[0] + '" data-pf="' + c[0] + '" type="number" inputmode="decimal" min="0" step="100" value="' + (pf[c[0]] || "") + '" placeholder="0"><span class="unit">€</span></div></div>';
+    return '<div class="field"><label for="pf-' + c[0] + '">' + esc(c[1]) + '</label><div class="input-wrap"><input id="pf-' + c[0] + '" data-pf="' + c[0] + '" type="number" inputmode="decimal" min="0" step="100" value="' + (pf[c[0]] ? Math.round(pf[c[0]]) : "") + '" placeholder="0"><span class="unit">€</span></div></div>';
   }).join("");
-  function renderPortfolio() {
-    var tot = 0, giorno = 0, mese = 0, base = 0, usate = [];
+
+  var storia = store.get("patrimonio", []);
+  function registraPatrimonio(tot) {
+    var d = new Date(), k = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    if (!(tot > 0)) return;
+    if (storia.length && storia[storia.length - 1].d === k) storia[storia.length - 1].v = Math.round(tot);
+    else storia.push({ d: k, v: Math.round(tot) });
+    if (storia.length > 1100) storia = storia.slice(-1100);
+    store.set("patrimonio", storia);
+  }
+  function chartPatrimonio() {
+    var box = $("#patrChart");
+    if (storia.length < 2) { box.innerHTML = '<p class="callout">' + (storia.length ? "Primo giorno registrato: " + eur(storia[0].v) + ". La curva comparirà dal secondo giorno." : "Compila il portafoglio qui sopra per iniziare a registrare il tuo patrimonio.") + '</p>'; return; }
+    var W = Math.max(300, Math.round(box.clientWidth || 760)), H = W < 500 ? 190 : 220, L = 52, R = 10, T = 14, B = 28;
+    var vals = storia.map(function (s) { return s.v; }), mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals), pad = (mx - mn) * 0.1 || mx * 0.02 || 1;
+    mn = Math.max(0, mn - pad); mx += pad;
+    var t0 = Date.parse(storia[0].d), t1 = Date.parse(storia[storia.length - 1].d) || t0 + 1;
+    var x = function (d) { return L + (Date.parse(d) - t0) / ((t1 - t0) || 1) * (W - L - R); }, y = function (v) { return T + (1 - (v - mn) / (mx - mn)) * (H - T - B); };
+    var line = storia.map(function (s, i) { return (i ? "L" : "M") + x(s.d).toFixed(1) + " " + y(s.v).toFixed(1); }).join(" ");
+    var grid = [mn + (mx - mn) * 0.25, mn + (mx - mn) * 0.5, mn + (mx - mn) * 0.75].map(function (g) { return '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g).toFixed(1) + '" y2="' + y(g).toFixed(1) + '" stroke="var(--line)" stroke-dasharray="3 4"/><text x="' + (L - 8) + '" y="' + (y(g) + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">' + (g >= 1000 ? nf(g / 1000, 1) + "k" : nf(g)) + '</text>'; }).join("");
+    var first = storia[0], last = storia[storia.length - 1], diff = last.v - first.v;
+    box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Andamento del patrimonio">' + grid +
+      '<path d="' + line + ' L' + x(last.d).toFixed(1) + ' ' + (H - B) + ' L' + L + ' ' + (H - B) + ' Z" fill="var(--teal)" fill-opacity=".12"/>' +
+      '<path d="' + line + '" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linejoin="round"/>' +
+      '<circle cx="' + x(last.d).toFixed(1) + '" cy="' + y(last.v).toFixed(1) + '" r="5" fill="var(--teal)"/>' +
+      '<text x="' + L + '" y="' + (H - 6) + '" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">' + fmtDate(first.d) + '</text>' +
+      '<text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono, monospace">' + fmtDate(last.d) + '</text></svg>' +
+      '<p style="margin-top:8px">Da ' + fmtDate(first.d) + ': <b class="' + (diff >= 0 ? "pos" : "neg") + '">' + segnoEur(diff) + '</b> (' + (first.v ? (diff >= 0 ? "+" : "") + pct(diff / first.v * 100, 1) : "") + '), compresi i tuoi versamenti e prelievi.</p>';
+  }
+  function contaSu(el, fine) {
+    var ridotto = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (ridotto || !isFinite(fine)) { el.textContent = segnoEur(fine); return; }
+    var t0 = null, dur = 900;
+    function passo(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = segnoEur(fine * e); if (k < 1) requestAnimationFrame(passo); }
+    requestAnimationFrame(passo);
+  }
+  function renderPortfolio(animata) {
+    var tot = 0, giorno = 0, mese = 0, base = 0;
     PF.forEach(function (c) {
       var a = pf[c[0]] || 0; tot += a;
       if (!c[2] || !a) return;
       var v = findVoce(c[2]);
-      if (v && typeof v.var === "number" && recente(v, 4)) { giorno += a * v.var / (100 + v.var); base += a; usate.push(c[1]); }
+      if (v && typeof v.var === "number" && recente(v, 4)) { giorno += a * v.var / (100 + v.var); base += a; }
       if (v && typeof v.mese === "number") mese += a * v.mese / (100 + v.mese);
     });
+    registraPatrimonio(tot);
     var box = $("#portfolioToday");
     if (tot <= 0) {
-      box.innerHTML = '<div class="portfolio-card"><div><div class="eyebrow">Il tuo portafoglio</div><p class="sub" style="margin-top:4px">Inserisci quanto hai investito e ogni giorno vedrai qui quanto è cambiato in euro.</p></div><a class="btn" href="#piano" style="text-decoration:none">Imposta</a></div>';
-      return;
+      box.innerHTML = '<div class="portfolio-card"><div><div class="eyebrow">Il tuo portafoglio</div><p class="sub" style="margin-top:4px">Inserisci quanto hai investito: ogni giorno vedrai qui quanto è cambiato in euro, e la curva del tuo patrimonio crescerà con te.</p></div><a class="btn" href="#piano" style="text-decoration:none">Imposta</a></div>';
+      chartPatrimonio(); return;
     }
-    box.innerHTML = '<div class="portfolio-card"><div><div class="eyebrow">Il tuo portafoglio oggi · stima</div><div class="big ' + (giorno >= 0 ? "pos" : "neg") + '">' + segnoEur(giorno) + '</div>' +
-      '<div class="sub">Su ' + eur(tot) + ' totali' + (mese ? ' · ultimo mese ' + segnoEur(mese) : '') + (base ? ' · ' + nf(base / tot * 100, 0) + '% del patrimonio si muove con i mercati' : '') + '</div></div>' +
+    box.innerHTML = '<div class="portfolio-card"><div><div class="eyebrow">Il tuo portafoglio oggi · stima</div><div class="big ' + (giorno >= 0 ? "pos" : "neg") + '" id="pfOggi">' + segnoEur(giorno) + '</div>' +
+      '<div class="sub">Patrimonio ' + eur(tot) + (mese ? ' · ultimo mese ' + segnoEur(mese) : '') + (base ? ' · ' + nf(base / tot * 100, 0) + '% si muove con i mercati' : '') + '</div></div>' +
       '<a class="btn ghost" href="#piano" style="text-decoration:none">Modifica</a></div>';
+    if (animata) contaSu($("#pfOggi"), giorno);
+    chartPatrimonio();
   }
   document.querySelectorAll("[data-pf]").forEach(function (el) {
-    el.addEventListener("input", function () { pf[el.dataset.pf] = num(el.id); store.set("portafoglio", pf); renderPortfolio(); });
+    el.addEventListener("input", function () {
+      var c = PF.filter(function (x) { return x[0] === el.dataset.pf; })[0];
+      pf[el.dataset.pf] = num(el.id);
+      if (c && c[2] && prezzo(c[2])) pfRif[c[0]] = prezzo(c[2]); // il valore scritto è quello di oggi
+      store.set("portafoglio", pf); store.set("portafoglioPrezzi", pfRif); renderPortfolio(false);
+    });
   });
-  renderPortfolio();
+  renderPortfolio(true);
+
+  /* ---------- PIANO: obiettivi di risparmio ---------- */
+  var goals = store.get("obiettivi", []);
+  var ring = function (p) {
+    var r = 30, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, p));
+    return '<svg class="ring" viewBox="0 0 74 74" aria-hidden="true"><circle cx="37" cy="37" r="' + r + '" fill="none" stroke="var(--surface-2)" stroke-width="8"/>' +
+      '<circle cx="37" cy="37" r="' + r + '" fill="none" stroke="' + (f >= 1 ? "var(--up)" : "var(--teal)") + '" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + (c * f).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 37 37)"/>' +
+      '<text x="37" y="42" text-anchor="middle" font-size="15" fill="var(--ink)">' + Math.round(f * 100) + '%</text></svg>';
+  };
+  function coriandoli(el) {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var box = document.createElement("div"); box.className = "confetti";
+    var col = ["#E2A546", "#13756C", "#4CC283", "#F0705F", "#4DB6AA"];
+    for (var i = 0; i < 28; i++) { var c = document.createElement("i"); c.style.left = Math.random() * 100 + "%"; c.style.background = col[i % col.length]; c.style.animationDelay = (Math.random() * 0.4) + "s"; box.appendChild(c); }
+    el.appendChild(box); setTimeout(function () { box.remove(); }, 2200);
+  }
+  function renderGoals(festeggia) {
+    var oggi = new Date();
+    $("#goals").innerHTML = goals.length ? goals.map(function (g, i) {
+      var p = g.tot > 0 ? g.gia / g.tot : 0, manca = Math.max(0, g.tot - g.gia);
+      var mesi = g.data ? Math.max(0, (new Date(g.data).getFullYear() - oggi.getFullYear()) * 12 + new Date(g.data).getMonth() - oggi.getMonth()) : null;
+      var info = p >= 1 ? "Traguardo raggiunto. Complimenti!" : "Mancano " + eur(manca) + (mesi != null ? (mesi > 0 ? " · " + eur(Math.ceil(manca / mesi)) + " al mese per " + mesi + (mesi === 1 ? " mese" : " mesi") : " · la scadenza è arrivata") : "");
+      return '<div class="goal' + (p >= 1 ? " done" : "") + '" data-g="' + i + '">' + ring(p) + '<div><b>' + esc(g.nome) + '</b><small>' + eur(g.gia) + ' di ' + eur(g.tot) + '</small><small>' + info + '</small></div>' +
+        '<div class="goal-actions"><div class="input-wrap"><input type="number" min="0" step="10" placeholder="Versamento" id="gv-' + i + '" aria-label="Versamento per ' + esc(g.nome) + '"><span class="unit">€</span></div>' +
+        '<button type="button" class="mini-btn" data-add="' + i + '">Aggiungi</button><button type="button" class="mini-btn danger" data-del="' + i + '">' + (g._conferma ? "Conferma" : "Elimina") + '</button></div></div>';
+    }).join("") : '<p class="callout">Nessun obiettivo ancora. Aggiungine uno qui sotto.</p>';
+    document.querySelectorAll("[data-add]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var i = +b.dataset.add, v = num("gv-" + i); if (!(v > 0)) return;
+        var prima = goals[i].gia >= goals[i].tot; goals[i].gia = Math.round((goals[i].gia + v) * 100) / 100;
+        salvaGoals(); renderGoals(!prima && goals[i].gia >= goals[i].tot ? i : null);
+      });
+    });
+    document.querySelectorAll("[data-del]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var i = +b.dataset.del;
+        if (goals[i]._conferma) goals.splice(i, 1); else { goals.forEach(function (g) { delete g._conferma; }); goals[i]._conferma = true; }
+        salvaGoals(); renderGoals();
+      });
+    });
+    if (festeggia != null) { var el = document.querySelector('[data-g="' + festeggia + '"]'); if (el) coriandoli(el); }
+    // striscia in Oggi: l'obiettivo più vicino al traguardo
+    var aperti = goals.filter(function (g) { return g.gia < g.tot; }).sort(function (a, b) { return b.gia / b.tot - a.gia / a.tot; });
+    var s = $("#goalStrip");
+    if (!aperti.length) { s.hidden = true; return; }
+    var g = aperti[0], p = g.gia / g.tot;
+    s.hidden = false;
+    s.innerHTML = '<span class="eyebrow" style="white-space:nowrap">Obiettivo</span><b style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%">' + esc(g.nome) + '</b><span class="bar"><i style="width:' + (p * 100).toFixed(1) + '%"></i></span><span class="num" style="white-space:nowrap">' + Math.round(p * 100) + '%</span>';
+  }
+  function salvaGoals() { store.set("obiettivi", goals.map(function (g) { return { nome: g.nome, tot: g.tot, gia: g.gia, data: g.data, _conferma: g._conferma }; })); }
+  $("#goalForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var nome = $("#g-nome").value.trim(), tot = num("g-tot"), gia = num("g-gia"), data = $("#g-data").value || null;
+    if (!nome || !(tot > 0)) return;
+    goals.push({ nome: nome, tot: tot, gia: Math.max(0, gia), data: data });
+    salvaGoals(); this.reset(); $("#g-gia").value = 0; renderGoals(gia >= tot ? goals.length - 1 : null);
+  });
+  goals.forEach(function (g) { delete g._conferma; });
+  renderGoals();
 
   /* ---------- PIANO: stipendio ---------- */
   (function () {
@@ -1389,6 +1620,9 @@ select { appearance: auto; }
   });
   renderHits();
 
+  $("#mioNome").value = store.get("nome", "");
+  $("#mioNome").addEventListener("change", function () { store.set("nome", this.value.trim()); });
+
   /* ---------- PIANO: copia di sicurezza ---------- */
   (function () {
     var msg = function (t) { var m = $("#bkMsg"); m.hidden = false; m.textContent = t; };
@@ -1425,6 +1659,133 @@ select { appearance: auto; }
     });
   })();
 
+  /* ---------- scheda di dettaglio ---------- */
+  var SPIEGA = {
+    ftsemib: ["L'indice delle 40 società più grandi della Borsa di Milano: banche, energia, auto, lusso, utility.", "Se hai fondi o ETF sull'Italia, si muovono con lui. Le banche pesano molto: quando i tassi salgono di solito l'indice ne beneficia."],
+    stoxx50: ["Le 50 maggiori società dell'area euro, da ASML a LVMH.", "È il termometro della Borsa europea, utile per capire se un movimento riguarda solo l'Italia o tutta l'Europa."],
+    dax: ["Le 40 maggiori società tedesche quotate a Francoforte.", "La Germania è il primo partner commerciale dell'Italia: quando l'industria tedesca rallenta, ne risentono anche le nostre esportazioni."],
+    mondo: ["Un ETF che contiene circa 1.500 aziende di 23 Paesi sviluppati, quotato in euro a Milano.", "È il riferimento più usato per i piani di accumulo di lungo periodo: diversificazione ampia con costi molto bassi."],
+    sp500: ["Le 500 maggiori società degli Stati Uniti, circa metà del valore delle borse mondiali.", "Quasi tutti i fondi azionari globali ne contengono una quota grande. È espresso in dollari: per un investitore europeo conta anche il cambio."],
+    nasdaq: ["L'indice delle società tecnologiche americane: Apple, Microsoft, Nvidia, Amazon.", "Sale più degli altri nelle fasi di ottimismo e scende di più nelle fasi di paura: è la parte più volatile dei portafogli azionari."],
+    dow: ["L'indice storico di Wall Street, composto da 30 grandi società americane.", "Meno rappresentativo dell'S&P 500, ma è il numero che i notiziari citano più spesso."],
+    vix: ["Misura quanta oscillazione si aspettano i mercati americani nei prossimi 30 giorni. Lo chiamano indice della paura.", "Sotto 15 i mercati sono tranquilli, sopra 25 sono nervosi, sopra 40 c'è panico. Nei picchi di paura vendere è quasi sempre la scelta peggiore."],
+    giappone: ["L'indice Nikkei 225 della Borsa di Tokyo, in yen.", "Il Giappone è la terza economia mondiale e ha un peso importante negli ETF azionari globali."],
+    emergenti: ["Un ETF in euro con oltre 3.000 aziende di Paesi emergenti: Cina, India, Taiwan, Corea, Brasile.", "Crescono più dei Paesi sviluppati ma con oscillazioni più forti. In un portafoglio diversificato pesano di solito tra il 10% e il 15% della parte azionaria."],
+    india: ["Le 50 maggiori società indiane, in rupie.", "L'India è l'economia grande che cresce più velocemente al mondo: un mercato con forte potenziale e forte volatilità."],
+    cina: ["L'indice della Borsa di Shanghai, in yuan.", "La Cina è la seconda economia mondiale e la fabbrica del mondo: rallentamenti o stimoli cinesi si sentono su materie prime e lusso europeo."],
+    brasile: ["L'indice Bovespa della Borsa di San Paolo, in real.", "È molto legato alle materie prime: petrolio, ferro, prodotti agricoli."],
+    bce: ["Il tasso che la Banca centrale europea riconosce alle banche sui loro depositi: è il tasso guida dell'area euro.", "Quando sale, salgono rate dei mutui variabili e rendimenti dei conti deposito. Quando scende, succede il contrario."],
+    euribor3m: ["Il tasso al quale le banche europee si prestano denaro a tre mesi.", "È il parametro della maggior parte dei mutui a tasso variabile: la tua rata è Euribor più lo spread della banca."],
+    btp10: ["Il rendimento annuo dei titoli di Stato italiani a 10 anni.", "Influenza i tassi dei mutui fissi e quanto lo Stato spende per interessi. Per chi compra un BTP è il rendimento lordo se lo tiene fino a scadenza."],
+    spread: ["La differenza di rendimento tra BTP e Bund tedeschi a 10 anni, in punti base (100 punti = 1%).", "Misura la fiducia dei mercati nell'Italia. Uno spread alto rende più caro il debito pubblico e, a cascata, i prestiti a famiglie e imprese."],
+    mutuo_medio: ["Il tasso medio dei nuovi mutui per l'acquisto della casa concessi in Italia, rilevato da Banca d'Italia.", "Se il tuo mutuo ha un tasso molto più alto, la surroga verso un'altra banca è gratuita e può farti risparmiare migliaia di euro."],
+    dep_vincolati: ["Il tasso lordo medio che le banche italiane pagano sui nuovi depositi vincolati fino a un anno.", "È la media di tutte le banche: le migliori offerte online pagano di più. Ricorda che va tolto il 26% di tasse e lo 0,20% di bollo."],
+    dep_conto: ["Il tasso medio pagato sui conti correnti delle famiglie.", "È quasi zero: oltre la liquidità che ti serve, i soldi sul conto corrente perdono valore con l'inflazione."],
+    disoccupazione: ["La quota di persone che cercano lavoro senza trovarlo, sul totale delle forze di lavoro.", "Un mercato del lavoro solido sostiene consumi e salari. Quando la disoccupazione sale, conviene rafforzare il fondo di emergenza."],
+    infl_it: ["Di quanto sono aumentati i prezzi in Italia rispetto allo stesso mese dell'anno prima, secondo l'indice armonizzato europeo.", "Se i tuoi risparmi rendono meno dell'inflazione, il loro potere d'acquisto diminuisce. In Piano trovi la tua inflazione personale."],
+    infl_ez: ["L'aumento dei prezzi nell'intera area euro rispetto a un anno prima.", "È il dato che guida le decisioni della BCE: l'obiettivo è il 2%. Sopra quella soglia i tassi tendono a salire."],
+    benzina: ["Il prezzo medio della benzina self service in Italia.", "Segue il petrolio con qualche settimana di ritardo. Confrontare i distributori vicini sull'Osservaprezzi del Mimit può far risparmiare diversi euro a pieno."],
+    gasolio: ["Il prezzo medio del gasolio self service in Italia.", "In Italia il gasolio è tassato quasi come la benzina: il suo prezzo segue quello del petrolio e del diesel all'ingrosso."],
+    oro_eur: ["Il prezzo di un grammo d'oro puro, convertito in euro al cambio del giorno.", "L'oro protegge nelle crisi e quando la fiducia nelle valute cala, ma non paga interessi né dividendi. A 18 carati vale il 75% di questo prezzo."],
+    argento: ["Il prezzo dell'argento in dollari per oncia.", "È metà metallo prezioso e metà metallo industriale, usato nei pannelli solari e nell'elettronica: per questo oscilla più dell'oro."],
+    platino: ["Il prezzo del platino in dollari per oncia.", "Usato nelle marmitte catalitiche e in gioielleria: dipende molto dall'industria dell'auto."],
+    rame: ["Il prezzo del rame in dollari per libbra.", "Serve per cavi, motori elettrici e costruzioni: quando l'economia mondiale accelera il rame sale, per questo è considerato un termometro della crescita."],
+    eurusd: ["Quanti dollari si comprano con un euro, al cambio ufficiale della BCE.", "Un euro forte rende più economici viaggi negli Stati Uniti e acquisti in dollari, ma riduce in euro il valore degli investimenti americani."],
+    eurgbp: ["Quante sterline si comprano con un euro, al cambio ufficiale della BCE.", "Utile per viaggi, studio e acquisti nel Regno Unito."],
+    eurchf: ["Quanti franchi svizzeri si comprano con un euro, al cambio ufficiale della BCE.", "Riguarda frontalieri e chi viaggia in Svizzera. Il franco è considerato una valuta rifugio: si rafforza nelle crisi."],
+    btc: ["La criptovaluta più diffusa, in dollari.", "Può guadagnare o perdere il 50% in pochi mesi e non ha garanzie né tutele. Se la usi, tienila a una quota piccola che puoi permetterti di perdere."],
+    fed: ["L'intervallo dei tassi guida fissato dalla Federal Reserve, la banca centrale degli Stati Uniti.", "Le decisioni della Fed muovono il dollaro, le borse e i tassi di tutto il mondo, Europa compresa."],
+    us10y: ["Il rendimento dei titoli di Stato americani a 10 anni.", "È il tasso di riferimento più importante del mondo: quando sale, tendono a scendere le borse e i titoli obbligazionari già emessi."],
+    brent: ["Il prezzo del petrolio del Mare del Nord, riferimento per l'Europa, in dollari al barile.", "Si trasmette a carburanti, trasporti e bollette. Un petrolio caro alimenta l'inflazione e pesa sulla crescita."]
+  };
+  var gruppoDi = function (id) { var g = ""; (D.mercati || []).forEach(function (x) { x.voci.forEach(function (v) { if (v.id === id) g = x.gruppo; }); }); return g; };
+  function bigChart(id, v) {
+    var pts = (D.serie && D.serie[id] || []).filter(function (x) { return typeof x === "number"; });
+    if (pts.length < 3) return '<p class="callout">Storico non ancora disponibile per questa voce.</p>';
+    var W = Math.max(300, Math.round(($("#sheetChart").clientWidth || 680))), H = W < 500 ? 200 : 240, L = 4, R = 58, T = 14, B = 26;
+    var mn = Math.min.apply(null, pts), mx = Math.max.apply(null, pts), pad = (mx - mn) * 0.08 || Math.abs(mx) * 0.01 || 1;
+    mn -= pad; mx += pad;
+    var x = function (i) { return L + i / (pts.length - 1) * (W - L - R); }, y = function (val) { return T + (1 - (val - mn) / (mx - mn)) * (H - T - B); };
+    var line = pts.map(function (val, i) { return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(val).toFixed(1); }).join(" ");
+    var area = line + " L" + x(pts.length - 1).toFixed(1) + " " + (H - B) + " L" + L + " " + (H - B) + " Z";
+    var su = pts[pts.length - 1] >= pts[0], col = (v.buono === "giu" ? !su : su) ? "var(--up)" : "var(--down)";
+    if (v.buono === "neutro") col = "var(--teal)";
+    var dec = typeof v.decimali === "number" ? v.decimali : 2;
+    var hi = Math.max.apply(null, pts), lo = Math.min.apply(null, pts);
+    var grid = [0.25, 0.5, 0.75].map(function (f) { var gy = T + f * (H - T - B); return '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + gy + '" y2="' + gy + '" stroke="var(--line)" stroke-dasharray="3 4"/>'; }).join("");
+    var lab = function (val, yy) { return '<text x="' + (W - R + 8) + '" y="' + (yy + 4) + '" font-size="12" fill="var(--muted)" font-family="IBM Plex Mono, monospace">' + nf(val, dec) + '</text>'; };
+    var monthly = /^\d{4}-\d{2}$/.test(String(v.data));
+    var startLbl = v.inizio ? fmtDate(v.inizio) : monthly ? (function () { var p = String(v.data).split("-"); var d = new Date(+p[0], +p[1] - 1 - (pts.length - 1), 1); return MESI[d.getMonth()] + " " + d.getFullYear(); })() : "";
+    var last = pts[pts.length - 1];
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' +
+      '<defs><linearGradient id="gArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + col + '" stop-opacity=".28"/><stop offset="1" stop-color="' + col + '" stop-opacity="0"/></linearGradient></defs>' + grid +
+      '<path d="' + area + '" fill="url(#gArea)"/><path d="' + line + '" fill="none" stroke="' + col + '" stroke-width="2.4" stroke-linejoin="round"/>' +
+      '<circle cx="' + x(pts.length - 1).toFixed(1) + '" cy="' + y(last).toFixed(1) + '" r="5" fill="' + col + '" stroke="var(--surface)" stroke-width="2"/>' +
+      lab(hi, y(hi)) + lab(lo, y(lo)) +
+      '<text x="' + L + '" y="' + (H - 6) + '" font-size="12" fill="var(--muted)" font-family="IBM Plex Mono, monospace">' + esc(startLbl) + '</text>' +
+      '<text x="' + (W - R) + '" y="' + (H - 6) + '" font-size="12" fill="var(--muted)" text-anchor="end" font-family="IBM Plex Mono, monospace">' + esc(fmtDate(v.data)) + '</text></svg>';
+  }
+  function openSheet(id) {
+    var v = findVoce(id); if (!v) return;
+    var dec = typeof v.decimali === "number" ? v.decimali : 2;
+    $("#sheetGroup").textContent = gruppoDi(id);
+    $("#sheetTitle").textContent = v.nome;
+    $("#sheetVal").innerHTML = (typeof v.valore === "number" ? nf(v.valore, dec) : esc(v.valore)) + '<small>' + esc(v.unita) + '</small>';
+    $("#sheetChg").innerHTML = chipFor(v) + (typeof v.var === "number" ? ' <span style="color:var(--muted);font-size:.85rem">nell\'ultima seduta</span>' : '');
+    $("#sheetChart").setAttribute("aria-label", "Andamento di " + v.nome);
+    var r = v.rend;
+    $("#sheetRend").innerHTML = r ? [["1 mese", r.m1], ["3 mesi", r.m3], ["Da inizio anno", r.ytd], ["1 anno", r.y1]].map(function (x) {
+      return '<div><small>' + x[0] + '</small><b class="' + (x[1] == null ? "" : x[1] >= 0 ? "pos" : "neg") + '">' + (x[1] == null ? "—" : (x[1] > 0 ? "+" : "") + pct(x[1], 1)) + '</b></div>';
+    }).join("") : "";
+    $("#sheetRend").hidden = !r;
+    var s = SPIEGA[id];
+    $("#sheetExplain").innerHTML = s ? '<div><h4>Cos\'è</h4><p>' + esc(s[0]) + '</p></div><div><h4>Perché ti riguarda</h4><p>' + esc(s[1]) + '</p></div>' : (v.nota ? '<p>' + esc(v.nota) + '</p>' : '');
+    $("#sheetSrc").innerHTML = 'Dato del ' + esc(fmtDate(v.data)) + ' · fonte <a href="' + esc(v.url) + '" target="_blank" rel="noopener">' + esc(v.fonte) + '</a>' + (v.nota && s ? ' · ' + esc(v.nota) : '');
+    var d = $("#sheet");
+    if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+    $("#sheetChart").innerHTML = bigChart(id, v); // disegnato dopo l'apertura, alla larghezza reale
+  }
+  $("#sheetClose").addEventListener("click", function () { $("#sheet").close(); });
+  $("#sheet").addEventListener("click", function (e) { if (e.target === e.currentTarget) e.currentTarget.close(); });
+  $("#markets").addEventListener("click", function (e) { var t = e.target.closest(".tile"); if (t && !e.target.closest("a")) openSheet(t.dataset.id); });
+  $("#markets").addEventListener("keydown", function (e) { var t = e.target.closest(".tile"); if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openSheet(t.dataset.id); } });
+
+  /* ---------- pillola e domanda del giorno ---------- */
+  (function () {
+    var P = window.ECO_PILLOLE || [], Q = window.ECO_QUIZ || [];
+    if (!P.length || !Q.length) { $("#pill").closest("section").hidden = true; return; }
+    var oggi = new Date(), chiave = oggi.getFullYear() + "-" + (oggi.getMonth() + 1) + "-" + oggi.getDate();
+    var nGiorno = Math.floor(Date.UTC(oggi.getFullYear(), oggi.getMonth(), oggi.getDate()) / 864e5);
+    var p = P[nGiorno % P.length], q = Q[(nGiorno * 7 + 3) % Q.length];
+    $("#pill").innerHTML = '<div class="eyebrow">La pillola di oggi</div><h3>' + esc(p[0]) + '</h3><p>' + esc(p[1]) + '</p>';
+    var st = store.get("quizStato", { serie: 0, ultimo: null, giuste: 0, totali: 0, oggi: null });
+    var ieri = new Date(oggi); ieri.setDate(ieri.getDate() - 1);
+    var chiaveIeri = ieri.getFullYear() + "-" + (ieri.getMonth() + 1) + "-" + ieri.getDate();
+    if (st.ultimo && st.ultimo !== chiave && st.ultimo !== chiaveIeri) st.serie = 0; // serie interrotta
+    function render(scelta) {
+      var risposto = st.oggi && st.oggi.giorno === chiave;
+      var sc = risposto ? st.oggi.scelta : scelta;
+      $("#dquiz").innerHTML = '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><span class="eyebrow">La domanda di oggi</span>' +
+        (st.serie > 0 ? '<span class="streak" title="Giorni consecutivi">● ' + st.serie + (st.serie === 1 ? ' giorno' : ' giorni') + ' di fila</span>' : '') + '</div>' +
+        '<div class="q">' + esc(q[0]) + '</div><div class="quiz-opts">' + q[1].map(function (o, i) {
+          var cls = risposto ? (i === q[2] ? "giusta" : i === sc ? "sbagliata" : "") : "";
+          return '<button type="button" data-o="' + i + '" class="' + cls + '"' + (risposto ? " disabled" : "") + '>' + esc(o) + '</button>';
+        }).join("") + '</div>' +
+        (risposto ? '<p style="font-size:.92rem"><b>' + (sc === q[2] ? "Esatto." : "Non proprio.") + '</b> ' + esc(q[3]) + '</p><p style="font-size:.8rem;color:var(--muted)">Risposte giuste finora: ' + st.giuste + ' su ' + st.totali + '. Domani una nuova domanda.</p>' : '');
+      if (!risposto) document.querySelectorAll("#dquiz [data-o]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var i = +b.dataset.o;
+          st.oggi = { giorno: chiave, scelta: i };
+          st.totali += 1; if (i === q[2]) st.giuste += 1;
+          st.serie = st.ultimo === chiaveIeri ? st.serie + 1 : 1;
+          st.ultimo = chiave;
+          store.set("quizStato", st); render();
+        });
+      });
+    }
+    render();
+  })();
+
   /* ---------- app installabile ---------- */
   var standalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
@@ -1452,10 +1813,15 @@ select { appearance: auto; }
     VIEWS.forEach(function (v) { var el = document.getElementById("view-" + v); if (el) el.hidden = v !== h; });
     document.querySelectorAll(".tabs a").forEach(function (a) { if (a.dataset.view === h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
     $("#hero").hidden = h !== "oggi";
+    // i grafici delle sezioni nascoste vanno ridisegnati alla larghezza reale quando diventano visibili
+    if (h === "strumenti") renderPac();
+    if (h === "piano") chartPatrimonio();
     if (anchor) anchor.scrollIntoView({ block: "start" });
     else window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
+  var tRes = null;
+  window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); }, 200); });
   route();
 })();
 </script>

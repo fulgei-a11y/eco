@@ -192,7 +192,8 @@ async function yahoo(sym, range) {
   };
   return {
     valore: last, var: var1, data: lastDay, mese: rend.m1, rend,
-    serie: closes.slice(-60).map((v) => round(v, 4)),
+    inizio: dayRome(new Date(pts[Math.max(0, pts.length - 130)][0] * 1000)),
+    serie: closes.slice(-130).map((v) => round(v, 4)),
   };
 }
 
@@ -692,6 +693,7 @@ async function main() {
     if (!y) { esito.ko.push(nome); continue; }
     V[id] = { nome, unita, decimali: dec, buono, valore: round(y.valore, dec), var: round(y.var, 2), data: y.data, mese: y.mese, fonte: "Yahoo Finance", url: `https://finance.yahoo.com/quote/${encodeURIComponent(sym)}` };
     rendimenti[id] = y.rend;
+    V[id].rend = y.rend; V[id].inizio = y.inizio;
     serie[id] = y.serie;
     esito.ok.push(nome);
   }
@@ -796,6 +798,7 @@ async function main() {
     if (rendimenti.oro && rendimenti[fxOro]) {
       const r = {}; for (const k of ["m1", "m3", "ytd", "y1"]) { const a = rendimenti.oro[k], b = rendimenti[fxOro][k]; r[k] = a != null && b != null ? round(((1 + a / 100) / (1 + b / 100) - 1) * 100, 2) : null; }
       rendimenti.oro_eur = r;
+      V.oro_eur.rend = r; V.oro_eur.inizio = V.oro?.inizio;
     }
   }
 
