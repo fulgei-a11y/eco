@@ -581,6 +581,9 @@ async function bitcoin() {
   }
   const gl = await safe("Dominanza CoinGecko", () => get("https://api.coingecko.com/api/v3/global", { json: true, timeout: 40000 }));
   if (num(gl?.data?.market_cap_percentage?.btc) != null) B.dominanza = round(gl.data.market_cap_percentage.btc, 1);
+  if (num(gl?.data?.market_cap_percentage?.eth) != null) B.dominanzaEth = round(gl.data.market_cap_percentage.eth, 1);
+  if (num(gl?.data?.total_market_cap?.eur) != null) B.totaleEur = Math.round(gl.data.total_market_cap.eur);
+  if (num(gl?.data?.market_cap_change_percentage_24h_usd) != null) B.totaleVar24h = round(gl.data.market_cap_change_percentage_24h_usd, 2);
   // Indice di paura e avidità del mercato cripto
   const fg = await safe("Fear & Greed", () => get("https://api.alternative.me/fng/?limit=31", { json: true }));
   if (Array.isArray(fg?.data) && fg.data.length) {
@@ -631,6 +634,27 @@ async function bitcoin() {
 }
 
 // ================================================================ testi calcolati dai dati (nessuna IA)
+
+// Le principali cripto-attività per capitalizzazione (CoinGecko). Esclusi i token "avvolti" o in staking,
+// che sono copie di altre monete e duplicherebbero la classifica.
+async function criptoMercato() {
+  const url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y";
+  const j = await get(url, { json: true, timeout: 40000 });
+  if (!Array.isArray(j) || j.length < 10) throw new Error("elenco vuoto");
+  const copia = /wrapped|staked|bridged|liquid staking|restaked|^weth$|binance-peg|coinbase-wrapped/i;
+  const p = (x) => (num(x) != null ? round(x, 2) : null);
+  const monete = j.filter((c) => c && num(c.market_cap) > 0 && num(c.current_price) > 0 && !copia.test(c.id) && !copia.test(c.name)).slice(0, 20).map((c) => ({
+    id: c.id, simbolo: String(c.symbol || "").toUpperCase(), nome: c.name, rank: c.market_cap_rank, prezzo: c.current_price, cap: Math.round(c.market_cap),
+    volume: num(c.total_volume) != null ? Math.round(c.total_volume) : null,
+    v24h: p(c.price_change_percentage_24h_in_currency), v7g: p(c.price_change_percentage_7d_in_currency), v30g: p(c.price_change_percentage_30d_in_currency), v1a: p(c.price_change_percentage_1y_in_currency),
+    daAth: p(c.ath_change_percentage), ath: c.ath, athData: c.ath_date ? String(c.ath_date).slice(0, 10) : null,
+    offerta: num(c.circulating_supply) != null ? Math.round(c.circulating_supply) : null, offertaMax: num(c.max_supply) != null ? Math.round(c.max_supply) : null,
+  }));
+  if (monete.length < 10) throw new Error("troppe poche monete valide");
+  const btc = monete.find((m) => m.id === "bitcoin");
+  if (!btc || btc.rank !== 1) throw new Error("ordine inatteso");
+  return { data: isoRome(), fonte: "CoinGecko", monete };
+}
 
 function testiCalcolati(ctx, V) {
   const f = V.ftsemib, sp = V.sp500, inf = V.infl_it, bce = V.bce, vix = num(V.vix?.valore);
@@ -1057,6 +1081,10 @@ async function main() {
   else esito.ko.push("Inflazione per categoria");
 
   const btc = await safe("Sezione Bitcoin", bitcoin);
+  await sleep(2500);
+  const cripto = await safe("Mercato cripto", criptoMercato);
+  if (cripto) { log("cripto:", cripto.monete.map((m) => `${m.simbolo} ${m.v1a ?? "—"}%`).join(", ")); esito.ok.push("Mercato cripto"); }
+  else esito.ko.push("Mercato cripto");
   if (btc) { log("bitcoin:", Object.keys(btc).join(", ")); esito.ok.push("Bitcoin (rete e mercato)"); }
   else esito.ko.push("Bitcoin (rete e mercato)");
 
@@ -1107,6 +1135,7 @@ async function main() {
     rendimenti: VV.dep_vincolati ? { mediaVincolati: VV.dep_vincolati.valore, mediaConto: VV.dep_conto?.valore ?? null, mutuoMedio: VV.mutuo_medio?.valore ?? null, data: VV.dep_vincolati.data, fonte: "Banca d'Italia / BCE" } : prev.rendimenti || null,
     inflazioneCategorie: inflCat || prev.inflazioneCategorie || null,
     bitcoin: btc ? { ...(prev.bitcoin || {}), ...btc } : prev.bitcoin || null,
+    cripto: cripto || prev.cripto || null,
     classifica: (() => {
       const LISTA = [
         ["mondo", "Azionario mondiale", "€"], ["emergenti", "Mercati emergenti", "€"], ["stoxx50", "Europa (Euro Stoxx 50)", "€"],

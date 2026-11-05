@@ -557,6 +557,62 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   .d-sint { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); }
   .hold-row { grid-template-columns: 4rem minmax(0, 1fr) 3rem; }
 }
+/* Cripto in generale */
+.cr-hero { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px 28px; background: linear-gradient(135deg, #0F1A2E 0%, #1B1636 60%, #2A1A3A 100%); color: #EEF1F7; border-radius: 20px; padding: 26px; }
+.cr-hero::after { content: ""; position: absolute; right: -80px; top: -80px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(98,126,234,.35), transparent 70%); pointer-events: none; }
+.cr-hero > * { position: relative; z-index: 1; }
+.cr-hero h2 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.5rem); }
+.cr-hero .eyebrow { color: #B6BDD8; margin-bottom: 8px; }
+.cr-hero .lede { color: #B6BDD8; margin-top: 10px; max-width: 58ch; }
+.cr-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-content: center; }
+.cr-kpi { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.cr-kpi small { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: #B6BDD8; }
+.cr-kpi b { font-family: var(--f-mono); font-size: 1.25rem; font-weight: 600; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.cr-kpi span { font-size: .78rem; color: #B6BDD8; line-height: 1.35; }
+.cr-map-wrap { grid-column: 1 / -1; display: grid; gap: 8px; }
+.cr-map { display: flex; height: 30px; border-radius: 9px; overflow: hidden; gap: 2px; }
+.cr-map i { display: block; height: 100%; min-width: 3px; }
+.cr-map-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .8rem; color: #D5DAEA; }
+.cr-map-leg span { display: inline-flex; align-items: center; gap: 6px; }
+.cr-map-leg i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.cr-row { display: grid; grid-template-columns: 2rem minmax(0, 1.3fr) 9.5rem minmax(0, .9fr) minmax(0, .8fr) minmax(0, .9fr); gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+.cr-row:last-child { border-bottom: 0; }
+.cr-row.head { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); }
+.cr-row.head span:nth-child(n+4) { text-align: right; }
+.cr-rank { font-family: var(--f-mono); color: var(--muted); font-size: .82rem; }
+.cr-name b { font-size: .95rem; }
+.cr-name small { font-family: var(--f-mono); color: var(--muted); font-size: .74rem; margin-left: 6px; }
+.cr-fam { display: inline-flex; align-items: center; gap: 6px; font-size: .76rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; background: var(--surface-2); white-space: nowrap; justify-self: start; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.cr-fam i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.cr-row .rad-m small { display: none; }
+@media (max-width: 720px) {
+  .cr-hero { grid-template-columns: minmax(0, 1fr); padding: 20px 16px; border-radius: 16px; }
+  .cr-row { grid-template-columns: 1.6rem minmax(0, 1fr) auto; row-gap: 6px; }
+  .cr-row.head { display: none; }
+  .cr-row .cr-ms { grid-column: 2 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .cr-row .rad-m { text-align: left; background: var(--bg); border-radius: 8px; padding: 5px 8px; }
+  .cr-row .rad-m small { display: block; font-size: .6rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .cr-row .cr-fam { grid-column: 2 / -1; }
+}
+@media (min-width: 721px) { .cr-ms { display: contents; } }
+.fam-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 8px; border-top: 4px solid var(--c); align-content: start; }
+.fam-card h3 { font-size: 1.05rem; }
+.fam-card p { color: var(--muted); font-size: .9rem; }
+.fam-card .lbl { font-weight: 700; color: var(--ink); }
+.fam-card .ex { font-family: var(--f-mono); font-size: .74rem; color: var(--muted); }
+.fam-card .ask { background: var(--surface-2); border-radius: 10px; padding: 8px 10px; color: var(--ink); font-size: .88rem; }
+.cr-modi { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 12px; }
+.modo { background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); padding: 16px; display: grid; gap: 8px; align-content: start; border-top: 4px solid var(--teal); }
+.modo.male { border-top-color: var(--down); }
+.modo .k { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+.modo.male .k { color: var(--down); }
+.modo h3 { font-size: 1.05rem; }
+.modo h4 { margin: 4px 0 0; font-family: var(--f-display); font-size: .86rem; }
+.modo p { color: var(--muted); font-size: .88rem; }
+.modo .ver { background: var(--teal-soft); color: var(--ink); border-radius: 10px; padding: 8px 10px; font-size: .86rem; }
+.modo.male .ver { background: color-mix(in srgb, var(--down) 12%, transparent); }
+.opt.rosso:has(input:checked) { border-color: var(--down); background: color-mix(in srgb, var(--down) 10%, transparent); }
+.pag-sep { font-weight: 700; font-size: .9rem; margin-top: 6px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -595,7 +651,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
       <a href="#piano" data-view="piano">Il mio piano</a>
       <a href="#investire" data-view="investire">Investire</a>
       <a href="#strumenti" data-view="strumenti">Strumenti</a>
-      <a href="#bitcoin" data-view="bitcoin">Bitcoin</a>
+      <a href="#cripto" data-view="cripto">Cripto</a>
       <a href="#tutela" data-view="tutela">Tutelarsi</a>
       <a href="#fonti" data-view="fonti">Fonti</a>
     </nav>
@@ -1028,7 +1084,45 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   </div>
 
   <!-- ===================== BITCOIN ===================== -->
-  <div class="view" id="view-bitcoin" hidden>
+  <div class="view" id="view-cripto" hidden>
+    <section class="cr-hero" aria-labelledby="h-cr">
+      <div class="cr-hero-txt">
+        <p class="eyebrow">Cripto · capire prima di comprare</p>
+        <h2 id="h-cr">Il mercato delle cripto</h2>
+        <p class="lede">Come funzionano, in quali famiglie si dividono, quali rischi ha ognuna e quali modi ci sono per investire con le regole italiane ed europee. Prima la comprensione, poi eventualmente la cifra.</p>
+      </div>
+      <div class="cr-kpis" id="crKpi"></div>
+      <div class="cr-map-wrap">
+        <p class="eyebrow">Come è diviso il valore del mercato</p>
+        <div class="cr-map" id="crMap" role="img"></div>
+        <div class="cr-map-leg" id="crMapLeg"></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-crtab">
+      <div class="section-head">
+        <h2 id="h-crtab">Le principali cripto oggi</h2>
+        <div class="seg" id="crSeg" role="group" aria-label="Periodo">
+          <button type="button" data-p="v7g">7 giorni</button>
+          <button type="button" data-p="v30g">30 giorni</button>
+          <button type="button" data-p="v1a">1 anno</button>
+          <button type="button" data-p="daAth">Dal massimo</button>
+        </div>
+      </div>
+      <p class="sub-lede">Le 20 più grandi per valore complessivo, prezzi in euro. Essere in classifica non è una garanzia: buona parte delle prime 20 di dieci anni fa oggi non c'è più.</p>
+      <div class="radar cr-tab" id="crTab"></div>
+      <p class="t-note" id="crTabNote" style="margin-top:8px"></p>
+    </section>
+
+    <section aria-labelledby="h-crfam">
+      <div class="section-head">
+        <h2 id="h-crfam">Le famiglie delle cripto</h2>
+        <p>«Cripto» non è un unico investimento. Ogni famiglia ha un modo diverso di avere valore e rischi diversi.</p>
+      </div>
+      <div class="strum-grid" id="crFam"></div>
+    </section>
+
+    <div class="section-head" style="margin-bottom:-18px"><h2>Bitcoin nel dettaglio</h2><p>La prima e la più grande: prezzo, rete, simulazioni e corso dedicato.</p></div>
     <section class="btc-hero" aria-labelledby="h-btc">
       <div style="display:grid;gap:8px;align-content:start;position:relative;z-index:1">
         <div class="eyebrow" id="btcAgg">Bitcoin oggi</div>
@@ -1067,7 +1161,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
         <div class="result" id="brResult"></div>
       </section>
       <section class="panel" aria-labelledby="h-btctax">
-        <header><h3 id="h-btctax">Tasse su una vendita</h3><p>Plusvalenze sulle cripto in Italia dal 2026: 33%, senza franchigia.</p></header>
+        <header><h3 id="h-btctax">Tasse su una vendita</h3><p>Plusvalenze sulle cripto possedute direttamente in Italia dal 2026: 33%, senza franchigia. Gli ETP cripto quotati in Borsa sono tassati al 26%.</p></header>
         <div class="fields">
           <div class="field"><label for="bt-acq">Speso per comprarli</label><div class="input-wrap"><input id="bt-acq" type="number" min="0" step="any" value="1000"><span class="unit">€</span></div></div>
           <div class="field"><label for="bt-ven">Incasso dalla vendita</label><div class="input-wrap"><input id="bt-ven" type="number" min="0" step="any" value="1600"><span class="unit">€</span></div></div>
@@ -1087,13 +1181,38 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
       </div>
     </section>
 
+    <section aria-labelledby="h-crmodi">
+      <div class="section-head">
+        <h2 id="h-crmodi">Come si investe in cripto, con le regole italiane</h2>
+        <p>Tre strade legali con tutele, tasse e costi diversi, più quella da evitare.</p>
+      </div>
+      <div class="cr-modi" id="crModi"></div>
+    </section>
+
+    <section class="grid-2" aria-labelledby="h-pag">
+      <div class="panel">
+        <header><h3 id="h-pag">La pagella di un progetto</h3><p>Ti propongono una cripto che non conosci? Rispondi con onestà: spunta solo ciò che è vero e che hai verificato.</p></header>
+        <form id="crPag" class="idea-opts"></form>
+      </div>
+      <div class="panel" id="crPagRis" aria-live="polite"></div>
+    </section>
+
+    <section aria-labelledby="h-corso2">
+      <div class="section-head">
+        <h2 id="h-corso2">Oltre Bitcoin in 8 lezioni</h2>
+        <div class="course-bar" style="min-width:min(100%,280px)"><span class="bar"><i id="crCourseFill" style="width:0"></i></span><span class="num" id="crCourseTxt">0/8</span></div>
+      </div>
+      <p class="sub-lede">Ethereum, stablecoin, DeFi, altcoin, custodia, MiCAR e tasse, truffe. Ogni lezione si completa rispondendo alla domanda finale.</p>
+      <div class="lessons" id="crLessons"></div>
+    </section>
+
     <section aria-labelledby="h-corso">
       <div class="section-head">
         <h2 id="h-corso">Capire Bitcoin in 8 lezioni</h2>
         <div class="course-bar" style="min-width:min(100%,280px)"><span class="bar"><i id="courseFill" style="width:0"></i></span><span class="num" id="courseTxt">0/8</span></div>
       </div>
       <div class="lessons" id="lessons"></div>
-      <p class="callout" style="margin-top:14px">Contenuti educativi, non consigli di investimento. Bitcoin è un investimento ad alto rischio: puoi perdere gran parte del capitale.</p>
+      <p class="callout" style="margin-top:14px">Contenuti educativi, non consigli di investimento né inviti a comprare cripto specifiche. Le cripto sono investimenti ad alto rischio: puoi perdere gran parte o tutto il capitale, e non esiste un fondo di garanzia.</p>
     </section>
   </div>
 
@@ -2303,7 +2422,8 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
       $("#btResult").innerHTML = '<div class="eyebrow">' + (g > 0 ? "Imposta da pagare" : "Nessuna imposta") + '</div><div class="big">' + eur(t, 2) + '</div>' +
         '<div class="row"><span>Plusvalenza</span><span>' + segnoEur(g) + '</span></div>' +
         '<div class="row"><b>Ti resta in tasca</b><b>' + eur(v - t, 2) + '</b></div>' +
-        '<p style="font-size:.86rem">' + (g < 0 ? "Le minusvalenze si possono compensare con plusvalenze future della stessa categoria nei quattro anni successivi. " : "") + 'In più è dovuta ogni anno un\'imposta dello 0,2% sul valore delle cripto possedute. Per casi concreti affidati a un commercialista.</p>';
+        (g > 0 ? '<div class="row"><span>Con un ETP cripto quotato (26%)</span><span>' + eur(g * 0.26, 2) + ' di imposta</span></div>' : '') +
+        '<p style="font-size:.86rem">' + (g < 0 ? "Le minusvalenze sulle cripto si compensano solo con plusvalenze da cripto nei quattro anni successivi. " : "") + 'In più è dovuta ogni anno un\'imposta dello 0,2% sul valore delle cripto possedute. Per casi concreti affidati a un commercialista.</p>';
     }
     function sats(da) {
       var p = BT.prezzoEur; if (!p) { $("#satResult").innerHTML = "<p>Prezzo non disponibile.</p>"; return; }
@@ -2347,6 +2467,34 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     }
     render();
   })();
+
+  /* ---------- corso con domanda di verifica (Investire e Cripto) ---------- */
+  function corsoQuiz(L, cont, fill, txt, chiave, dopo) {
+    var fatte = store.get(chiave, []), box = document.getElementById(cont);
+    box.innerHTML = L.map(function (l, i) {
+      var ok = fatte.indexOf(i) >= 0, q = l.domanda;
+      return '<details class="lesson' + (ok ? " fatta" : "") + '" data-l="' + i + '"><summary><span class="n">' + (ok ? "✓" : i + 1) + '</span><b>' + esc(l.titolo) + '</b><span class="arrow" aria-hidden="true">›</span></summary>' +
+        '<div class="body">' + l.testo.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join("") + '<p class="key">' + esc(l.punto) + '</p>' +
+        '<div class="l-quiz"><p class="q">' + esc(q.q) + '</p><div class="quiz-opts">' + q.opts.map(function (o, j) { return '<button type="button" data-q="' + i + '" data-o="' + j + '"' + (ok ? " disabled" : "") + ' class="' + (ok && j === q.ok ? "giusta" : "") + '">' + esc(o) + '</button>'; }).join("") + '</div>' +
+        '<p class="esito">' + (ok ? esc(q.spiega) : "") + '</p>' + (ok ? '<div><button type="button" class="mini-btn" data-rif="' + i + '">Ripeti la lezione</button></div>' : '') + '</div></div></details>';
+    }).join("");
+    document.getElementById(fill).style.width = (fatte.length / (L.length || 1) * 100) + "%";
+    document.getElementById(txt).textContent = fatte.length + "/" + L.length;
+    var rifai = function () { corsoQuiz(L, cont, fill, txt, chiave, dopo); if (dopo) dopo(); };
+    box.querySelectorAll("[data-q]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var i = +b.dataset.q, j = +b.dataset.o, q = L[i].domanda, es = b.closest(".l-quiz").querySelector(".esito");
+        if (j === q.ok) {
+          b.classList.add("giusta");
+          b.parentNode.querySelectorAll("button").forEach(function (x) { x.disabled = true; });
+          es.innerHTML = '<b class="pos">Giusto.</b> ' + esc(q.spiega);
+          if (fatte.indexOf(i) < 0) { fatte.push(i); store.set(chiave, fatte); }
+          setTimeout(function () { rifai(); var next = box.querySelector('.lesson[data-l="' + (i + 1) + '"]'); if (next) { next.open = true; next.scrollIntoView({ block: "nearest", behavior: "smooth" }); } }, 1400);
+        } else { b.classList.add("sbagliata"); b.disabled = true; es.innerHTML = '<b class="neg">Non proprio.</b> Rileggi il testo e riprova.'; }
+      });
+    });
+    box.querySelectorAll("[data-rif]").forEach(function (b) { b.addEventListener("click", function () { var i = +b.dataset.rif; fatte = fatte.filter(function (x) { return x !== i; }); store.set(chiave, fatte); rifai(); var l = box.querySelector('.lesson[data-l="' + i + '"]'); if (l) l.open = true; }); });
+  }
 
   /* ---------- INVESTIRE: la bussola dell'investitore ---------- */
   var INV = window.ECO_INV || { strumenti: [], lezioni: [], motivi: [], domande: [] };
@@ -2743,34 +2891,103 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     }
 
     /* ---- percorso ---- */
-    function renderLezioni() {
-      var L = INV.lezioni, fatte = store.get("corsoInv", []);
-      $("#invLessons").innerHTML = L.map(function (l, i) {
-        var ok = fatte.indexOf(i) >= 0, q = l.domanda;
-        return '<details class="lesson' + (ok ? " fatta" : "") + '" data-l="' + i + '"><summary><span class="n">' + (ok ? "✓" : i + 1) + '</span><b>' + esc(l.titolo) + '</b><span class="arrow" aria-hidden="true">›</span></summary>' +
-          '<div class="body">' + l.testo.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join("") + '<p class="key">' + esc(l.punto) + '</p>' +
-          '<div class="l-quiz"><p class="q">' + esc(q.q) + '</p><div class="quiz-opts">' + q.opts.map(function (o, j) { return '<button type="button" data-q="' + i + '" data-o="' + j + '"' + (ok ? " disabled" : "") + ' class="' + (ok && j === q.ok ? "giusta" : "") + '">' + esc(o) + '</button>'; }).join("") + '</div>' +
-          '<p class="esito" id="esito' + i + '">' + (ok ? esc(q.spiega) : "") + '</p>' + (ok ? '<div><button type="button" class="mini-btn" data-rif="' + i + '">Ripeti la lezione</button></div>' : '') + '</div></div></details>';
-      }).join("");
-      $("#invCourseFill").style.width = (fatte.length / (L.length || 1) * 100) + "%";
-      $("#invCourseTxt").textContent = fatte.length + "/" + L.length;
-      document.querySelectorAll("#invLessons [data-q]").forEach(function (b) {
-        b.addEventListener("click", function () {
-          var i = +b.dataset.q, j = +b.dataset.o, q = L[i].domanda, es = $("#esito" + i);
-          if (j === q.ok) {
-            b.classList.add("giusta");
-            b.parentNode.querySelectorAll("button").forEach(function (x) { x.disabled = true; });
-            es.innerHTML = '<b class="pos">Giusto.</b> ' + esc(q.spiega);
-            if (fatte.indexOf(i) < 0) { fatte.push(i); store.set("corsoInv", fatte); }
-            setTimeout(function () { renderLezioni(); livello(); var next = document.querySelector('#invLessons .lesson[data-l="' + (i + 1) + '"]'); if (next) { next.open = true; next.scrollIntoView({ block: "nearest", behavior: "smooth" }); } }, 1400);
-          } else { b.classList.add("sbagliata"); b.disabled = true; es.innerHTML = '<b class="neg">Non proprio.</b> Rileggi il testo e riprova.'; }
-        });
-      });
-      document.querySelectorAll("#invLessons [data-rif]").forEach(function (b) { b.addEventListener("click", function () { var i = +b.dataset.rif; fatte = fatte.filter(function (x) { return x !== i; }); store.set("corsoInv", fatte); renderLezioni(); livello(); var l = document.querySelector('#invLessons .lesson[data-l="' + i + '"]'); if (l) l.open = true; }); });
-    }
+    function renderLezioni() { corsoQuiz(INV.lezioni, "invLessons", "invCourseFill", "invCourseTxt", "corsoInv", livello); }
 
     livello(); renderLetture(); renderRadar(); renderReale(); renderPremi(); renderStrumenti(); renderCmp(); renderDiario(); renderLezioni();
     invDisegna = function () { renderScatter(); renderStoria(); };
+  })();
+
+  /* ---------- CRIPTO in generale ---------- */
+  var crDisegna = function () {};
+  (function () {
+    var K = window.ECO_CRIPTO || { famiglie: [], modi: [], pagella: [], lezioni: [], categoria: {} };
+    var CR = D.cripto, B = D.bitcoin || {};
+    var FAM = {}; K.famiglie.forEach(function (f) { FAM[f.id] = f; });
+    var famDi = function (m) { return FAM[K.categoria[m.id]] || FAM.infrastruttura || { id: "altro", nome: "Altro", colore: "#888" }; };
+    var segnoP = function (v, d) { return typeof v === "number" ? (v > 0 ? "+" : "") + pct(v, d == null ? 1 : d) : "—"; };
+    var mld = function (v) { return v >= 1e12 ? nf(v / 1e12, 2) + " mila mld €" : nf(v / 1e9, 0) + " mld €"; };
+    var M = CR && CR.monete || [];
+
+    // indicatori
+    var tot = B.totaleEur || null;
+    var stable = M.filter(function (m) { return K.categoria[m.id] === "stablecoin"; }).reduce(function (a, m) { return a + m.cap; }, 0);
+    var k = [];
+    if (tot) k.push(['Valore totale', mld(tot), typeof B.totaleVar24h === "number" ? segnoP(B.totaleVar24h) + " in 24 ore" : "tutte le cripto insieme"]);
+    if (typeof B.dominanza === "number") k.push(['Peso di Bitcoin', pct(B.dominanza, 1), "quota del valore totale"]);
+    if (tot && stable) k.push(['Peso stablecoin', pct(stable / tot * 100, 1), "denaro «parcheggiato» in attesa"]);
+    if (B.paura) k.push(['Umore del mercato', B.paura.valore + "/100", ({ "Extreme Fear": "paura estrema", "Fear": "paura", "Neutral": "neutrale", "Greed": "avidità", "Extreme Greed": "avidità estrema" })[B.paura.etichetta] || B.paura.etichetta]);
+    $("#crKpi").innerHTML = k.map(function (x) { return '<div class="cr-kpi"><small>' + esc(x[0]) + '</small><b>' + esc(x[1]) + '</b><span>' + esc(x[2]) + '</span></div>'; }).join("");
+
+    // mappa per famiglia
+    if (tot && M.length) {
+      var perFam = {}, somma = 0;
+      M.forEach(function (m) { var f = famDi(m); perFam[f.id] = (perFam[f.id] || 0) + m.cap; somma += m.cap; });
+      var parti = Object.keys(perFam).map(function (id) { return { f: FAM[id] || { nome: "Altro", colore: "#888" }, v: perFam[id] }; }).sort(function (a, b) { return b.v - a.v; });
+      if (tot > somma) parti.push({ f: { nome: "Tutte le altre", colore: "#5B6478" }, v: tot - somma });
+      $("#crMap").innerHTML = parti.map(function (p) { return '<i style="flex:' + (p.v / tot * 1000).toFixed(0) + ';background:' + p.f.colore + '" title="' + esc(p.f.nome) + ' ' + pct(p.v / tot * 100, 1) + '"></i>'; }).join("");
+      $("#crMap").setAttribute("aria-label", parti.map(function (p) { return p.f.nome + " " + pct(p.v / tot * 100, 0); }).join(", "));
+      $("#crMapLeg").innerHTML = parti.filter(function (p) { return p.v / tot >= 0.005; }).map(function (p) { return '<span><i style="background:' + p.f.colore + '"></i>' + esc(p.f.nome) + ' ' + pct(p.v / tot * 100, p.v / tot < 0.1 ? 1 : 0) + '</span>'; }).join("");
+    } else document.querySelector(".cr-map-wrap").hidden = true;
+
+    // tabella
+    var per = store.get("crPer", "v1a");
+    function tabella() {
+      document.querySelectorAll("#crSeg button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.p === per)); });
+      if (!M.length) { $("#crTab").innerHTML = '<p class="callout" style="margin:12px 0">I dati delle principali cripto arriveranno con il prossimo aggiornamento automatico.</p>'; return; }
+      var cell = function (v, l) { return '<span class="rad-m ' + (typeof v === "number" ? (v >= 0 ? "pos" : "neg") : "") + '"><small>' + l + '</small>' + segnoP(v) + '</span>'; };
+      var lab = { v7g: "7 giorni", v30g: "30 giorni", v1a: "1 anno", daAth: "Dal massimo" }[per];
+      $("#crTab").innerHTML = '<div class="cr-row head"><span>#</span><span>Nome</span><span>Famiglia</span><span>Prezzo</span><span>' + lab + '</span><span>Dal massimo</span></div>' +
+        M.map(function (m) {
+          var f = famDi(m), d = m.prezzo >= 100 ? 0 : m.prezzo >= 1 ? 2 : m.prezzo >= 0.01 ? 4 : 8;
+          return '<div class="cr-row"><span class="cr-rank">' + m.rank + '</span><span class="cr-name"><b>' + esc(m.nome) + '</b><small>' + esc(m.simbolo) + '</small></span>' +
+            '<span class="cr-fam" title="' + esc(f.nome) + '"><i style="background:' + f.colore + '"></i>' + esc(f.breve || f.nome) + (m.id === "tether" ? " · non MiCAR" : "") + '</span>' +
+            '<span class="cr-ms"><span class="rad-m"><small>Prezzo</small>' + nf(m.prezzo, d) + ' €</span>' + cell(per === "daAth" ? m.v1a : m[per], per === "daAth" ? "1 anno" : lab) + cell(m.daAth, "Dal max") + '</span></div>';
+        }).join("");
+      var sotto = M.filter(function (m) { return K.categoria[m.id] !== "stablecoin" && typeof m.daAth === "number" && m.daAth <= -50; }).length;
+      var nonStable = M.filter(function (m) { return K.categoria[m.id] !== "stablecoin"; }).length;
+      $("#crTabNote").textContent = sotto + " delle " + nonStable + " cripto non stabili in elenco valgono meno della metà del loro massimo storico. Fonte: CoinGecko, " + (CR.data ? fmtDate(CR.data) : "") + ".";
+    }
+    document.querySelectorAll("#crSeg button").forEach(function (b) { b.addEventListener("click", function () { per = b.dataset.p; store.set("crPer", per); tabella(); }); });
+    tabella();
+
+    // famiglie
+    $("#crFam").innerHTML = K.famiglie.map(function (f) {
+      var es = M.filter(function (m) { return K.categoria[m.id] === f.id; }).slice(0, 4).map(function (m) { return m.simbolo; });
+      var dots = ""; for (var i = 1; i <= 5; i++) dots += '<i class="' + (i <= f.rischio ? "on" : "") + '"></i>';
+      return '<article class="fam-card" style="--c:' + f.colore + '"><h3>' + esc(f.nome) + '</h3>' +
+        '<span class="vote"><span>Rischio</span><span class="dots" style="--c:var(--down)">' + dots + '</span></span>' +
+        '<p>' + esc(f.cosa) + '</p><p><span class="lbl">Da dove viene il valore. </span>' + esc(f.valore) + '</p><p><span class="lbl">Attenzione. </span>' + esc(f.attenzione) + '</p>' +
+        (es.length ? '<p class="ex">Tra le prime 20: ' + esc(es.join(", ")) + '</p>' : '') +
+        '<p class="ask"><b>Chiediti:</b> ' + esc(f.domanda) + '</p></article>';
+    }).join("");
+
+    // modi
+    $("#crModi").innerHTML = K.modi.map(function (m) {
+      return '<article class="modo' + (m.male ? " male" : "") + '"><span class="k">' + esc(m.sigla) + '</span><h3>' + esc(m.nome) + '</h3><p>' + esc(m.come) + '</p>' +
+        '<h4>Tutele</h4><p>' + esc(m.tutele) + '</p><h4>Tasse</h4><p>' + esc(m.tasse) + '</p><h4>Costi</h4><p>' + esc(m.costi) + '</p><p class="ver">' + esc(m.verifica) + '</p></article>';
+    }).join("");
+
+    // pagella
+    var buoni = K.pagella.filter(function (x) { return !x.rosso; }), rossi = K.pagella.filter(function (x) { return x.rosso; });
+    var opt = function (x) { return '<label class="opt' + (x.rosso ? " rosso" : "") + '"><input type="checkbox" value="' + esc(x.id) + '"><span>' + esc(x.t) + '</span></label>'; };
+    $("#crPag").innerHTML = '<p class="pag-sep">Il progetto</p>' + buoni.map(opt).join("") + '<p class="pag-sep">Come te l\'hanno proposto</p>' + rossi.map(opt).join("");
+    function pagella() {
+      var sel = [].slice.call(document.querySelectorAll("#crPag input:checked")).map(function (i) { return i.value; });
+      var punti = 0, maxB = buoni.reduce(function (a, x) { return a + x.peso; }, 0), red = [];
+      K.pagella.forEach(function (x) { if (sel.indexOf(x.id) < 0) return; punti += x.peso; if (x.rosso) red.push(x); });
+      var v = Math.max(0, Math.min(100, Math.round(punti / maxB * 100)));
+      var ver = red.length ? ["Segnali di truffa: fermati", "var(--down)"] : v >= 75 ? ["Progetto con basi verificabili", "var(--up)"] : v >= 45 ? ["Molte cose da verificare", "var(--warn)"] : ["Troppe incognite", "var(--down)"];
+      var manca = buoni.filter(function (x) { return sel.indexOf(x.id) < 0; });
+      $("#crPagRis").innerHTML = '<header><h3>Il risultato</h3><p>Anche un punteggio alto non rende una cripto sicura: misura solo quanto il progetto è verificabile.</p></header>' +
+        '<div class="score"><span class="n" style="color:' + ver[1] + '">' + v + '</span><span><b class="verdict">' + esc(ver[0]) + '</b><span class="bar"><i style="width:' + v + '%;background:' + ver[1] + '"></i></span></span></div>' +
+        red.map(function (x) { return '<div class="trap"><b>' + esc(x.t) + '</b><p>' + esc(x.spiega) + '</p></div>'; }).join("") +
+        (manca.length ? '<div><b>Da verificare prima di tutto:</b><ul class="todo">' + manca.map(function (x) { return '<li>' + esc(x.t) + '</li>'; }).join("") + '</ul></div>' : '') +
+        (red.length ? '<p class="callout">Se hai già versato denaro, non pagarne altro per «sbloccarlo». Conserva le prove e rivolgiti alla Polizia Postale; controlla la piattaforma sul sito della Consob.</p>' : '<p class="t-note">Anche con tutte le caselle spuntate, metti in cripto solo una quota che puoi perdere senza cambiare la tua vita.</p>');
+    }
+    $("#crPag").addEventListener("change", pagella);
+    pagella();
+
+    corsoQuiz(K.lezioni, "crLessons", "crCourseFill", "crCourseTxt", "corsoCripto");
   })();
 
   /* ---------- app installabile ---------- */
@@ -2792,9 +3009,10 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   window.addEventListener("offline", function () { var b = $("#staleBanner"); b.hidden = false; b.textContent = "Sei offline: stai vedendo gli ultimi dati scaricati."; });
 
   /* ---------- navigazione ---------- */
-  var VIEWS = ["oggi", "piano", "investire", "strumenti", "bitcoin", "tutela", "fonti"];
+  var VIEWS = ["oggi", "piano", "investire", "strumenti", "cripto", "tutela", "fonti"];
   function route() {
     var h = (location.hash || "#oggi").slice(1);
+    if (h === "bitcoin") h = "cripto";
     var anchor = null;
     if (VIEWS.indexOf(h) < 0) { anchor = document.getElementById(h); h = anchor && anchor.closest(".view") ? anchor.closest(".view").id.replace("view-", "") : "oggi"; }
     VIEWS.forEach(function (v) { var el = document.getElementById("view-" + v); if (el) el.hidden = v !== h; });
@@ -2803,14 +3021,14 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     // i grafici delle sezioni nascoste vanno ridisegnati alla larghezza reale quando diventano visibili
     if (h === "strumenti") renderPac();
     if (h === "piano") chartPatrimonio();
-    if (h === "bitcoin") renderBitcoinGrafici();
+    if (h === "cripto") { renderBitcoinGrafici(); crDisegna(); }
     if (h === "investire") invDisegna();
     if (anchor) anchor.scrollIntoView({ block: "start" });
     else window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
   var tRes = null;
-  window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); renderBitcoinGrafici(); if (!$("#view-investire").hidden) invDisegna(); }, 200); });
+  window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); renderBitcoinGrafici(); if (!$("#view-investire").hidden) invDisegna(); if (!$("#view-cripto").hidden) crDisegna(); }, 200); });
   route();
 })();
 </script>
