@@ -343,6 +343,40 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
 .goal-strip .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--accent)); border-radius: 99px; }
 .toggle { display: flex; align-items: center; gap: 10px; font-size: .9rem; }
 .toggle input { width: 20px; height: 20px; accent-color: var(--teal); }
+.btc-hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px; background: linear-gradient(135deg, #1A1408 0%, #2B1E08 55%, #3A2608 100%); color: #FBEFD9; border-radius: 20px; padding: 24px; position: relative; overflow: hidden; }
+.btc-hero::after { content: "₿"; position: absolute; right: -10px; bottom: -60px; font-size: 260px; font-family: var(--f-display); font-weight: 800; color: rgba(247,147,26,.08); line-height: 1; pointer-events: none; }
+.btc-hero .eyebrow { color: #E9C58E; }
+.btc-price { font-family: var(--f-mono); font-size: clamp(2rem, 1.4rem + 3vw, 3.2rem); font-weight: 600; letter-spacing: -.03em; color: #fff; }
+.btc-sub { color: #E9C58E; font-size: .92rem; }
+.btc-hero .chip { background: rgba(255,255,255,.1); }
+.btc-hero .chart-box svg text { fill: #E9C58E; }
+.btc-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.kpi .k { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.kpi .v { font-family: var(--f-mono); font-size: 1.35rem; font-weight: 600; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.kpi small { color: var(--muted); font-size: .8rem; line-height: 1.35; }
+.kpi .meter { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; margin-top: 4px; }
+.kpi .meter i { display: block; height: 100%; border-radius: 99px; background: #F7931A; }
+.fg-scale { height: 10px; border-radius: 99px; background: linear-gradient(90deg, #C0392B, #E2A546 50%, #1B7F48); position: relative; margin-top: 6px; }
+.fg-scale b { position: absolute; top: -4px; width: 4px; height: 18px; background: var(--ink); border-radius: 2px; transform: translateX(-2px); }
+.lessons { display: grid; gap: 10px; }
+.lesson { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.lesson summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; }
+.lesson summary::-webkit-details-marker { display: none; }
+.lesson .n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; background: #FDEBD0; color: #7A4A06; }
+.lesson.fatta .n { background: var(--up); color: #fff; }
+.lesson summary b { font-family: var(--f-display); font-size: 1.02rem; }
+.lesson .arrow { color: var(--muted); transition: transform .2s; }
+.lesson[open] .arrow { transform: rotate(90deg); }
+.lesson .body { padding: 0 16px 16px 64px; display: grid; gap: 10px; color: var(--muted); max-width: 80ch; }
+.lesson .key { color: var(--ink); background: #FDF3E1; border-radius: 10px; padding: 10px 12px; font-weight: 700; }
+:root[data-theme="dark"] .lesson .key, :root[data-theme="dark"] .lesson .n { background: #3A2A10; color: #F5D9A8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .lesson .key, :root:not([data-theme="light"]) .lesson .n { background: #3A2A10; color: #F5D9A8; } }
+.course-bar { display: flex; align-items: center; gap: 12px; }
+.course-bar .bar { flex: 1; height: 10px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.course-bar .bar i { display: block; height: 100%; background: #F7931A; border-radius: 99px; transition: width .4s; }
+@media (max-width: 960px) { .btc-hero { grid-template-columns: minmax(0, 1fr); } .btc-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .lesson .body { padding-left: 16px; } .btc-hero { padding: 18px; } }
 .stale-banner { background: var(--accent-soft); color: var(--ink); border-radius: 12px; padding: 12px 16px; font-size: .92rem; }
 .tile.old .t-src::after { content: " · non aggiornato"; color: var(--warn); font-weight: 600; }
 .news time { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); margin-left: 8px; }
@@ -405,6 +439,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
       <a href="#oggi" data-view="oggi">Oggi</a>
       <a href="#piano" data-view="piano">Il mio piano</a>
       <a href="#strumenti" data-view="strumenti">Strumenti</a>
+      <a href="#bitcoin" data-view="bitcoin">Bitcoin</a>
       <a href="#tutela" data-view="tutela">Tutelarsi</a>
       <a href="#fonti" data-view="fonti">Fonti</a>
     </nav>
@@ -701,6 +736,76 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     </section>
   </div>
 
+  <!-- ===================== BITCOIN ===================== -->
+  <div class="view" id="view-bitcoin" hidden>
+    <section class="btc-hero" aria-labelledby="h-btc">
+      <div style="display:grid;gap:8px;align-content:start;position:relative;z-index:1">
+        <div class="eyebrow" id="btcAgg">Bitcoin oggi</div>
+        <h2 id="h-btc" class="sr-only" style="position:absolute;left:-9999px">Bitcoin</h2>
+        <div class="btc-price" id="btcPrezzo">—</div>
+        <div id="btcVar" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        <p class="btc-sub" id="btcAth"></p>
+      </div>
+      <div class="chart-box" id="btcChart" style="position:relative;z-index:1"></div>
+    </section>
+
+    <section aria-label="Stato della rete e del mercato">
+      <div class="btc-kpis" id="btcKpi"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="h-btcsim">
+      <header><h3 id="h-btcsim">Se avessi investito ogni mese</h3><p>Simulazione con i prezzi mensili reali di bitcoin in euro. Mostra cosa sarebbe successo, compresi i momenti difficili: il passato non garantisce il futuro.</p></header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="bs-mese">Ogni mese</label><div class="input-wrap"><input id="bs-mese" type="number" min="1" step="any" value="50"><span class="unit">€</span></div></div>
+          <div class="field"><label for="bs-da">A partire da</label><div class="input-wrap"><select id="bs-da"></select></div></div>
+        </div>
+        <div class="result" id="bsResult"></div>
+      </div>
+      <div class="chart-box" id="bsChart"></div>
+      <div class="chart-legend"><span><i style="background:var(--muted)"></i>Soldi versati</span><span><i style="background:#F7931A"></i>Valore dei bitcoin accumulati</span></div>
+    </section>
+
+    <div class="grid-2">
+      <section class="panel" aria-labelledby="h-btcrisk">
+        <header><h3 id="h-btcrisk">Quanto rischi davvero</h3><p>Prima di comprare, guarda in euro quanto perderesti nei crolli che Bitcoin ha già vissuto.</p></header>
+        <div class="fields">
+          <div class="field"><label for="br-patr">Il tuo patrimonio</label><div class="input-wrap"><input id="br-patr" type="number" min="0" step="any" value="30000"><span class="unit">€</span></div></div>
+          <div class="field"><label for="br-quota">Quota in bitcoin</label><div class="input-wrap"><input id="br-quota" type="number" min="0" max="100" step="any" value="5"><span class="unit">%</span></div></div>
+        </div>
+        <div class="result" id="brResult"></div>
+      </section>
+      <section class="panel" aria-labelledby="h-btctax">
+        <header><h3 id="h-btctax">Tasse su una vendita</h3><p>Plusvalenze sulle cripto in Italia dal 2026: 33%, senza franchigia.</p></header>
+        <div class="fields">
+          <div class="field"><label for="bt-acq">Speso per comprarli</label><div class="input-wrap"><input id="bt-acq" type="number" min="0" step="any" value="1000"><span class="unit">€</span></div></div>
+          <div class="field"><label for="bt-ven">Incasso dalla vendita</label><div class="input-wrap"><input id="bt-ven" type="number" min="0" step="any" value="1600"><span class="unit">€</span></div></div>
+        </div>
+        <div class="result" id="btResult"></div>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="h-sats">
+      <header><h3 id="h-sats">Euro e satoshi</h3><p>Un bitcoin vale 100 milioni di satoshi. Scopri quanti ne compri con una cifra, o quanto valgono quelli che hai.</p></header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="sat-eur">Euro</label><div class="input-wrap"><input id="sat-eur" type="number" min="0" step="any" value="20"><span class="unit">€</span></div></div>
+          <div class="field"><label for="sat-sat">Satoshi</label><div class="input-wrap"><input id="sat-sat" type="number" min="0" step="1"><span class="unit">sat</span></div></div>
+        </div>
+        <div class="result" id="satResult"></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-corso">
+      <div class="section-head">
+        <h2 id="h-corso">Capire Bitcoin in 8 lezioni</h2>
+        <div class="course-bar" style="min-width:min(100%,280px)"><span class="bar"><i id="courseFill" style="width:0"></i></span><span class="num" id="courseTxt">0/8</span></div>
+      </div>
+      <div class="lessons" id="lessons"></div>
+      <p class="callout" style="margin-top:14px">Contenuti educativi, non consigli di investimento. Bitcoin è un investimento ad alto rischio: puoi perdere gran parte del capitale.</p>
+    </section>
+  </div>
+
   <!-- ===================== TUTELA ===================== -->
   <div class="view" id="view-tutela" hidden>
     <section class="grid-2">
@@ -788,6 +893,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
 
 <script src="data.js"></script>
 <script src="pillole.js"></script>
+<script src="bitcoin.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1787,6 +1893,169 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     render();
   })();
 
+  /* ---------- BITCOIN ---------- */
+  var BT = D.bitcoin || {};
+  var ARANCIO = "#F7931A";
+  function linea(box, pts, opt) {
+    opt = opt || {};
+    var W = Math.max(280, Math.round(box.clientWidth || 600)), H = opt.h || (W < 500 ? 170 : 210), L = opt.l || 4, R = opt.r || 58, T = 12, B = 22;
+    var serie = opt.serie || [pts];
+    var all = [].concat.apply([], serie).filter(function (v) { return typeof v === "number"; });
+    if (all.length < 3) { box.innerHTML = ""; return; }
+    var mn = opt.zero ? 0 : Math.min.apply(null, all), mx = Math.max.apply(null, all), pad = (mx - mn) * 0.06 || 1; if (!opt.zero) mn -= pad; mx += pad;
+    var n = serie[0].length;
+    var x = function (i) { return L + i / (n - 1) * (W - L - R); }, y = function (v) { return T + (1 - (v - mn) / (mx - mn)) * (H - T - B); };
+    var path = function (s) { return s.map(function (v, i) { return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1); }).join(" "); };
+    var cols = opt.cols || [ARANCIO];
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><defs><linearGradient id="g' + box.id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + cols[cols.length - 1] + '" stop-opacity=".35"/><stop offset="1" stop-color="' + cols[cols.length - 1] + '" stop-opacity="0"/></linearGradient></defs>';
+    [0.33, 0.66].forEach(function (f) { var gy = T + f * (H - T - B); out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + gy + '" y2="' + gy + '" stroke="' + (opt.grid || "var(--line)") + '" stroke-dasharray="3 4"/>'; });
+    var last = serie[serie.length - 1];
+    out += '<path d="' + path(last) + ' L' + x(n - 1).toFixed(1) + ' ' + (H - B) + ' L' + L + ' ' + (H - B) + ' Z" fill="url(#g' + box.id + ')"/>';
+    serie.forEach(function (s, k) { out += '<path d="' + path(s) + '" fill="none" stroke="' + cols[k] + '" stroke-width="' + (k === serie.length - 1 ? 2.6 : 2) + '"' + (k < serie.length - 1 ? ' stroke-dasharray="5 4"' : '') + '/>'; });
+    var hi = Math.max.apply(null, last), lo = Math.min.apply(null, last), fmt = opt.fmt || function (v) { return nf(v); };
+    var txt = function (t, xx, yy, anc) { return '<text x="' + xx + '" y="' + yy + '" font-size="12" fill="' + (opt.txt || "var(--muted)") + '" text-anchor="' + (anc || "start") + '" font-family="IBM Plex Mono, monospace">' + esc(t) + '</text>'; };
+    out += txt(fmt(hi), W - R + 6, y(hi) + 4) + (opt.zero ? "" : txt(fmt(lo), W - R + 6, y(lo) + 4));
+    out += '<circle cx="' + x(n - 1).toFixed(1) + '" cy="' + y(last[n - 1]).toFixed(1) + '" r="4.5" fill="' + cols[cols.length - 1] + '"/>';
+    if (opt.da) out += txt(opt.da, L, H - 5);
+    if (opt.a) out += txt(opt.a, W - R, H - 5, "end");
+    box.innerHTML = out + '</svg>';
+  }
+  var kEur = function (v) { return v >= 1e6 ? nf(v / 1e6, 2) + " mln €" : v >= 1e4 ? nf(v / 1000, 1) + "k €" : eur(v); };
+
+  (function () {
+    if (!BT.prezzoEur) { $("#btcPrezzo").textContent = "Dati non ancora disponibili"; return; }
+    $("#btcAgg").textContent = "Bitcoin oggi · aggiornato " + (BT.data ? new Date(BT.data).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" }) : "");
+    $("#btcPrezzo").textContent = eur(BT.prezzoEur);
+    var ch = function (l, v) { return typeof v === "number" ? '<span class="chip ' + (v >= 0 ? "up" : "down") + '">' + l + ' ' + (v > 0 ? "+" : "") + pct(v, 1) + '</span>' : ""; };
+    $("#btcVar").innerHTML = ch("24 ore", BT.var24h) + ch("7 giorni", BT.var7g) + ch("30 giorni", BT.var30g) + ch("1 anno", BT.var1a);
+    $("#btcAth").textContent = (BT.athEur ? "Massimo storico " + eur(BT.athEur) + (BT.athData ? " (" + fmtDate(BT.athData) + " " + BT.athData.slice(0, 4) + ")" : "") + (typeof BT.daAth === "number" ? ": oggi " + (BT.daAth >= -0.5 ? "sui massimi" : "a " + pct(BT.daAth, 1) + " dal picco") : "") + ". " : "") + (BT.prezzoUsd ? "In dollari: " + nf(BT.prezzoUsd) + " $." : "");
+
+    var K = [];
+    if (BT.paura) {
+      var fv = BT.paura.valore, fl = fv < 25 ? "Paura estrema" : fv < 45 ? "Paura" : fv <= 55 ? "Neutrale" : fv <= 75 ? "Avidità" : "Avidità estrema";
+      K.push('<div class="kpi"><span class="k">Paura e avidità</span><span class="v">' + fv + '<small style="font-size:.85rem;margin-left:6px">/100</small></span><small>' + fl + (BT.paura.settimana != null ? " · una settimana fa " + BT.paura.settimana : "") + '</small><div class="fg-scale"><b style="left:' + fv + '%"></b></div></div>');
+    }
+    if (BT.offerta) {
+      var perc = BT.offerta / 21e6 * 100;
+      K.push('<div class="kpi"><span class="k">Bitcoin estratti</span><span class="v">' + nf(BT.offerta / 1e6, 3) + ' mln</span><small>' + pct(perc, 2) + ' dei 21 milioni totali</small><div class="meter"><i style="width:' + perc.toFixed(1) + '%"></i></div></div>');
+    }
+    if (BT.halving) {
+      var giorni = BT.halving.data ? Math.max(0, Math.round((new Date(BT.halving.data) - new Date()) / 864e5)) : null;
+      var fatto = 1 - BT.halving.mancano / 210000;
+      K.push('<div class="kpi"><span class="k">Prossimo halving</span><span class="v">' + (giorni != null ? nf(giorni) + ' giorni' : nf(BT.halving.mancano) + ' blocchi') + '</span><small>' + (BT.halving.data ? 'Stimato a ' + MESI[+BT.halving.data.slice(5, 7) - 1] + ' ' + BT.halving.data.slice(0, 4) + ' · ' : '') + 'premio da ' + nf(BT.halving.premioOra, 3) + ' a ' + nf(BT.halving.premioDopo, 4) + ' BTC</small><div class="meter"><i style="width:' + (fatto * 100).toFixed(1) + '%"></i></div></div>');
+    }
+    if (BT.commissioni) {
+      var costo = BT.commissioni.mezzora * 140 / 1e8 * BT.prezzoEur; // transazione tipica di circa 140 vbyte
+      K.push('<div class="kpi"><span class="k">Costo di un invio</span><span class="v">' + eur(costo, 2) + '</span><small>Transazione tipica, conferma in circa mezz\'ora (' + BT.commissioni.mezzora + ' sat/vB)</small></div>');
+    }
+    if (BT.dominanza) K.push('<div class="kpi"><span class="k">Dominanza</span><span class="v">' + pct(BT.dominanza, 1) + '</span><small>Quota di Bitcoin sul valore di tutte le criptovalute</small><div class="meter"><i style="width:' + BT.dominanza + '%"></i></div></div>');
+    if (BT.capEur) K.push('<div class="kpi"><span class="k">Valore totale</span><span class="v">' + nf(BT.capEur / 1e9, 0) + ' mld €</span><small>Capitalizzazione di tutti i bitcoin in circolazione</small></div>');
+    if (BT.hashrate) K.push('<div class="kpi"><span class="k">Potenza della rete</span><span class="v">' + nf(BT.hashrate) + ' EH/s</span><small>Più è alta, più è costoso attaccare la rete</small></div>');
+    if (BT.difficolta) K.push('<div class="kpi"><span class="k">Prossima difficoltà</span><span class="v">' + (BT.difficolta.variazione > 0 ? "+" : "") + pct(BT.difficolta.variazione, 1) + '</span><small>Ricalcolo stimato ' + (BT.difficolta.data ? "il " + fmtDate(BT.difficolta.data) : "a breve") + ' · ciclo al ' + pct(BT.difficolta.avanzamento, 0) + (BT.altezza ? ' · blocco ' + nf(BT.altezza) : '') + '</small></div>');
+    $("#btcKpi").innerHTML = K.join("");
+
+    // simulatore: elenco anni disponibili
+    var M = BT.mensile || [];
+    if (M.length) {
+      var anni = []; M.forEach(function (m) { var y = m[0].slice(0, 4); if (anni.indexOf(y) < 0) anni.push(y); });
+      $("#bs-da").innerHTML = anni.slice(0, -1).map(function (y) { return '<option value="' + y + '-01"' + (y === String(new Date().getFullYear() - 5) ? " selected" : "") + '>Gennaio ' + y + '</option>'; }).join("");
+    }
+  })();
+
+  function renderBitcoinGrafici() {
+    if (!BT.prezzoEur) return;
+    if (BT.giornaliero && BT.giornaliero.length > 5) linea($("#btcChart"), BT.giornaliero, { txt: "#E9C58E", grid: "rgba(255,255,255,.12)", fmt: kEur, da: BT.giornalieroInizio ? fmtDate(BT.giornalieroInizio) : "", a: "oggi" });
+    renderBtcSim();
+  }
+  function renderBtcSim() {
+    var M = BT.mensile || [];
+    if (M.length < 12) { $("#bsResult").innerHTML = "<p>Storico non ancora disponibile.</p>"; return; }
+    var rata = Math.max(0, num("bs-mese")), da = $("#bs-da").value || M[0][0];
+    var sel = M.filter(function (m) { return m[0] >= da; });
+    var btc = 0, versato = 0, val = [], ver = [], picco = 0, peggio = 0, peggioEur = 0;
+    sel.forEach(function (m, i) {
+      btc += rata / m[1]; versato += rata;
+      var p = i === sel.length - 1 ? BT.prezzoEur : m[1], v = btc * p;
+      val.push(v); ver.push(versato);
+      if (v > picco) picco = v;
+      var dd = picco ? (v / picco - 1) * 100 : 0; if (dd < peggio) { peggio = dd; peggioEur = v - picco; }
+    });
+    var oggi = val[val.length - 1], g = oggi - versato;
+    var tasse = g > 0 ? g * 0.33 : 0;
+    $("#bsResult").className = "result" + (g < 0 ? " warn" : "");
+    $("#bsResult").innerHTML = '<div class="eyebrow">Oggi avresti</div><div class="big">' + eur(oggi) + '</div>' +
+      '<div class="row"><span>Versati in ' + sel.length + ' mesi</span><span>' + eur(versato) + '</span></div>' +
+      '<div class="row"><span>Guadagno o perdita</span><span class="' + (g >= 0 ? "pos" : "neg") + '">' + segnoEur(g) + ' (' + (versato ? (g >= 0 ? "+" : "") + pct(g / versato * 100, 0) : "") + ')</span></div>' +
+      '<div class="row"><span>Tasse al 33% se vendessi</span><span>−' + eur(tasse) + '</span></div>' +
+      '<div class="row"><b>Il momento peggiore</b><b class="neg">' + pct(peggio, 0) + ' · ' + segnoEur(peggioEur) + '</b></div>' +
+      '<p style="font-size:.86rem">Per ottenere questo risultato avresti dovuto continuare a versare anche nel momento peggiore, senza vendere. Bitcoin acquistati: ' + nf(btc, 6) + ' BTC.</p>';
+    linea($("#bsChart"), null, { serie: [ver, val], cols: ["var(--muted)", ARANCIO], zero: true, fmt: kEur, da: fmtDate(sel[0][0]), a: "oggi" });
+  }
+  ["bs-mese", "bs-da"].forEach(function (id) { document.getElementById(id).addEventListener("input", renderBtcSim); });
+
+  (function () {
+    function rischio() {
+      var P = num("br-patr"), q = Math.min(100, Math.max(0, num("br-quota"))), inv = P * q / 100;
+      var cm = BT.caloMassimo;
+      var scen = [["Calo del 30%", 30], ["Calo del 50%", 50]];
+      if (cm && cm.valore < -50) scen.push(["Come il calo peggiore nei dati (" + MESI[+cm.a.slice(5, 7) - 1] + " " + cm.a.slice(0, 4) + ")", -cm.valore]);
+      else scen.push(["Calo del 75%", 75]);
+      $("#brResult").className = "result" + (q > 10 ? " warn" : "");
+      $("#brResult").innerHTML = '<div class="eyebrow">In bitcoin avresti</div><div class="big">' + eur(inv) + '</div>' +
+        scen.map(function (s) { return '<div class="row"><span>' + esc(s[0]) + '</span><span class="neg">−' + eur(inv * s[1] / 100) + ' · patrimonio ' + eur(P - inv * s[1] / 100) + '</span></div>'; }).join("") +
+        '<p style="font-size:.86rem">' + (q > 10 ? "Una quota superiore al 10% espone il patrimonio a oscillazioni molto forti. Chiediti se potresti sopportarle senza vendere." : q > 0 ? "La domanda giusta: se domani questa cifra si dimezzasse, cambierebbe qualcosa nella tua vita? Se sì, la quota è troppo alta." : "Imposta una quota per vedere l'effetto dei crolli.") + '</p>';
+    }
+    function tasse() {
+      var a = num("bt-acq"), v = num("bt-ven"), g = v - a, t = g > 0 ? g * 0.33 : 0;
+      $("#btResult").className = "result" + (g < 0 ? " warn" : "");
+      $("#btResult").innerHTML = '<div class="eyebrow">' + (g > 0 ? "Imposta da pagare" : "Nessuna imposta") + '</div><div class="big">' + eur(t, 2) + '</div>' +
+        '<div class="row"><span>Plusvalenza</span><span>' + segnoEur(g) + '</span></div>' +
+        '<div class="row"><b>Ti resta in tasca</b><b>' + eur(v - t, 2) + '</b></div>' +
+        '<p style="font-size:.86rem">' + (g < 0 ? "Le minusvalenze si possono compensare con plusvalenze future della stessa categoria nei quattro anni successivi. " : "") + 'In più è dovuta ogni anno un\'imposta dello 0,2% sul valore delle cripto possedute. Per casi concreti affidati a un commercialista.</p>';
+    }
+    function sats(da) {
+      var p = BT.prezzoEur; if (!p) { $("#satResult").innerHTML = "<p>Prezzo non disponibile.</p>"; return; }
+      if (da === "sat") $("#sat-eur").value = (num("sat-sat") / 1e8 * p).toFixed(2);
+      else $("#sat-sat").value = Math.round(num("sat-eur") / p * 1e8);
+      var s = num("sat-sat");
+      $("#satResult").innerHTML = '<div class="eyebrow">Al prezzo di oggi</div><div class="big">' + nf(s) + ' sat</div>' +
+        '<div class="row"><span>In bitcoin</span><span>' + nf(s / 1e8, 8) + ' BTC</span></div>' +
+        '<div class="row"><span>1 euro compra</span><span>' + nf(1e8 / p) + ' sat</span></div>' +
+        '<div class="row"><span>1.000 satoshi valgono</span><span>' + eur(1000 / 1e8 * p, 2) + '</span></div>';
+    }
+    ["br-patr", "br-quota"].forEach(function (id) { document.getElementById(id).addEventListener("input", rischio); });
+    ["bt-acq", "bt-ven"].forEach(function (id) { document.getElementById(id).addEventListener("input", tasse); });
+    $("#sat-eur").addEventListener("input", function () { sats("eur"); });
+    $("#sat-sat").addEventListener("input", function () { sats("sat"); });
+    var pfTot = 0; Object.keys(pf).forEach(function (k) { pfTot += +pf[k] || 0; });
+    if (pfTot > 0) { $("#br-patr").value = Math.round(pfTot); if (pf.btc) $("#br-quota").value = +(pf.btc / pfTot * 100).toFixed(1); }
+    rischio(); tasse(); sats("eur");
+  })();
+
+  (function () {
+    var L = window.ECO_BTC_LEZIONI || [], fatte = store.get("corsoBtc", []);
+    function render() {
+      $("#lessons").innerHTML = L.map(function (l, i) {
+        var ok = fatte.indexOf(i) >= 0;
+        return '<details class="lesson' + (ok ? " fatta" : "") + '" data-l="' + i + '"><summary><span class="n">' + (ok ? "✓" : i + 1) + '</span><b>' + esc(l.titolo) + '</b><span class="arrow" aria-hidden="true">›</span></summary>' +
+          '<div class="body">' + l.testo.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join("") + '<p class="key">' + esc(l.punto) + '</p>' +
+          '<div><button type="button" class="mini-btn" data-fatta="' + i + '">' + (ok ? "Segna come da rileggere" : "Ho capito, lezione completata") + '</button></div></div></details>';
+      }).join("");
+      $("#courseFill").style.width = (fatte.length / (L.length || 1) * 100) + "%";
+      $("#courseTxt").textContent = fatte.length + "/" + L.length;
+      document.querySelectorAll("[data-fatta]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var i = +b.dataset.fatta;
+          if (fatte.indexOf(i) >= 0) fatte = fatte.filter(function (x) { return x !== i; }); else fatte.push(i);
+          store.set("corsoBtc", fatte); render();
+          var next = document.querySelector('.lesson[data-l="' + (i + 1) + '"]');
+          if (next && fatte.indexOf(i) >= 0) { next.open = true; next.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+        });
+      });
+    }
+    render();
+  })();
+
   /* ---------- app installabile ---------- */
   var standalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
@@ -1806,7 +2075,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   window.addEventListener("offline", function () { var b = $("#staleBanner"); b.hidden = false; b.textContent = "Sei offline: stai vedendo gli ultimi dati scaricati."; });
 
   /* ---------- navigazione ---------- */
-  var VIEWS = ["oggi", "piano", "strumenti", "tutela", "fonti"];
+  var VIEWS = ["oggi", "piano", "strumenti", "bitcoin", "tutela", "fonti"];
   function route() {
     var h = (location.hash || "#oggi").slice(1);
     var anchor = null;
@@ -1817,12 +2086,13 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     // i grafici delle sezioni nascoste vanno ridisegnati alla larghezza reale quando diventano visibili
     if (h === "strumenti") renderPac();
     if (h === "piano") chartPatrimonio();
+    if (h === "bitcoin") renderBitcoinGrafici();
     if (anchor) anchor.scrollIntoView({ block: "start" });
     else window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
   var tRes = null;
-  window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); }, 200); });
+  window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); renderBitcoinGrafici(); }, 200); });
   route();
 })();
 </script>

@@ -18,6 +18,7 @@
   ],
   "shortcuts": [
     { "name": "Il mio piano", "short_name": "Piano", "url": "./#piano", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Strumenti", "short_name": "Strumenti", "url": "./#strumenti", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+    { "name": "Strumenti", "short_name": "Strumenti", "url": "./#strumenti", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Bitcoin", "short_name": "Bitcoin", "url": "./#bitcoin", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

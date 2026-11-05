@@ -452,6 +452,80 @@ async function notizieRss(giorno) {
     .slice(0, 12);
 }
 
+// ================================================================ Bitcoin
+
+// Bitcoin estratti fino a un certo blocco: 50 BTC per blocco, dimezzati ogni 210.000 blocchi.
+function offertaBitcoin(altezza) {
+  let tot = 0, premio = 50 * 1e8, h = altezza + 1;
+  for (let era = 0; h > 0 && premio >= 1; era++) { const n = Math.min(h, 210000); tot += n * premio; h -= n; premio = Math.floor(premio / 2); }
+  return tot / 1e8;
+}
+
+async function bitcoin() {
+  const B = {};
+  // Prezzo, massimo storico e capitalizzazione (CoinGecko, piano pubblico senza chiave)
+  const cg = await safe("Bitcoin CoinGecko", () => get("https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false", { json: true, timeout: 40000 }));
+  const md = cg?.market_data;
+  if (md && num(md.current_price?.eur) > 100) {
+    B.prezzoEur = md.current_price.eur; B.prezzoUsd = md.current_price.usd;
+    B.var24h = num(md.price_change_percentage_24h);
+    B.var7g = num(md.price_change_percentage_7d); B.var30g = num(md.price_change_percentage_30d); B.var1a = num(md.price_change_percentage_1y);
+    B.athEur = num(md.ath?.eur); B.athData = md.ath_date?.eur ? String(md.ath_date.eur).slice(0, 10) : null;
+    B.daAth = num(md.ath_change_percentage?.eur);
+    B.capEur = num(md.market_cap?.eur);
+    B.aggiornatoPrezzo = md.last_updated || null;
+  }
+  const gl = await safe("Dominanza CoinGecko", () => get("https://api.coingecko.com/api/v3/global", { json: true, timeout: 40000 }));
+  if (num(gl?.data?.market_cap_percentage?.btc) != null) B.dominanza = round(gl.data.market_cap_percentage.btc, 1);
+  // Indice di paura e avidità del mercato cripto
+  const fg = await safe("Fear & Greed", () => get("https://api.alternative.me/fng/?limit=31", { json: true }));
+  if (Array.isArray(fg?.data) && fg.data.length) {
+    B.paura = { valore: +fg.data[0].value, etichetta: fg.data[0].value_classification, serie: fg.data.map((d) => +d.value).reverse(), settimana: fg.data[7] ? +fg.data[7].value : null, mese: fg.data[30] ? +fg.data[30].value : null };
+  }
+  // Rete: altezza, commissioni, potenza di calcolo, aggiustamento di difficoltà (mempool.space)
+  const alt = await safe("Altezza blocco", () => get("https://mempool.space/api/blocks/tip/height", { timeout: 30000 }));
+  if (alt && /^\d+$/.test(alt.trim())) {
+    const hgt = +alt.trim();
+    B.altezza = hgt;
+    B.offerta = round(offertaBitcoin(hgt), 0);
+    const prossimo = Math.ceil((hgt + 1) / 210000) * 210000;
+    B.halving = { blocco: prossimo, mancano: prossimo - hgt, premioOra: 50 / 2 ** Math.floor(hgt / 210000), premioDopo: 50 / 2 ** Math.floor(prossimo / 210000) };
+  }
+  const fees = await safe("Commissioni rete", () => get("https://mempool.space/api/v1/fees/recommended", { json: true, timeout: 30000 }));
+  if (fees && num(fees.halfHourFee) != null) B.commissioni = { veloce: fees.fastestFee, mezzora: fees.halfHourFee, ora: fees.hourFee, minima: fees.minimumFee };
+  const hr = await safe("Hashrate", () => get("https://mempool.space/api/v1/mining/hashrate/1m", { json: true, timeout: 30000 }));
+  if (hr && num(hr.currentHashrate) != null) {
+    B.hashrate = round(hr.currentHashrate / 1e18, 0); // EH/s
+    if (Array.isArray(hr.hashrates) && hr.hashrates.length > 5) B.hashrateSerie = hr.hashrates.map((x) => round(x.avgHashrate / 1e18, 0)).slice(-30);
+  }
+  const da = await safe("Aggiustamento difficoltà", () => get("https://mempool.space/api/v1/difficulty-adjustment", { json: true, timeout: 30000 }));
+  if (da && num(da.progressPercent) != null) {
+    B.difficolta = { avanzamento: round(da.progressPercent, 1), variazione: round(da.difficultyChange, 2), data: da.estimatedRetargetDate ? new Date(da.estimatedRetargetDate).toISOString().slice(0, 10) : null, tempoMedio: num(da.timeAvg) ? round(da.timeAvg / 60000, 2) : null };
+    if (B.halving && B.difficolta.tempoMedio) B.halving.data = new Date(Date.now() + B.halving.mancano * B.difficolta.tempoMedio * 60000).toISOString().slice(0, 10);
+  }
+  // Storico mensile in euro dal 2014 (per il simulatore) e giornaliero di un anno (per il grafico)
+  const mens = await safe("Storico mensile BTC-EUR", async () => {
+    const j = await get("https://query1.finance.yahoo.com/v8/finance/chart/BTC-EUR?range=max&interval=1mo", { json: true });
+    const r = j?.chart?.result?.[0], ts = r?.timestamp || [], cl = r?.indicators?.quote?.[0]?.close || [];
+    const out = ts.map((t, i) => [new Date(t * 1000).toISOString().slice(0, 7), cl[i]]).filter((p) => num(p[1]) != null && p[1] > 1);
+    if (out.length < 24) throw new Error("serie troppo corta");
+    const vista = new Map(out.map((p) => [p[0], round(p[1], 2)])); // un valore per mese
+    return [...vista.entries()];
+  });
+  if (mens) B.mensile = mens;
+  const gior = await safe("Storico giornaliero BTC-EUR", () => yahoo("BTC-EUR", [100, 10000000]));
+  if (gior) { B.giornaliero = gior.serie; B.giornalieroInizio = gior.inizio; B.rend = gior.rend; if (!B.prezzoEur) { B.prezzoEur = gior.valore; B.var24h = gior.var; } }
+  if (!B.prezzoEur) throw new Error("prezzo non disponibile da nessuna fonte");
+  if (B.mensile && B.mensile.length) {
+    // calo massimo dal picco nei dati mensili
+    let picco = 0, peggio = 0, piccoT = null, fondoT = null, tmpT = null;
+    for (const [t, v] of B.mensile) { if (v > picco) { picco = v; tmpT = t; } const dd = (v / picco - 1) * 100; if (dd < peggio) { peggio = dd; piccoT = tmpT; fondoT = t; } }
+    B.caloMassimo = { valore: round(peggio, 1), da: piccoT, a: fondoT };
+  }
+  B.data = isoRome();
+  return B;
+}
+
 // ================================================================ testi calcolati dai dati (nessuna IA)
 
 function testiCalcolati(ctx, V) {
@@ -867,6 +941,10 @@ async function main() {
   if (inflCat) { log("inflazione per categoria:", inflCat.periodo, Object.entries(inflCat.categorie).map(([k, v]) => `${k} ${v.valore}%`).join(", ")); esito.ok.push("Inflazione per categoria"); }
   else esito.ko.push("Inflazione per categoria");
 
+  const btc = await safe("Sezione Bitcoin", bitcoin);
+  if (btc) { log("bitcoin:", Object.keys(btc).join(", ")); esito.ok.push("Bitcoin (rete e mercato)"); }
+  else esito.ko.push("Bitcoin (rete e mercato)");
+
   const notizie = (await safe("notizie", () => notizieRss(giorno))) || [];
   log("notizie raccolte:", notizie.length);
 
@@ -904,6 +982,7 @@ async function main() {
     agenda,
     rendimenti: VV.dep_vincolati ? { mediaVincolati: VV.dep_vincolati.valore, mediaConto: VV.dep_conto?.valore ?? null, mutuoMedio: VV.mutuo_medio?.valore ?? null, data: VV.dep_vincolati.data, fonte: "Banca d'Italia / BCE" } : prev.rendimenti || null,
     inflazioneCategorie: inflCat || prev.inflazioneCategorie || null,
+    bitcoin: btc ? { ...(prev.bitcoin || {}), ...btc } : prev.bitcoin || null,
     classifica: (() => {
       const LISTA = [
         ["mondo", "Azionario mondiale", "€"], ["emergenti", "Mercati emergenti", "€"], ["stoxx50", "Europa (Euro Stoxx 50)", "€"],
