@@ -834,7 +834,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   var timeShort = upd ? upd.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" }) : "";
   var ed = D.edizione === "mattina" ? "Edizione del mattino" : "Edizione della sera";
   var ora = new Date().getHours(), nome = store.get("nome", "");
-  var saluto = ora >= 5 && ora < 12 ? "Buongiorno" : ora < 18 && ora >= 12 ? "Buon pomeriggio" : "Buonasera";
+  var saluto = ora < 5 ? "Ciao" : ora < 12 ? "Buongiorno" : ora < 18 ? "Buon pomeriggio" : "Buonasera";
   var sole = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="10" r="3.4" fill="#E2A546"/><path d="M8 2.5v2M2.8 6.2l1.5 1M13.2 6.2l-1.5 1M1.5 13.5h13" stroke="#E2A546" stroke-width="1.4" stroke-linecap="round"/></svg>';
   var luna = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.5 10.8A5.5 5.5 0 0 1 6.2 2.6a5.6 5.6 0 1 0 7.2 7.3 5.4 5.4 0 0 1-1.9.9z" fill="#C9B8F0"/></svg>';
   document.querySelector(".masthead").classList.add(D.edizione === "mattina" ? "mattina" : "sera");
@@ -1728,7 +1728,8 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   function openSheet(id) {
     var v = findVoce(id); if (!v) return;
     var dec = typeof v.decimali === "number" ? v.decimali : 2;
-    $("#sheetGroup").textContent = gruppoDi(id);
+    var gr = gruppoDi(id);
+    $("#sheetGroup").textContent = gr.toLowerCase() === String(v.nome).toLowerCase() ? "" : gr;
     $("#sheetTitle").textContent = v.nome;
     $("#sheetVal").innerHTML = (typeof v.valore === "number" ? nf(v.valore, dec) : esc(v.valore)) + '<small>' + esc(v.unita) + '</small>';
     $("#sheetChg").innerHTML = chipFor(v) + (typeof v.var === "number" ? ' <span style="color:var(--muted);font-size:.85rem">nell\'ultima seduta</span>' : '');
