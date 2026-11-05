@@ -280,7 +280,8 @@ async function yahoo(sym, range) {
   if (tsC.length < closes.length) tsC.push(liveT);
   if (!inRange(last, range) || !inRange(prev, range)) throw new Error(`valore fuori scala (${last})`);
   const var1 = (last / prev - 1) * 100;
-  if (Math.abs(var1) > 35) throw new Error(`variazione implausibile (${var1.toFixed(1)}%)`);
+  // l'indice della paura può più che raddoppiare in un giorno (febbraio 2018, agosto 2024): soglia più larga solo per lui
+  if (Math.abs(var1) > (sym === "^VIX" ? 150 : 35)) throw new Error(`variazione implausibile (${var1.toFixed(1)}%)`);
   // rendimento rispetto all'ultima chiusura disponibile a una certa data
   const tsAll = pts.map((p) => p[0]);
   const alla = (sec) => { let k = -1; for (let i = 0; i < tsAll.length; i++) if (tsAll[i] <= sec) k = i; return k >= 0 ? pts[k][1] : null; };
