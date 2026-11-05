@@ -180,9 +180,11 @@ const STORIA = [
 ];
 
 async function storiaLunga(sym) {
+  // range=max a volte restituisce punti trimestrali: si chiede un periodo esplicito e si lavora sui mesi di calendario.
   let j, lastErr;
+  const fine = Math.floor(Date.now() / 1000);
   for (const host of ["query1", "query2"]) {
-    try { j = await get(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=max&interval=1mo&includePrePost=false`, { json: true, timeout: 45000 }); break; }
+    try { j = await get(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?period1=0&period2=${fine}&interval=1mo&includePrePost=false`, { json: true, timeout: 45000 }); break; }
     catch (e) { lastErr = e; }
   }
   if (!j) throw lastErr;
@@ -191,46 +193,43 @@ async function storiaLunga(sym) {
   const ts = r.timestamp || [], cl = r.indicators?.quote?.[0]?.close || [];
   const perMese = new Map();
   ts.forEach((t, i) => { const v = num(cl[i]); if (v != null && v > 0) perMese.set(new Date((t + 43200) * 1000).toISOString().slice(0, 7), v); });
-  const mesi = [...perMese.keys()].sort();
+  const chiavi = [...perMese.keys()].sort();
+  const idx = (k) => +k.slice(0, 4) * 12 + (+k.slice(5, 7) - 1);
   const m = [], c = [];
-  for (const k of mesi) {
+  for (const k of chiavi) {
     const v = perMese.get(k);
     if (c.length && (v / c.at(-1) > 1.6 || v / c.at(-1) < 0.45)) continue; // dato anomalo
     m.push(k); c.push(v);
   }
+  // serve una serie davvero mensile: niente buchi più lunghi di 2 mesi
+  for (let i = 1; i < m.length; i++) if (idx(m[i]) - idx(m[i - 1]) > 2) throw new Error(`serie non mensile (${m[i - 1]} → ${m[i]})`);
   if (c.length < 120) throw new Error(`storia troppo corta (${c.length} mesi)`);
-  const n = c.length, anni = (n - 1) / 12;
+  const n = c.length, mesiTot = idx(m.at(-1)) - idx(m[0]), anni = mesiTot / 12;
   const cagr = (c.at(-1) / c[0]) ** (1 / anni) - 1;
-  // calo massimo dal picco e mesi per tornare al picco
+  if (!isFinite(cagr) || Math.abs(cagr) > 0.3) throw new Error(`crescita annua implausibile (${(cagr * 100).toFixed(1)}%)`);
+  const valore = new Map(m.map((k, i) => [idx(k), c[i]]));
   let pi = 0, best = { calo: 0, p: 0, t: 0 };
   for (let i = 0; i < n; i++) { if (c[i] > c[pi]) pi = i; const d = c[i] / c[pi] - 1; if (d < best.calo) best = { calo: d, p: pi, t: i }; }
   let rec = null;
   for (let i = best.t; i < n; i++) if (c[i] >= c[best.p]) { rec = i; break; }
   const max = Math.max(...c);
   const finestre = [1, 3, 5, 10, 15, 20].map((H) => {
-    const k = 12 * H;
-    if (n - 1 < k + 24) return null;
-    const v = [];
-    for (let i = 0; i + k < n; i++) v.push((c[i + k] / c[i]) ** (1 / H) - 1);
+    const k = 12 * H, v = [];
+    for (let i = 0; i < n; i++) { const fineV = valore.get(idx(m[i]) + k); if (fineV) v.push((fineV / c[i]) ** (1 / H) - 1); }
+    if (v.length < 24) return null;
     v.sort((a, b) => a - b);
-    const pos = v.filter((x) => x > 0).length / v.length;
-    return { anni: H, n: v.length, positivi: round(pos * 100, 0), peggiore: round(v[0] * 100, 1), mediana: round(v[Math.floor(v.length / 2)] * 100, 1), migliore: round(v.at(-1) * 100, 1) };
+    return { anni: H, n: v.length, positivi: round(v.filter((x) => x > 0).length / v.length * 100, 0), peggiore: round(v[0] * 100, 1), mediana: round(v[Math.floor(v.length / 2)] * 100, 1), migliore: round(v.at(-1) * 100, 1) };
   }).filter(Boolean);
-  // rendimenti per anno solare (anni completi)
-  const fineAnno = new Map();
-  m.forEach((k, i) => fineAnno.set(+k.slice(0, 4), c[i]));
-  const anniSolari = [...fineAnno.keys()].sort((a, b) => a - b);
-  const annoCorrente = +m.at(-1).slice(0, 4);
   const annuali = [];
-  for (let i = 1; i < anniSolari.length; i++) {
-    const y = anniSolari[i];
+  const annoCorrente = +m.at(-1).slice(0, 4);
+  for (let y = +m[0].slice(0, 4) + 1; y <= annoCorrente; y++) {
+    const a = valore.get(y * 12 + 11) ?? valore.get(y * 12 + 10), b = valore.get((y - 1) * 12 + 11) ?? valore.get((y - 1) * 12 + 10);
     if (y === annoCorrente && m.at(-1).slice(5) !== "12") continue;
-    if (anniSolari[i - 1] !== y - 1) continue;
-    annuali.push([y, round((fineAnno.get(y) / fineAnno.get(y - 1) - 1) * 100, 1)]);
+    if (a && b) annuali.push([y, round((a / b - 1) * 100, 1)]);
   }
   return {
     inizio: m[0], fine: m.at(-1), anni: round(anni, 1), cagr: round(cagr * 100, 1),
-    calo: { valore: round(best.calo * 100, 1), picco: m[best.p], minimo: m[best.t], ritorno: rec != null ? m[rec] : null, mesi: rec != null ? rec - best.p : null },
+    calo: { valore: round(best.calo * 100, 1), picco: m[best.p], minimo: m[best.t], ritorno: rec != null ? m[rec] : null, mesi: rec != null ? idx(m[rec]) - idx(m[best.p]) : null },
     dalMassimo: round((c.at(-1) / max - 1) * 100, 1),
     finestre, annuali: annuali.slice(-30),
   };
