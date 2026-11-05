@@ -1,6 +1,6 @@
 /* Dati del giorno, generati automaticamente due volte al giorno. */
 window.ECO = {
-  "aggiornato": "2026-11-05T06:27:32+01:00",
+  "aggiornato": "2026-11-05T06:34:50+01:00",
   "edizione": "mattina",
   "testiIA": false,
   "fonti": {
@@ -226,19 +226,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 61176,
-          "var": -1.63,
+          "valore": 61239,
+          "var": -1.53,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5EN225",
           "rend": {
-            "m1": -13.45,
-            "m3": -6.86,
-            "ytd": 21.53,
-            "y1": 21.83
+            "m1": -13.36,
+            "m3": -6.77,
+            "ytd": 21.65,
+            "y1": 21.96
           },
           "inizio": "2026-04-23",
-          "mese": -13.45,
+          "mese": -13.36,
           "nota": "Borsa di Tokyo, in yen"
         },
         {
@@ -294,19 +294,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 24363,
-          "var": 1.68,
+          "valore": 24368,
+          "var": 1.7,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5ENSEI",
           "rend": {
-            "m1": 6.97,
-            "m3": -1.11,
-            "ytd": -6.76,
-            "y1": -4.49
+            "m1": 6.99,
+            "m3": -1.09,
+            "ytd": -6.74,
+            "y1": -4.48
           },
           "inizio": "2026-04-30",
-          "mese": 6.97,
+          "mese": 6.99,
           "nota": "Le 50 maggiori società indiane, in rupie"
         },
         {
@@ -315,19 +315,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 3676,
-          "var": -0.29,
+          "valore": 3677,
+          "var": -0.25,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/000001.SS",
           "rend": {
-            "m1": -4.34,
-            "m3": -5.76,
-            "ytd": -7.39,
-            "y1": -7.4
+            "m1": -4.31,
+            "m3": -5.73,
+            "ytd": -7.36,
+            "y1": -7.37
           },
           "inizio": "2026-04-24",
-          "mese": -4.34,
+          "mese": -4.31,
           "nota": "Borsa di Shanghai, in yuan"
         },
         {
@@ -554,17 +554,17 @@ window.ECO = {
           "nome": "Oro al grammo",
           "unita": "€/g",
           "decimali": 2,
-          "valore": 118.21,
-          "var": 1.17,
+          "valore": 118.16,
+          "var": 1.12,
           "data": "2026-11-05",
-          "nota": "Oro puro. A 18 carati circa 88,66 €/g",
+          "nota": "Oro puro. A 18 carati circa 88,62 €/g",
           "fonte": "Calcolo su Yahoo Finance e BCE",
           "url": "https://finance.yahoo.com/quote/GC%3DF",
           "rend": {
-            "m1": -1.49,
-            "m3": -1.16,
-            "ytd": -0.49,
-            "y1": 5.77,
+            "m1": -1.54,
+            "m3": -1.21,
+            "ytd": -0.54,
+            "y1": 5.71,
             "dalMax": -18.6,
             "dalMin": 5.9,
             "ma200": -5.7,
@@ -572,7 +572,7 @@ window.ECO = {
             "calo1a": -22.8
           },
           "inizio": "2026-05-04",
-          "mese": -1.5
+          "mese": -1.54
         },
         {
           "id": "argento",
@@ -580,19 +580,19 @@ window.ECO = {
           "unita": "$/oz",
           "decimali": 2,
           "buono": null,
-          "valore": 52.92,
-          "var": 1.53,
+          "valore": 52.88,
+          "var": 1.46,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/SI%3DF",
           "rend": {
-            "m1": -13.49,
-            "m3": -13.87,
-            "ytd": -24.55,
-            "y1": 10.56
+            "m1": -13.55,
+            "m3": -13.93,
+            "ytd": -24.6,
+            "y1": 10.48
           },
           "inizio": "2026-05-04",
-          "mese": -13.49,
+          "mese": -13.55,
           "nota": "Metallo prezioso e industriale, più volatile dell'oro"
         },
         {
@@ -602,18 +602,18 @@ window.ECO = {
           "decimali": 0,
           "buono": null,
           "valore": 1526,
-          "var": 1.65,
+          "var": 1.63,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/PL%3DF",
           "rend": {
-            "m1": -9.86,
-            "m3": -11.75,
-            "ytd": -25,
-            "y1": -1.78
+            "m1": -9.88,
+            "m3": -11.77,
+            "ytd": -25.02,
+            "y1": -1.8
           },
           "inizio": "2026-05-04",
-          "mese": -9.86,
+          "mese": -9.88,
           "nota": "Usato in gioielleria e catalizzatori auto"
         },
         {
@@ -622,19 +622,19 @@ window.ECO = {
           "unita": "$/lb",
           "decimali": 2,
           "buono": null,
-          "valore": 6.41,
-          "var": 0.14,
+          "valore": 6.42,
+          "var": 0.23,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/HG%3DF",
           "rend": {
-            "m1": -2.77,
-            "m3": -4.11,
-            "ytd": 13.89,
-            "y1": 29.2
+            "m1": -2.68,
+            "m3": -4.02,
+            "ytd": 14,
+            "y1": 29.32
           },
           "inizio": "2026-05-04",
-          "mese": -2.77,
+          "mese": -2.68,
           "nota": "Termometro dell'economia mondiale: sale quando l'industria cresce"
         }
       ]
@@ -687,19 +687,19 @@ window.ECO = {
           "unita": "$",
           "decimali": 0,
           "buono": null,
-          "valore": 80330,
-          "var": 3.86,
+          "valore": 80383,
+          "var": 3.93,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/BTC-USD",
           "rend": {
-            "m1": -6.11,
-            "m3": 25,
-            "ytd": -9.47,
-            "y1": -22.68
+            "m1": -6.05,
+            "m3": 25.09,
+            "ytd": -9.41,
+            "y1": -22.63
           },
           "inizio": "2026-06-28",
-          "mese": -6.11,
+          "mese": -6.05,
           "nota": "Asset speculativo, molto volatile e non protetto"
         }
       ]
@@ -769,19 +769,19 @@ window.ECO = {
           "unita": "$/bbl",
           "decimali": 2,
           "buono": "giu",
-          "valore": 93.9,
-          "var": -0.76,
+          "valore": 93.86,
+          "var": -0.8,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/BZ%3DF",
           "rend": {
-            "m1": -6.64,
-            "m3": 13.83,
-            "ytd": 54.31,
-            "y1": 47.83
+            "m1": -6.68,
+            "m3": 13.78,
+            "ytd": 54.25,
+            "y1": 47.76
           },
           "inizio": "2026-05-04",
-          "mese": -6.64,
+          "mese": -6.68,
           "nota": "Riferimento per carburanti ed energia"
         }
       ]
@@ -913,17 +913,17 @@ window.ECO = {
     }
   },
   "bitcoin": {
-    "prezzoEur": 71356,
-    "prezzoUsd": 80359,
-    "var24h": 3.87634,
-    "var7g": 0.24175,
-    "var30g": -6.11924,
-    "var1a": -21.19277,
+    "prezzoEur": 71394,
+    "prezzoUsd": 80408,
+    "var24h": 3.92606,
+    "var7g": 0.30254,
+    "var30g": -6.06231,
+    "var1a": -21.14498,
     "athEur": 107662,
     "athData": "2025-10-06",
-    "daAth": -33.7216,
-    "capEur": 1434602048697,
-    "aggiornatoPrezzo": "2026-11-05T05:25:54.000Z",
+    "daAth": -33.68671,
+    "capEur": 1435281440864,
+    "aggiornatoPrezzo": "2026-11-05T05:32:54.000Z",
     "dominanza": 59.5,
     "paura": {
       "valore": 50,
@@ -971,7 +971,7 @@ window.ECO = {
       "mancano": 75371,
       "premioOra": 3.125,
       "premioDopo": 1.5625,
-      "data": "2028-04-25"
+      "data": "2028-04-26"
     },
     "commissioni": {
       "veloce": 2,
@@ -1014,9 +1014,9 @@ window.ECO = {
     ],
     "difficolta": {
       "avanzamento": 44.7,
-      "variazione": -2.51,
+      "variazione": -2.59,
       "data": "2026-11-13",
-      "tempoMedio": 10.27
+      "tempoMedio": 10.28
     },
     "mensile": [
       [
@@ -1601,7 +1601,7 @@ window.ECO = {
       ],
       [
         "2026-11",
-        71371.79
+        71419.77
       ]
     ],
     "giornaliero": [
@@ -1734,21 +1734,21 @@ window.ECO = {
       70136.4375,
       68503.5,
       69015.6797,
-      71371.79
+      71419.77
     ],
     "giornalieroInizio": "2026-06-28",
     "rend": {
-      "m1": -6.13,
-      "m3": 27.99,
-      "ytd": -5.48,
-      "y1": -21.03
+      "m1": -6.07,
+      "m3": 28.08,
+      "ytd": -5.42,
+      "y1": -20.97
     },
     "caloMassimo": {
       "valore": -74.4,
       "da": "2017-12",
       "a": "2019-01"
     },
-    "data": "2026-11-05T06:27:24+01:00"
+    "data": "2026-11-05T06:34:42+01:00"
   },
   "classifica": {
     "data": "2026-11-05",
@@ -1841,25 +1841,25 @@ window.ECO = {
         "id": "giappone",
         "nome": "Giappone",
         "valuta": "¥",
-        "m1": -13.45,
-        "m3": -6.86,
-        "ytd": 21.53,
-        "y1": 21.83,
-        "dalMax": -15.5,
-        "dalMin": 26,
-        "ma200": -1.2,
-        "vol": 28.5,
-        "calo1a": -15.5
+        "m1": -13.36,
+        "m3": -6.77,
+        "ytd": 21.65,
+        "y1": 21.96,
+        "dalMax": -15.4,
+        "dalMin": 26.2,
+        "ma200": -1.1,
+        "vol": 28.4,
+        "calo1a": -15.4
       },
       {
         "id": "india",
         "nome": "India",
         "valuta": "₹",
-        "m1": 6.97,
-        "m3": -1.11,
-        "ytd": -6.76,
-        "y1": -4.49,
-        "dalMax": -7.5,
+        "m1": 6.99,
+        "m3": -1.09,
+        "ytd": -6.74,
+        "y1": -4.48,
+        "dalMax": -7.4,
         "dalMin": 9.6,
         "ma200": 1.5,
         "vol": 13.9,
@@ -1869,12 +1869,12 @@ window.ECO = {
         "id": "cina",
         "nome": "Cina",
         "valuta": "¥",
-        "m1": -4.34,
-        "m3": -5.76,
-        "ytd": -7.39,
-        "y1": -7.4,
-        "dalMax": -13.4,
-        "dalMin": 2.1,
+        "m1": -4.31,
+        "m3": -5.73,
+        "ytd": -7.36,
+        "y1": -7.37,
+        "dalMax": -13.3,
+        "dalMin": 2.2,
         "ma200": -7.8,
         "vol": 14.5,
         "calo1a": -15.2
@@ -1897,10 +1897,10 @@ window.ECO = {
         "id": "oro_eur",
         "nome": "Oro",
         "valuta": "€",
-        "m1": -1.49,
-        "m3": -1.16,
-        "ytd": -0.49,
-        "y1": 5.77,
+        "m1": -1.54,
+        "m3": -1.21,
+        "ytd": -0.54,
+        "y1": 5.71,
         "dalMax": -18.6,
         "dalMin": 5.9,
         "ma200": -5.7,
@@ -1911,12 +1911,12 @@ window.ECO = {
         "id": "argento",
         "nome": "Argento",
         "valuta": "$",
-        "m1": -13.49,
-        "m3": -13.87,
-        "ytd": -24.55,
-        "y1": 10.56,
+        "m1": -13.55,
+        "m3": -13.93,
+        "ytd": -24.6,
+        "y1": 10.48,
         "dalMax": -54,
-        "dalMin": 10.7,
+        "dalMin": 10.6,
         "ma200": -24.5,
         "vol": 69,
         "calo1a": -57.3
@@ -1925,13 +1925,13 @@ window.ECO = {
         "id": "platino",
         "nome": "Platino",
         "valuta": "$",
-        "m1": -9.86,
-        "m3": -11.75,
-        "ytd": -25,
-        "y1": -1.78,
+        "m1": -9.88,
+        "m3": -11.77,
+        "ytd": -25.02,
+        "y1": -1.8,
         "dalMax": -46.5,
         "dalMin": 6.5,
-        "ma200": -18.4,
+        "ma200": -18.5,
         "vol": 55.4,
         "calo1a": -49.8
       },
@@ -1939,13 +1939,13 @@ window.ECO = {
         "id": "rame",
         "nome": "Rame",
         "valuta": "$",
-        "m1": -2.77,
-        "m3": -4.11,
-        "ytd": 13.89,
-        "y1": 29.2,
-        "dalMax": -5.8,
-        "dalMin": 29.9,
-        "ma200": 3.1,
+        "m1": -2.68,
+        "m3": -4.02,
+        "ytd": 14,
+        "y1": 29.32,
+        "dalMax": -5.7,
+        "dalMin": 30,
+        "ma200": 3.2,
         "vol": 27.2,
         "calo1a": -13.5
       },
@@ -1953,12 +1953,12 @@ window.ECO = {
         "id": "brent",
         "nome": "Petrolio",
         "valuta": "$",
-        "m1": -6.64,
-        "m3": 13.83,
-        "ytd": 54.31,
-        "y1": 47.83,
+        "m1": -6.68,
+        "m3": 13.78,
+        "ytd": 54.25,
+        "y1": 47.76,
         "dalMax": -20.7,
-        "dalMin": 59.4,
+        "dalMin": 59.3,
         "ma200": 0.8,
         "vol": 56.9,
         "calo1a": -39.5
@@ -1967,12 +1967,12 @@ window.ECO = {
         "id": "btc",
         "nome": "Bitcoin",
         "valuta": "$",
-        "m1": -6.11,
-        "m3": 25,
-        "ytd": -9.47,
-        "y1": -22.68,
+        "m1": -6.05,
+        "m3": 25.09,
+        "ytd": -9.41,
+        "y1": -22.63,
         "dalMax": -24.2,
-        "dalMin": 37.2,
+        "dalMin": 37.3,
         "ma200": 9.8,
         "vol": 44.1,
         "calo1a": -44.8
@@ -1987,172 +1987,188 @@ window.ECO = {
         "id": "sp500",
         "nome": "Borsa USA (S&P 500)",
         "nota": "Solo prezzo: i dividendi, circa 1-2% l'anno in più, non sono inclusi",
-        "inizio": "1984-12",
+        "inizio": "1985-01",
         "fine": "2026-11",
-        "anni": 14,
-        "cagr": 30.7,
+        "anni": 41.8,
+        "cagr": 9.4,
         "calo": {
-          "valore": -52,
-          "picco": "2007-03",
-          "minimo": "2008-12",
+          "valore": -52.6,
+          "picco": "2007-10",
+          "minimo": "2009-02",
           "ritorno": "2013-03",
-          "mesi": 24
+          "mesi": 65
         },
         "dalMassimo": 0,
         "finestre": [
           {
             "anni": 1,
-            "n": 157,
-            "positivi": 84,
-            "peggiore": -42.6,
-            "mediana": 33.7,
-            "migliore": 115.3
+            "n": 491,
+            "positivi": 80,
+            "peggiore": -44.8,
+            "mediana": 12.2,
+            "migliore": 53.7
           },
           {
             "anni": 3,
-            "n": 133,
-            "positivi": 93,
-            "peggiore": -18.7,
-            "mediana": 30.6,
-            "migliore": 62.7
+            "n": 467,
+            "positivi": 85,
+            "peggiore": -17.3,
+            "mediana": 10.2,
+            "migliore": 30.1
           },
           {
             "anni": 5,
-            "n": 109,
-            "positivi": 100,
-            "peggiore": 5.4,
-            "mediana": 24.4,
-            "migliore": 51.7
+            "n": 443,
+            "positivi": 81,
+            "peggiore": -8.5,
+            "mediana": 10.1,
+            "migliore": 26.2
           },
           {
             "anni": 10,
-            "n": 49,
+            "n": 383,
+            "positivi": 93,
+            "peggiore": -5.1,
+            "mediana": 9.4,
+            "migliore": 16.8
+          },
+          {
+            "anni": 15,
+            "n": 323,
             "positivi": 100,
-            "peggiore": 22.3,
-            "mediana": 26.3,
-            "migliore": 29.5
+            "peggiore": 1.8,
+            "mediana": 7.6,
+            "migliore": 15.1
+          },
+          {
+            "anni": 20,
+            "n": 263,
+            "positivi": 100,
+            "peggiore": 2.8,
+            "mediana": 6.8,
+            "migliore": 10
           }
         ],
         "annuali": [
           [
             1996,
-            23.5
+            20.3
           ],
           [
             1997,
-            32.7
+            31
           ],
           [
             1998,
-            18
+            26.7
           ],
           [
             1999,
-            10.3
+            19.5
           ],
           [
             2000,
-            -9.3
+            -10.1
           ],
           [
             2001,
-            -10.7
+            -13
           ],
           [
             2002,
-            -24
+            -23.4
           ],
           [
             2003,
-            36.1
+            26.4
           ],
           [
             2004,
-            5.1
+            9
           ],
           [
             2005,
-            6.4
+            3
           ],
           [
             2006,
-            9.9
+            13.6
           ],
           [
             2007,
-            -5.4
+            3.5
           ],
           [
             2008,
-            -44.8
+            -38.5
           ],
           [
             2009,
-            50.3
+            23.5
           ],
           [
             2010,
-            20.2
+            12.8
           ],
           [
             2011,
-            2.9
+            0
           ],
           [
             2012,
-            10.9
+            13.4
           ],
           [
             2013,
-            22.8
+            29.6
           ],
           [
             2014,
-            13.2
+            11.4
           ],
           [
             2015,
-            -8.2
+            -0.7
           ],
           [
             2016,
-            22.3
+            9.5
           ],
           [
             2017,
-            14.8
+            19.4
           ],
           [
             2018,
-            2.6
+            -6.2
           ],
           [
             2019,
-            6.1
+            28.9
           ],
           [
             2020,
-            29
+            16.3
           ],
           [
             2021,
-            14.8
+            26.9
           ],
           [
             2022,
-            -9.2
+            -19.4
           ],
           [
             2023,
-            28.4
+            24.2
           ],
           [
             2024,
-            16.8
+            23.3
           ],
           [
             2025,
-            15.5
+            16.4
           ]
         ]
       },
@@ -2160,172 +2176,188 @@ window.ECO = {
         "id": "nasdaq",
         "nome": "Tecnologici USA (Nasdaq)",
         "nota": "Solo prezzo, senza dividendi",
-        "inizio": "1984-11",
+        "inizio": "1985-01",
         "fine": "2026-11",
-        "anni": 14,
-        "cagr": 38.2,
+        "anni": 41.8,
+        "cagr": 11.4,
         "calo": {
-          "valore": -66.5,
-          "picco": "1999-11",
-          "minimo": "2002-11",
-          "ritorno": "2013-11",
-          "mesi": 56
+          "valore": -75,
+          "picco": "2000-02",
+          "minimo": "2002-09",
+          "ritorno": "2014-11",
+          "mesi": 177
         },
-        "dalMassimo": 0,
+        "dalMassimo": -4.6,
         "finestre": [
           {
             "anni": 1,
-            "n": 157,
-            "positivi": 87,
-            "peggiore": -66.5,
-            "mediana": 44.8,
-            "migliore": 206.2
+            "n": 491,
+            "positivi": 79,
+            "peggiore": -59.8,
+            "mediana": 15.8,
+            "migliore": 105.3
           },
           {
             "anni": 3,
-            "n": 133,
-            "positivi": 93,
-            "peggiore": -27.9,
-            "mediana": 39.2,
-            "migliore": 111.9
+            "n": 467,
+            "positivi": 87,
+            "peggiore": -34.2,
+            "mediana": 12.8,
+            "migliore": 55.3
           },
           {
             "anni": 5,
-            "n": 109,
-            "positivi": 100,
-            "peggiore": 3.3,
-            "mediana": 34.3,
-            "migliore": 69.9
+            "n": 443,
+            "positivi": 89,
+            "peggiore": -15.3,
+            "mediana": 12.5,
+            "migliore": 42.7
           },
           {
             "anni": 10,
-            "n": 49,
+            "n": 383,
+            "positivi": 93,
+            "peggiore": -7.1,
+            "mediana": 11.2,
+            "migliore": 27.1
+          },
+          {
+            "anni": 15,
+            "n": 323,
             "positivi": 100,
-            "peggiore": 28.7,
-            "mediana": 35.2,
-            "migliore": 41.9
+            "peggiore": 0.4,
+            "mediana": 10.2,
+            "migliore": 20.6
+          },
+          {
+            "anni": 20,
+            "n": 263,
+            "positivi": 100,
+            "peggiore": 2.6,
+            "mediana": 9.1,
+            "migliore": 13.4
           }
         ],
         "annuali": [
           [
             1996,
-            30.2
+            22.7
           ],
           [
             1997,
-            17.4
+            21.6
           ],
           [
             1998,
-            54.7
+            39.6
           ],
           [
             1999,
-            57.2
+            85.6
           ],
           [
             2000,
-            -29.6
+            -39.3
           ],
           [
             2001,
-            -30.2
+            -21.1
           ],
           [
             2002,
-            -31.7
+            -31.5
           ],
           [
             2003,
-            56.4
+            50
           ],
           [
             2004,
-            -0.2
+            8.6
           ],
           [
             2005,
-            11.8
+            1.4
           ],
           [
             2006,
-            6.9
+            9.5
           ],
           [
             2007,
-            -3
+            9.8
           ],
           [
             2008,
-            -38.2
+            -40.5
           ],
           [
             2009,
-            45.4
+            43.9
           ],
           [
             2010,
-            25.7
+            16.9
           ],
           [
             2011,
-            4.2
-          ],
-          [
-            2012,
-            11.7
-          ],
-          [
-            2013,
-            30.6
-          ],
-          [
-            2014,
-            12.9
-          ],
-          [
-            2015,
-            -0.5
-          ],
-          [
-            2016,
-            21.7
-          ],
-          [
-            2017,
-            32
-          ],
-          [
-            2018,
             -1.8
           ],
           [
+            2012,
+            15.9
+          ],
+          [
+            2013,
+            38.3
+          ],
+          [
+            2014,
+            13.4
+          ],
+          [
+            2015,
+            5.7
+          ],
+          [
+            2016,
+            7.5
+          ],
+          [
+            2017,
+            28.2
+          ],
+          [
+            2018,
+            -3.9
+          ],
+          [
             2019,
-            25.7
+            35.2
           ],
           [
             2020,
-            42.8
+            43.6
           ],
           [
             2021,
-            8.9
+            21.4
           ],
           [
             2022,
-            -18.6
+            -33.1
           ],
           [
             2023,
-            30.9
+            43.4
           ],
           [
             2024,
-            29.4
+            28.6
           ],
           [
             2025,
-            19.5
+            20.4
           ]
         ]
       },
@@ -2333,10 +2365,10 @@ window.ECO = {
         "id": "stoxx50",
         "nome": "Europa (Euro Stoxx 50)",
         "nota": "Solo prezzo, senza dividendi",
-        "inizio": "2007-04",
+        "inizio": "2007-03",
         "fine": "2026-11",
-        "anni": 19.6,
-        "cagr": 1.8,
+        "anni": 19.7,
+        "cagr": 2.1,
         "calo": {
           "valore": -56.2,
           "picco": "2007-05",
@@ -2348,40 +2380,40 @@ window.ECO = {
         "finestre": [
           {
             "anni": 1,
-            "n": 224,
+            "n": 225,
             "positivi": 62,
             "peggiore": -46.9,
-            "mediana": 6.9,
+            "mediana": 6.5,
             "migliore": 43.7
           },
           {
             "anni": 3,
-            "n": 200,
-            "positivi": 72,
+            "n": 201,
+            "positivi": 71,
             "peggiore": -16.9,
             "mediana": 3.7,
             "migliore": 19
           },
           {
             "anni": 5,
-            "n": 176,
-            "positivi": 83,
+            "n": 177,
+            "positivi": 82,
             "peggiore": -14,
             "mediana": 4.9,
             "migliore": 13.9
           },
           {
             "anni": 10,
-            "n": 116,
-            "positivi": 87,
+            "n": 117,
+            "positivi": 86,
             "peggiore": -2.6,
-            "mediana": 4,
+            "mediana": 3.8,
             "migliore": 8.2
           },
           {
             "anni": 15,
-            "n": 56,
-            "positivi": 84,
+            "n": 57,
+            "positivi": 82,
             "peggiore": -1.8,
             "mediana": 4.2,
             "migliore": 7.3
@@ -2468,170 +2500,186 @@ window.ECO = {
         "nota": "Indice con dividendi reinvestiti",
         "inizio": "1987-12",
         "fine": "2026-11",
-        "anni": 13,
-        "cagr": 27.9,
+        "anni": 38.9,
+        "cagr": 8.8,
         "calo": {
-          "valore": -66.7,
-          "picco": "1999-12",
-          "minimo": "2002-12",
-          "ritorno": "2007-03",
-          "mesi": 29
+          "valore": -68.3,
+          "picco": "2000-02",
+          "minimo": "2003-03",
+          "ritorno": "2007-05",
+          "mesi": 87
         },
         "dalMassimo": 0,
         "finestre": [
           {
             "anni": 1,
-            "n": 145,
-            "positivi": 79,
-            "peggiore": -66.7,
-            "mediana": 30,
-            "migliore": 164.6
+            "n": 456,
+            "positivi": 70,
+            "peggiore": -55.1,
+            "mediana": 13.4,
+            "migliore": 76.8
           },
           {
             "anni": 3,
-            "n": 121,
-            "positivi": 94,
-            "peggiore": -20.5,
-            "mediana": 24.3,
-            "migliore": 69.7
+            "n": 432,
+            "positivi": 79,
+            "peggiore": -31.7,
+            "mediana": 8.6,
+            "migliore": 40.9
           },
           {
             "anni": 5,
-            "n": 97,
-            "positivi": 100,
-            "peggiore": 7.3,
-            "mediana": 22.1,
-            "migliore": 38.5
+            "n": 408,
+            "positivi": 83,
+            "peggiore": -13.8,
+            "mediana": 8.2,
+            "migliore": 31.7
           },
           {
             "anni": 10,
-            "n": 37,
+            "n": 348,
+            "positivi": 94,
+            "peggiore": -3.1,
+            "mediana": 7.7,
+            "migliore": 17.8
+          },
+          {
+            "anni": 15,
+            "n": 288,
             "positivi": 100,
-            "peggiore": 20.2,
-            "mediana": 24.6,
-            "migliore": 27.9
+            "peggiore": 2.1,
+            "mediana": 6.9,
+            "migliore": 11.9
+          },
+          {
+            "anni": 20,
+            "n": 228,
+            "positivi": 100,
+            "peggiore": 1.3,
+            "mediana": 7.3,
+            "migliore": 11
           }
         ],
         "annuali": [
           [
             1996,
-            31.2
+            27.4
           ],
           [
             1997,
-            43.9
+            46.7
           ],
           [
             1998,
-            4.5
+            18.5
           ],
           [
             1999,
-            55.9
+            39
           ],
           [
             2000,
-            -18.8
+            -7.5
           ],
           [
             2001,
-            -18.8
+            -19.8
           ],
           [
             2002,
-            -49.5
+            -43.9
           ],
           [
             2003,
-            57.8
+            37.1
           ],
           [
             2004,
-            8.3
+            7.3
           ],
           [
             2005,
-            33.2
+            27.1
           ],
           [
             2006,
-            15.9
+            22
           ],
           [
             2007,
-            0.5
+            22.3
           ],
           [
             2008,
-            -43
+            -40.4
           ],
           [
             2009,
-            45.7
+            23.8
           ],
           [
             2010,
-            29.9
+            16.1
           ],
           [
             2011,
-            -5.7
+            -14.7
           ],
           [
             2012,
-            12.9
+            29.1
           ],
           [
             2013,
-            25.2
+            25.5
           ],
           [
             2014,
-            17.6
+            2.7
           ],
           [
             2015,
-            -16.7
+            9.6
           ],
           [
             2016,
-            24.6
+            6.9
           ],
           [
             2017,
-            5.1
+            12.5
           ],
           [
             2018,
-            -7.4
+            -18.3
           ],
           [
             2019,
-            3.3
+            25.5
           ],
           [
             2020,
-            15.9
+            3.5
           ],
           [
             2021,
-            4.9
+            15.8
           ],
           [
             2022,
-            6.3
+            -12.3
           ],
           [
             2023,
-            15.1
+            20.3
           ],
           [
             2024,
-            27.6
+            18.8
           ],
           [
             2025,
-            12.1
+            23
           ]
         ]
       },
@@ -2639,10 +2687,10 @@ window.ECO = {
         "id": "ftsemib",
         "nome": "Italia (FTSE MIB)",
         "nota": "Solo prezzo, senza dividendi",
-        "inizio": "1998-01",
+        "inizio": "1997-12",
         "fine": "2026-11",
-        "anni": 28.8,
-        "cagr": 2.2,
+        "anni": 28.9,
+        "cagr": 2.6,
         "calo": {
           "valore": -73.4,
           "picco": "2000-02",
@@ -2654,23 +2702,23 @@ window.ECO = {
         "finestre": [
           {
             "anni": 1,
-            "n": 335,
+            "n": 336,
             "positivi": 63,
             "peggiore": -54.5,
-            "mediana": 8.7,
+            "mediana": 9.1,
             "migliore": 49.8
           },
           {
             "anni": 3,
-            "n": 311,
+            "n": 312,
             "positivi": 54,
             "peggiore": -26,
-            "mediana": 1,
+            "mediana": 1.3,
             "migliore": 27.4
           },
           {
             "anni": 5,
-            "n": 287,
+            "n": 288,
             "positivi": 52,
             "peggiore": -21.5,
             "mediana": 0.7,
@@ -2678,15 +2726,15 @@ window.ECO = {
           },
           {
             "anni": 10,
-            "n": 227,
-            "positivi": 38,
+            "n": 228,
+            "positivi": 39,
             "peggiore": -8.5,
             "mediana": -2.7,
             "migliore": 12.3
           },
           {
             "anni": 15,
-            "n": 167,
+            "n": 168,
             "positivi": 27,
             "peggiore": -5.7,
             "mediana": -2.5,
@@ -2694,14 +2742,18 @@ window.ECO = {
           },
           {
             "anni": 20,
-            "n": 107,
-            "positivi": 45,
+            "n": 108,
+            "positivi": 44,
             "peggiore": -4.8,
             "mediana": -0.6,
             "migliore": 1.8
           }
         ],
         "annuali": [
+          [
+            1998,
+            45.2
+          ],
           [
             1999,
             20.3
@@ -2818,48 +2870,64 @@ window.ECO = {
         "nota": "Solo prezzo, senza dividendi",
         "inizio": "1985-01",
         "fine": "2026-11",
-        "anni": 14,
-        "cagr": 12,
+        "anni": 41.8,
+        "cagr": 4,
         "calo": {
-          "valore": -79.5,
-          "picco": "1989-10",
-          "minimo": "2003-01",
-          "ritorno": "2024-01",
-          "mesi": 137
+          "valore": -80.6,
+          "picco": "1989-12",
+          "minimo": "2009-02",
+          "ritorno": "2024-02",
+          "mesi": 410
         },
-        "dalMassimo": -12.5,
+        "dalMassimo": -12.6,
         "finestre": [
           {
             "anni": 1,
-            "n": 157,
-            "positivi": 61,
-            "peggiore": -60.8,
-            "mediana": 11.3,
-            "migliore": 130.5
+            "n": 491,
+            "positivi": 59,
+            "peggiore": -48.8,
+            "mediana": 5.3,
+            "migliore": 74.7
           },
           {
             "anni": 3,
-            "n": 133,
-            "positivi": 50,
-            "peggiore": -29.1,
-            "mediana": 0.1,
-            "migliore": 51.8
+            "n": 467,
+            "positivi": 60,
+            "peggiore": -26.8,
+            "mediana": 3.6,
+            "migliore": 34.3
           },
           {
             "anni": 5,
-            "n": 109,
-            "positivi": 50,
-            "peggiore": -21.7,
-            "mediana": 1.1,
-            "migliore": 50.3
+            "n": 443,
+            "positivi": 53,
+            "peggiore": -14.6,
+            "mediana": 1.4,
+            "migliore": 25.4
           },
           {
             "anni": 10,
-            "n": 49,
-            "positivi": 69,
-            "peggiore": -4.9,
-            "mediana": 3.2,
-            "migliore": 13
+            "n": 383,
+            "positivi": 50,
+            "peggiore": -9.4,
+            "mediana": 0,
+            "migliore": 16.2
+          },
+          {
+            "anni": 15,
+            "n": 323,
+            "positivi": 50,
+            "peggiore": -8,
+            "mediana": 0,
+            "migliore": 14.6
+          },
+          {
+            "anni": 20,
+            "n": 263,
+            "positivi": 50,
+            "peggiore": -7,
+            "mediana": 0,
+            "migliore": 7.8
           }
         ],
         "annuali": [
@@ -2982,175 +3050,6 @@ window.ECO = {
           [
             2025,
             26.2
-          ]
-        ]
-      },
-      {
-        "id": "oro",
-        "nome": "Oro (in dollari)",
-        "nota": "Prezzo del metallo, che non paga interessi né dividendi",
-        "inizio": "2000-09",
-        "fine": "2026-11",
-        "anni": 22.3,
-        "cagr": 12.9,
-        "calo": {
-          "valore": -42,
-          "picco": "2011-08",
-          "minimo": "2015-12",
-          "ritorno": "2020-07",
-          "mesi": 90
-        },
-        "dalMassimo": -12.7,
-        "finestre": [
-          {
-            "anni": 1,
-            "n": 257,
-            "positivi": 78,
-            "peggiore": -27.5,
-            "mediana": 13.4,
-            "migliore": 78.6
-          },
-          {
-            "anni": 3,
-            "n": 233,
-            "positivi": 84,
-            "peggiore": -14.4,
-            "mediana": 14.3,
-            "migliore": 40.9
-          },
-          {
-            "anni": 5,
-            "n": 209,
-            "positivi": 85,
-            "peggiore": -7.5,
-            "mediana": 10.5,
-            "migliore": 31.5
-          },
-          {
-            "anni": 10,
-            "n": 149,
-            "positivi": 100,
-            "peggiore": 0.7,
-            "mediana": 8.8,
-            "migliore": 20.6
-          },
-          {
-            "anni": 15,
-            "n": 89,
-            "positivi": 100,
-            "peggiore": 7.9,
-            "mediana": 10.5,
-            "migliore": 12.9
-          },
-          {
-            "anni": 20,
-            "n": 29,
-            "positivi": 100,
-            "peggiore": 10.6,
-            "mediana": 12.9,
-            "migliore": 14.6
-          }
-        ],
-        "annuali": [
-          [
-            2001,
-            2.5
-          ],
-          [
-            2002,
-            13.7
-          ],
-          [
-            2003,
-            31.2
-          ],
-          [
-            2004,
-            5.2
-          ],
-          [
-            2005,
-            18.2
-          ],
-          [
-            2006,
-            22.8
-          ],
-          [
-            2007,
-            31.4
-          ],
-          [
-            2008,
-            5.8
-          ],
-          [
-            2009,
-            23.9
-          ],
-          [
-            2010,
-            29.8
-          ],
-          [
-            2011,
-            10.2
-          ],
-          [
-            2012,
-            7
-          ],
-          [
-            2013,
-            -25.3
-          ],
-          [
-            2014,
-            -5.3
-          ],
-          [
-            2015,
-            -10.4
-          ],
-          [
-            2016,
-            8.5
-          ],
-          [
-            2017,
-            13.6
-          ],
-          [
-            2018,
-            -2.1
-          ],
-          [
-            2019,
-            14.7
-          ],
-          [
-            2020,
-            29.3
-          ],
-          [
-            2021,
-            -3.5
-          ],
-          [
-            2022,
-            -0.1
-          ],
-          [
-            2023,
-            13.4
-          ],
-          [
-            2024,
-            28.2
-          ],
-          [
-            2025,
-            63.4
           ]
         ]
       }
@@ -4537,7 +4436,7 @@ window.ECO = {
       3969.6001,
       3940.3999,
       4073,
-      4142.4
+      4140
     ],
     "argento": [
       73.072,
@@ -4669,7 +4568,7 @@ window.ECO = {
       50.72,
       49.587,
       52.12,
-      52.915
+      52.88
     ],
     "brent": [
       114.44,
@@ -4801,7 +4700,7 @@ window.ECO = {
       104.77,
       103.6,
       94.62,
-      93.9
+      93.86
     ],
     "btc": [
       59532.3398,
@@ -4933,7 +4832,7 @@ window.ECO = {
       78248.4531,
       76677.2969,
       77345.0469,
-      80329.92
+      80383.26
     ],
     "btp10": [
       3.559,
@@ -5456,7 +5355,7 @@ window.ECO = {
       114.39,
       113.19,
       116.85,
-      118.23
+      118.16
     ],
     "benzina": [
       1.789,
@@ -5644,7 +5543,7 @@ window.ECO = {
       1459,
       1432.4,
       1501.1,
-      1525.8
+      1525.5
     ],
     "rame": [
       5.795,
@@ -5776,7 +5675,7 @@ window.ECO = {
       6.5435,
       6.3785,
       6.403,
-      6.412
+      6.418
     ],
     "emergenti": [
       46.75,
@@ -6040,7 +5939,7 @@ window.ECO = {
       63290.1094,
       63081.8594,
       62188.6289,
-      61175.5
+      61239.22
     ],
     "india": [
       23997.5508,
@@ -6172,7 +6071,7 @@ window.ECO = {
       23440.8008,
       23810.8496,
       23960.5996,
-      24363.15
+      24367.55
     ],
     "cina": [
       4079.8999,
@@ -6304,7 +6203,7 @@ window.ECO = {
       3638.031,
       3608.0979,
       3686.1731,
-      3675.548
+      3676.784
     ],
     "brasile": [
       187318,
