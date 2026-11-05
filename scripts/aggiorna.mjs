@@ -201,8 +201,8 @@ async function storiaLunga(sym) {
     if (c.length && (v / c.at(-1) > 1.6 || v / c.at(-1) < 0.45)) continue; // dato anomalo
     m.push(k); c.push(v);
   }
-  // serve una serie davvero mensile: niente buchi più lunghi di 2 mesi
-  for (let i = 1; i < m.length; i++) if (idx(m[i]) - idx(m[i - 1]) > 2) throw new Error(`serie non mensile (${m[i - 1]} → ${m[i]})`);
+  // serve una serie davvero mensile: al massimo qualche mese mancante, che viene saltato
+  for (let i = 1; i < m.length; i++) if (idx(m[i]) - idx(m[i - 1]) > 4) throw new Error(`serie non mensile (${m[i - 1]} → ${m[i]})`);
   if (c.length < 120) throw new Error(`storia troppo corta (${c.length} mesi)`);
   const n = c.length, mesiTot = idx(m.at(-1)) - idx(m[0]), anni = mesiTot / 12;
   const cagr = (c.at(-1) / c[0]) ** (1 / anni) - 1;
