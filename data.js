@@ -1,6 +1,6 @@
 /* Dati del giorno, generati automaticamente due volte al giorno. */
 window.ECO = {
-  "aggiornato": "2026-11-05T15:38:51+01:00",
+  "aggiornato": "2026-11-05T22:02:40+01:00",
   "edizione": "sera",
   "testiIA": false,
   "fonti": {
@@ -12,7 +12,6 @@ window.ECO = {
       "S&P 500",
       "Dow Jones",
       "Nasdaq",
-      "Indice della paura (VIX)",
       "Treasury USA 10 anni",
       "Euro / Dollaro (mercato)",
       "Oro",
@@ -45,20 +44,22 @@ window.ECO = {
       "Bitcoin (rete e mercato)",
       "Storia dei mercati"
     ],
-    "nonAggiornate": []
+    "nonAggiornate": [
+      "Indice della paura (VIX)"
+    ]
   },
-  "titolo": "Piazza Affari in rialzo (+0,51%), inflazione alta al 5,6%",
-  "sintesi": "Oggi il FTSE MIB chiude a 51.294 punti (+0,51%), mentre l'S&P 500 di Wall Street segna −0,55%. L'inflazione italiana è al 5,6% (ottobre 2026): è il fattore che pesa di più sul potere d'acquisto delle famiglie. Lo spread BTP-Bund è a 89 punti base (media di settembre 2026).",
+  "titolo": "Piazza Affari in calo (−1,03%), inflazione alta al 5,6%",
+  "sintesi": "Oggi il FTSE MIB chiude a 50.506 punti (−1,03%), mentre l'S&P 500 di Wall Street segna −4,35%. L'inflazione italiana è al 5,6% (ottobre 2026): è il fattore che pesa di più sul potere d'acquisto delle famiglie. Lo spread BTP-Bund è a 89 punti base (media di settembre 2026).",
   "climi": {
     "mercati": {
-      "valore": 50,
-      "etichetta": "Variabile",
+      "valore": 18,
+      "etichetta": "Tempesta",
       "nota": "Da Piazza Affari e Wall Street nella seduta di oggi; VIX a 17,0."
     },
     "famiglie": {
       "valore": 90,
       "etichetta": "Pressione alta",
-      "nota": "Inflazione al 5,6%, benzina a 2,006 €/l, disoccupazione al 6,3%."
+      "nota": "Inflazione al 5,6%, benzina a 2,001 €/l, disoccupazione al 6,3%."
     }
   },
   "perTe": [
@@ -79,14 +80,14 @@ window.ECO = {
     {
       "tema": "Investimenti",
       "titolo": "Il piano conta più della seduta",
-      "testo": "Piazza Affari segna +0,51% nella seduta di oggi e +0,1% nell'ultimo mese. L'azionario mondiale, riferimento di molti piani di accumulo, è a −0,8% in un mese. Per chi investe a lungo termine contano costi bassi, diversificazione e versamenti regolari.",
+      "testo": "Piazza Affari segna −1,03% nella seduta di oggi e −1,5% nell'ultimo mese. L'azionario mondiale, riferimento di molti piani di accumulo, è a −3,3% in un mese. Per chi investe a lungo termine contano costi bassi, diversificazione e versamenti regolari.",
       "azione": "Simula un piano di accumulo",
       "link": "#strumenti"
     },
     {
       "tema": "Spese",
       "titolo": "Carburanti in calo",
-      "testo": "La benzina self costa in media 2,006 €/l (−15,0 centesimi rispetto a un mese fa): un pieno da 50 litri vale circa 100 €. Il petrolio è sceso del 3% in un mese: i prezzi alla pompa di solito lo seguono con qualche settimana di ritardo. Il Portale Offerte ARERA e l'Osservaprezzi del Mimit sono gratuiti e neutrali.",
+      "testo": "La benzina self costa in media 2,001 €/l (−7,2 centesimi rispetto a un mese fa): un pieno da 50 litri vale circa 100 €. Il Portale Offerte ARERA e l'Osservaprezzi del Mimit sono gratuiti e neutrali.",
       "azione": "Apri le fonti utili",
       "link": "#fonti"
     }
@@ -101,19 +102,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 51294,
-          "var": 0.51,
+          "valore": 50506,
+          "var": -1.03,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/FTSEMIB.MI",
           "rend": {
-            "m1": 0.06,
-            "m3": -4.45,
-            "ytd": 14.13,
-            "y1": 18.08
+            "m1": -1.47,
+            "m3": -5.92,
+            "ytd": 12.37,
+            "y1": 16.27
           },
           "inizio": "2026-05-08",
-          "mese": 0.06,
+          "mese": -1.47,
           "nota": "Indice principale di Piazza Affari"
         },
         {
@@ -122,19 +123,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 6307,
-          "var": 0.65,
+          "valore": 6232,
+          "var": -0.55,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5ESTOXX50E",
           "rend": {
-            "m1": 0.55,
-            "m3": -3.01,
-            "ytd": 8.81,
-            "y1": 11.25
+            "m1": -0.65,
+            "m3": -4.17,
+            "ytd": 7.51,
+            "y1": 9.92
           },
           "inizio": "2026-05-06",
-          "mese": 0.55,
+          "mese": -0.65,
           "nota": "Le 50 maggiori società dell'area euro"
         },
         {
@@ -143,19 +144,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 26629,
-          "var": 0.72,
+          "valore": 26325,
+          "var": -0.43,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5EGDAXI",
           "rend": {
-            "m1": 4.64,
-            "m3": 1.87,
-            "ytd": 8.73,
-            "y1": 10.73
+            "m1": 3.44,
+            "m3": 0.71,
+            "ytd": 7.49,
+            "y1": 9.46
           },
           "inizio": "2026-05-08",
-          "mese": 4.64,
+          "mese": 3.44,
           "nota": "Borsa di Francoforte"
         },
         {
@@ -164,19 +165,19 @@ window.ECO = {
           "unita": "€",
           "decimali": 2,
           "buono": null,
-          "valore": 130.74,
-          "var": 0.17,
+          "valore": 127.57,
+          "var": -2.26,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/SWDA.MI",
           "rend": {
-            "m1": -0.84,
-            "m3": 2.07,
-            "ytd": 16.93,
-            "y1": 16.99
+            "m1": -3.25,
+            "m3": -0.41,
+            "ytd": 14.1,
+            "y1": 14.16
           },
           "inizio": "2026-05-08",
-          "mese": -0.84,
+          "mese": -3.25,
           "nota": "ETF iShares Core MSCI World quotato a Milano: misura l'azionario globale"
         },
         {
@@ -185,19 +186,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 2,
           "buono": null,
-          "valore": 7646.19,
-          "var": -0.55,
+          "valore": 7353.8,
+          "var": -4.35,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5EGSPC",
           "rend": {
-            "m1": -2.21,
-            "m3": -0.83,
-            "ytd": 11.7,
-            "y1": 12.51
+            "m1": -5.95,
+            "m3": -4.62,
+            "ytd": 7.43,
+            "y1": 9.43
           },
           "inizio": "2026-05-04",
-          "mese": -2.21,
+          "mese": -5.95,
           "nota": "Le 500 maggiori società USA"
         },
         {
@@ -206,19 +207,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 2,
           "buono": null,
-          "valore": 25376.64,
-          "var": -1.4,
+          "valore": 24315,
+          "var": -5.52,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5EIXIC",
           "rend": {
-            "m1": -8.05,
-            "m3": -3.69,
-            "ytd": 9.18,
-            "y1": 7.99
+            "m1": -11.9,
+            "m3": -7.72,
+            "ytd": 4.62,
+            "y1": 5.47
           },
           "inizio": "2026-05-04",
-          "mese": -8.05,
+          "mese": -11.9,
           "nota": "Indice dei tecnologici USA"
         },
         {
@@ -238,7 +239,7 @@ window.ECO = {
             "ytd": 21.33,
             "y1": 21.64
           },
-          "inizio": "2026-04-23",
+          "inizio": "2026-04-22",
           "mese": -13.59,
           "nota": "Borsa di Tokyo, in yen"
         },
@@ -274,19 +275,19 @@ window.ECO = {
           "unita": "€",
           "decimali": 2,
           "buono": null,
-          "valore": 44.39,
-          "var": -1.5,
+          "valore": 43.31,
+          "var": -3.89,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/EIMI.MI",
           "rend": {
-            "m1": -11.02,
-            "m3": -4.67,
-            "ytd": 15.57,
-            "y1": 14.05
+            "m1": -13.19,
+            "m3": -6.99,
+            "ytd": 12.76,
+            "y1": 11.28
           },
           "inizio": "2026-05-08",
-          "mese": -11.02,
+          "mese": -13.19,
           "nota": "ETF iShares MSCI EM IMI quotato a Milano: oltre 3.000 aziende di Cina, India, Taiwan, Brasile"
         },
         {
@@ -306,7 +307,7 @@ window.ECO = {
             "ytd": -6.1,
             "y1": -3.81
           },
-          "inizio": "2026-04-30",
+          "inizio": "2026-04-29",
           "mese": 7.73,
           "nota": "Le 50 maggiori società indiane, in rupie"
         },
@@ -327,7 +328,7 @@ window.ECO = {
             "ytd": -7.03,
             "y1": -7.04
           },
-          "inizio": "2026-04-24",
+          "inizio": "2026-04-23",
           "mese": -3.96,
           "nota": "Borsa di Shanghai, in yuan"
         },
@@ -337,19 +338,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 0,
           "buono": null,
-          "valore": 168817,
-          "var": 0.75,
+          "valore": 166495,
+          "var": -0.64,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5EBVSP",
           "rend": {
-            "m1": -17.98,
-            "m3": -3.83,
-            "ytd": 4.77,
-            "y1": 10.13
+            "m1": -19.11,
+            "m3": -5.16,
+            "ytd": 3.33,
+            "y1": 8.61
           },
           "inizio": "2026-05-04",
-          "mese": -17.98,
+          "mese": -19.11,
           "nota": "Borsa di San Paolo, in real"
         }
       ]
@@ -522,11 +523,11 @@ window.ECO = {
           "nome": "Benzina",
           "unita": "€/l",
           "decimali": 3,
-          "valore": 2.006,
-          "var": -0.5,
+          "valore": 2.001,
+          "var": -0.25,
           "buono": "giu",
           "nota": "Media nazionale settimanale, Bollettino petrolifero UE",
-          "data": "2026-10-26",
+          "data": "2026-11-02",
           "fonte": "Commissione europea via fuel-prices.eu",
           "url": "https://www.fuel-prices.eu/research/",
           "mese": null
@@ -536,11 +537,11 @@ window.ECO = {
           "nome": "Gasolio",
           "unita": "€/l",
           "decimali": 3,
-          "valore": 2.247,
-          "var": 0.13,
+          "valore": 2.238,
+          "var": -0.4,
           "buono": "giu",
           "nota": "Media nazionale settimanale, Bollettino petrolifero UE",
-          "data": "2026-10-26",
+          "data": "2026-11-02",
           "fonte": "Commissione europea via fuel-prices.eu",
           "url": "https://www.fuel-prices.eu/research/",
           "mese": null
@@ -555,25 +556,25 @@ window.ECO = {
           "nome": "Oro al grammo",
           "unita": "€/g",
           "decimali": 2,
-          "valore": 118.43,
-          "var": 1.36,
+          "valore": 117.76,
+          "var": 0.78,
           "data": "2026-11-05",
-          "nota": "Oro puro. A 18 carati circa 88,83 €/g",
+          "nota": "Oro puro. A 18 carati circa 88,32 €/g",
           "fonte": "Calcolo su Yahoo Finance e BCE",
           "url": "https://finance.yahoo.com/quote/GC%3DF",
           "rend": {
-            "m1": -1.32,
-            "m3": -0.99,
-            "ytd": -0.32,
-            "y1": 5.96,
-            "dalMax": -18.4,
-            "dalMin": 6.1,
-            "ma200": -5.5,
+            "m1": -1.88,
+            "m3": -1.54,
+            "ytd": -0.89,
+            "y1": 5.35,
+            "dalMax": -18.9,
+            "dalMin": 5.5,
+            "ma200": -6,
             "vol": 27.3,
             "calo1a": -22.8
           },
           "inizio": "2026-05-04",
-          "mese": -1.31
+          "mese": -1.87
         },
         {
           "id": "argento",
@@ -581,19 +582,19 @@ window.ECO = {
           "unita": "$/oz",
           "decimali": 2,
           "buono": null,
-          "valore": 52.96,
-          "var": 1.61,
+          "valore": 52.02,
+          "var": -0.19,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/SI%3DF",
           "rend": {
-            "m1": -13.42,
-            "m3": -13.8,
-            "ytd": -24.49,
-            "y1": 10.65
+            "m1": -14.96,
+            "m3": -15.33,
+            "ytd": -25.83,
+            "y1": 8.69
           },
           "inizio": "2026-05-04",
-          "mese": -13.42,
+          "mese": -14.96,
           "nota": "Metallo prezioso e industriale, più volatile dell'oro"
         },
         {
@@ -602,19 +603,19 @@ window.ECO = {
           "unita": "$/oz",
           "decimali": 0,
           "buono": null,
-          "valore": 1541,
-          "var": 2.66,
+          "valore": 1525,
+          "var": 1.6,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/PL%3DF",
           "rend": {
-            "m1": -8.96,
-            "m3": -10.87,
-            "ytd": -24.26,
-            "y1": -0.8
+            "m1": -9.9,
+            "m3": -11.79,
+            "ytd": -25.04,
+            "y1": -1.83
           },
           "inizio": "2026-05-04",
-          "mese": -8.96,
+          "mese": -9.9,
           "nota": "Usato in gioielleria e catalizzatori auto"
         },
         {
@@ -623,19 +624,19 @@ window.ECO = {
           "unita": "$/lb",
           "decimali": 2,
           "buono": null,
-          "valore": 6.44,
-          "var": 0.59,
+          "valore": 6.21,
+          "var": -3.01,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/HG%3DF",
           "rend": {
-            "m1": -2.33,
-            "m3": -3.68,
-            "ytd": 14.4,
-            "y1": 29.78
+            "m1": -5.83,
+            "m3": -7.13,
+            "ytd": 10.3,
+            "y1": 25.13
           },
           "inizio": "2026-05-04",
-          "mese": -2.33,
+          "mese": -5.83,
           "nota": "Termometro dell'economia mondiale: sale quando l'industria cresce"
         }
       ]
@@ -648,39 +649,39 @@ window.ECO = {
           "nome": "Euro / Dollaro",
           "unita": "$",
           "decimali": 4,
-          "valore": 1.1267,
-          "var": 0.79,
-          "data": "2026-11-04",
+          "valore": 1.1224,
+          "var": -0.38,
+          "data": "2026-11-05",
           "nota": "Cambio ufficiale BCE. Un euro forte rende più economici acquisti e viaggi in dollari",
           "fonte": "BCE",
           "url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.it.html",
-          "mese": 0.56
+          "mese": -0.4
         },
         {
           "id": "eurgbp",
           "nome": "Euro / Sterlina",
           "unita": "£",
           "decimali": 4,
-          "valore": 0.8346,
-          "var": 0.12,
-          "data": "2026-11-04",
+          "valore": 0.8339,
+          "var": -0.08,
+          "data": "2026-11-05",
           "nota": "Cambio ufficiale BCE, utile per viaggi e acquisti nel Regno Unito",
           "fonte": "BCE",
           "url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.it.html",
-          "mese": -1.49
+          "mese": -1.75
         },
         {
           "id": "eurchf",
           "nome": "Euro / Franco svizzero",
           "unita": "CHF",
           "decimali": 4,
-          "valore": 0.9188,
-          "var": 0.24,
-          "data": "2026-11-04",
+          "valore": 0.918,
+          "var": -0.09,
+          "data": "2026-11-05",
           "nota": "Cambio ufficiale BCE, utile per frontalieri e viaggi in Svizzera",
           "fonte": "BCE",
           "url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.it.html",
-          "mese": -1.32
+          "mese": -1.91
         },
         {
           "id": "btc",
@@ -688,19 +689,19 @@ window.ECO = {
           "unita": "$",
           "decimali": 0,
           "buono": null,
-          "valore": 79315,
-          "var": -1.36,
+          "valore": 76023,
+          "var": -5.45,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/BTC-USD",
           "rend": {
-            "m1": -7.3,
-            "m3": 23.42,
-            "ytd": -10.61,
-            "y1": -23.66
+            "m1": -11.14,
+            "m3": 18.3,
+            "ytd": -14.32,
+            "y1": -26.82
           },
           "inizio": "2026-06-29",
-          "mese": -7.3,
+          "mese": -11.14,
           "nota": "Asset speculativo, molto volatile e non protetto"
         }
       ]
@@ -728,19 +729,19 @@ window.ECO = {
           "unita": "%",
           "decimali": 2,
           "buono": "neutro",
-          "valore": 4.91,
-          "var": 0.31,
+          "valore": 4.84,
+          "var": -1.16,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5ETNX",
           "rend": {
-            "m1": -6.83,
-            "m3": 5.12,
-            "ytd": 17.92,
-            "y1": 18.09
+            "m1": -8.2,
+            "m3": 3.58,
+            "ytd": 16.19,
+            "y1": 16.36
           },
           "inizio": "2026-05-04",
-          "mese": -6.83,
+          "mese": -8.2,
           "nota": "Rendimento del decennale USA, riferimento mondiale"
         },
         {
@@ -749,19 +750,19 @@ window.ECO = {
           "unita": "pt",
           "decimali": 2,
           "buono": null,
-          "valore": 53606.62,
-          "var": 0.47,
+          "valore": 51521.28,
+          "var": -3.44,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/%5EDJI",
           "rend": {
-            "m1": 4.05,
-            "m3": -0.52,
-            "ytd": 11.53,
-            "y1": 13.31
+            "m1": 0,
+            "m3": -4.39,
+            "ytd": 7.19,
+            "y1": 9.82
           },
           "inizio": "2026-05-04",
-          "mese": 4.05,
+          "mese": 0,
           "nota": "Indice storico di Wall Street"
         },
         {
@@ -770,19 +771,19 @@ window.ECO = {
           "unita": "$/bbl",
           "decimali": 2,
           "buono": "giu",
-          "valore": 97.44,
-          "var": 2.98,
+          "valore": 98.46,
+          "var": 4.06,
           "data": "2026-11-05",
           "fonte": "Yahoo Finance",
           "url": "https://finance.yahoo.com/quote/BZ%3DF",
           "rend": {
-            "m1": -3.12,
-            "m3": 18.12,
-            "ytd": 60.13,
-            "y1": 53.4
+            "m1": -2.11,
+            "m3": 19.36,
+            "ytd": 61.81,
+            "y1": 55.01
           },
           "inizio": "2026-05-04",
-          "mese": -3.12,
+          "mese": -2.11,
           "nota": "Riferimento per carburanti ed energia"
         }
       ]
@@ -790,20 +791,44 @@ window.ECO = {
   ],
   "notizie": [
     {
-      "titolo": "Quacivi, attacchi cyber a banche minaccia per stabilità sistema paese",
-      "testo": "Dg Acn, attacchi sempre più complessi e articolati",
+      "titolo": "Lagarde: 'A dicembre capiremo se dovremo alzare ancora i tassi'",
+      "testo": "L'inflazione italiana supera il 4% a causa dell'energia'",
       "impatto": null,
       "fonte": "ANSA",
-      "url": "https://www.ansa.it/sito/notizie/economia/2026/11/05/quacivi-attacchi-cyber-a-banche-minaccia-per-stabilita-sistema-paese_ca62f9aa-5904-46c3-b290-21cd5e1e7fe1.html",
-      "data": "2026-11-05T12:23:55.000Z"
+      "url": "https://www.ansa.it/sito/notizie/economia/2026/11/05/lagarde-a-dicembre-capiremo-se-dovremo-alzare-ancora-i-tassi_b56dd0c3-738f-4e14-8246-ce1812ffc86d.html",
+      "data": "2026-11-05T18:09:39.000Z"
     },
     {
-      "titolo": "Borsa: l'Europa sui massimi attende Wall Street, Milano +0,3%",
-      "testo": "A Piazza Affari di corsa Tenaris e Amplifon. Lo spread tra Btp e Bund a 103 punti",
+      "titolo": "Borsa: Milano chiude in calo, Ftse Mib -1,03%",
+      "testo": "L'indice dei titoli principali di Piazza Affari a 50.505 punti",
       "impatto": null,
       "fonte": "ANSA",
-      "url": "https://www.ansa.it/sito/notizie/economia/2026/11/05/borsa-leuropa-sui-massimi-attende-wall-street-milano-03_de710fab-908e-48e9-b589-f19780d51471.html",
-      "data": "2026-11-05T11:59:39.000Z"
+      "url": "https://www.ansa.it/sito/notizie/economia/2026/11/05/borsa-milano-chiude-in-calo-ftse-mib-103_3d6028d3-771c-4531-bcda-b1b69033704c.html",
+      "data": "2026-11-05T17:22:58.000Z"
+    },
+    {
+      "titolo": "Utile record sopra gli 1,5 miliardi, Banco Bpm ritocca la cedola",
+      "testo": "Ai soci più un euro ad azione nel 2026, l'acconto sul dividendo sale a 0,5 euro",
+      "impatto": null,
+      "fonte": "ANSA",
+      "url": "https://www.ansa.it/sito/notizie/economia/2026/11/05/utile-record-sopra-gli-15-miliardi-banco-bpm-ritocca-la-cedola_d6138096-fe26-48b0-b3a1-f0ed08fe7743.html",
+      "data": "2026-11-05T17:22:50.000Z"
+    },
+    {
+      "titolo": "Emirates, traffico in ripresa ma gli utili semestrali crollano del 66%",
+      "testo": "La guerra in Medio Oriente presenta il conto anche a Emirates. La principale compagnia aerea di Dubai ha registrato una contrazione del 66% dell’utile netto nel primo semestre dell’esercizio finanziario...",
+      "impatto": null,
+      "fonte": "Il Sole 24 Ore",
+      "url": "https://www.ilsole24ore.com/art/emirates-traffico-ripresa-ma-utili-semestrali-crollano-66percento-AJN1S75B",
+      "data": "2026-11-05T15:50:37.000Z"
+    },
+    {
+      "titolo": "«Il vino migliore è quello che ricordi»: via alla nuova campagna sul bere moderato",
+      "testo": "Il vino migliore è quello che ricordiamo. Ruota attorno a questo slogan e al messaggio “Let de moment last, lasciamo che il ricordo duri” l’ultima campagna lanciata da Federvini, Unione...",
+      "impatto": null,
+      "fonte": "Il Sole 24 Ore",
+      "url": "https://www.ilsole24ore.com/art/il-vino-migliore-e-quello-che-ricordi-via-nuova-campagna-bere-moderato-AJw1l15B",
+      "data": "2026-11-05T15:23:21.000Z"
     },
     {
       "titolo": "Lottomatica accelera in Borsa, i ricavi balzano a 1,72 miliardi grazie al gioco online",
@@ -812,30 +837,6 @@ window.ECO = {
       "fonte": "Il Sole 24 Ore",
       "url": "https://www.ilsole24ore.com/art/lottomatica-accelera-borsa-ricavi-balzano-172-miliardi-grazie-gioco-online-AJ0gjH3B",
       "data": "2026-11-05T11:14:36.000Z"
-    },
-    {
-      "titolo": "Carburanti in calo, il prezzo medio self della benzina è a 2,005 euro",
-      "testo": "Mimit, ma grazie a price cap in larga parte delle strade è sotto 2 euro",
-      "impatto": null,
-      "fonte": "ANSA",
-      "url": "https://www.ansa.it/sito/notizie/economia/2026/11/05/carburanti-in-calo-il-prezzo-medio-self-della-benzina-e-a-2005-euro_72a40f93-7e1a-4ea3-bc9d-0dc1e048ef07.html",
-      "data": "2026-11-05T11:00:01.000Z"
-    },
-    {
-      "titolo": "Cargo ferroviario, nel 2026 nuovo calo dei traffici (-4%)",
-      "testo": "Il presidente Carta: già nella legge di bilancio servono misure urgenti di sostegno al settore",
-      "impatto": null,
-      "fonte": "Il Sole 24 Ore",
-      "url": "https://www.ilsole24ore.com/art/cargo-ferroviario-2026-nuovo-calo-traffici-4percento-AJNOrd4B",
-      "data": "2026-11-05T08:02:02.000Z"
-    },
-    {
-      "titolo": "KLM taglia del 15% i dipendenti e riduce la flotta",
-      "testo": "Riduzione dei dipendenti e razionalizzazione della flotta per la compagnia olandese KLM che ha annunciato il taglio del numero di posti di lavoro di un ulteriore 15%: nei prossimi anni...",
-      "impatto": null,
-      "fonte": "Il Sole 24 Ore",
-      "url": "https://www.ilsole24ore.com/art/klm-taglia-15percento-dipendenti-e-riduce-flotta-AJJ7EU5B",
-      "data": "2026-11-05T07:40:00.000Z"
     }
   ],
   "agenda": [
@@ -853,6 +854,16 @@ window.ECO = {
       "data": "2026-12-17",
       "evento": "Riunione BCE sui tassi",
       "perche": "Conta per mutui variabili, conti deposito e titoli di Stato"
+    },
+    {
+      "data": "2026-12-31",
+      "evento": "Ultimo giorno per i versamenti al fondo pensione",
+      "perche": "Contano per la deduzione dell'anno, fino a 5.300 €"
+    },
+    {
+      "data": "2026-12-31",
+      "evento": "Scade l'ISEE dell'anno",
+      "perche": "Dal 1° gennaio serve una nuova DSU per assegno unico, bonus e agevolazioni"
     },
     {
       "data": "2027-02-04",
@@ -914,18 +925,18 @@ window.ECO = {
     }
   },
   "bitcoin": {
-    "prezzoEur": 70775,
-    "prezzoUsd": 79371,
-    "var24h": 1.02752,
-    "var7g": -1.07212,
-    "var30g": -8.03406,
-    "var1a": -22.87754,
+    "prezzoEur": 67773,
+    "prezzoUsd": 76051,
+    "var24h": -5.03986,
+    "var7g": -3.44401,
+    "var30g": -11.17076,
+    "var1a": -26.65232,
     "athEur": 107662,
     "athData": "2025-10-06",
-    "daAth": -34.26164,
-    "capEur": 1423095688626,
-    "aggiornatoPrezzo": "2026-11-05T14:36:54.000Z",
-    "dominanza": 59.5,
+    "daAth": -37.04961,
+    "capEur": 1362609228955,
+    "aggiornatoPrezzo": "2026-11-05T20:59:45.000Z",
+    "dominanza": 59.2,
     "paura": {
       "valore": 50,
       "etichetta": "Neutral",
@@ -965,22 +976,22 @@ window.ECO = {
       "settimana": 51,
       "mese": 73
     },
-    "altezza": 974676,
-    "offerta": 20108366,
+    "altezza": 974709,
+    "offerta": 20108469,
     "halving": {
       "blocco": 1050000,
-      "mancano": 75324,
+      "mancano": 75291,
       "premioOra": 3.125,
       "premioDopo": 1.5625,
-      "data": "2028-04-29"
+      "data": "2028-05-01"
     },
     "commissioni": {
-      "veloce": 7,
-      "mezzora": 6,
-      "ora": 5,
+      "veloce": 3,
+      "mezzora": 3,
+      "ora": 3,
       "minima": 1
     },
-    "hashrate": 1031,
+    "hashrate": 1023,
     "hashrateSerie": [
       1025,
       1019,
@@ -1014,10 +1025,10 @@ window.ECO = {
       1077
     ],
     "difficolta": {
-      "avanzamento": 47,
-      "variazione": -3.2,
+      "avanzamento": 48.7,
+      "variazione": -3.61,
       "data": "2026-11-13",
-      "tempoMedio": 10.34
+      "tempoMedio": 10.38
     },
     "mensile": [
       [
@@ -1602,7 +1613,7 @@ window.ECO = {
       ],
       [
         "2026-11",
-        70532.95
+        67786.97
       ]
     ],
     "giornaliero": [
@@ -1735,27 +1746,27 @@ window.ECO = {
       68503.5,
       69015.6797,
       71568.3438,
-      70532.95
+      67786.97
     ],
     "giornalieroInizio": "2026-06-29",
     "rend": {
-      "m1": -7.23,
-      "m3": 26.49,
-      "ytd": -6.59,
-      "y1": -21.95
+      "m1": -10.84,
+      "m3": 21.56,
+      "ytd": -10.23,
+      "y1": -24.99
     },
     "caloMassimo": {
       "valore": -74.4,
       "da": "2017-12",
       "a": "2019-01"
     },
-    "data": "2026-11-05T15:38:38+01:00",
-    "dominanzaEth": 10.8,
-    "totaleEur": 2383455853116,
-    "totaleVar24h": -1.41
+    "data": "2026-11-05T22:02:28+01:00",
+    "dominanzaEth": 10.6,
+    "totaleEur": 2294249932909,
+    "totaleVar24h": -6.72
   },
   "cripto": {
-    "data": "2026-11-05T15:38:41+01:00",
+    "data": "2026-11-05T22:02:31+01:00",
     "fonte": "CoinGecko",
     "monete": [
       {
@@ -1763,14 +1774,14 @@ window.ECO = {
         "simbolo": "BTC",
         "nome": "Bitcoin",
         "rank": 1,
-        "prezzo": 70590,
-        "cap": 1419245653402,
-        "volume": 31349615167,
-        "v24h": 1.24,
-        "v7g": -0.53,
-        "v30g": -7.69,
-        "v1a": -22.5,
-        "daAth": -34.43,
+        "prezzo": 67787,
+        "cap": 1363326288440,
+        "volume": 36705676836,
+        "v24h": -4.95,
+        "v7g": -5.84,
+        "v30g": -11.17,
+        "v1a": -26.9,
+        "daAth": -37.04,
         "ath": 107662,
         "athData": "2025-10-06",
         "offerta": 20105365,
@@ -1781,14 +1792,14 @@ window.ECO = {
         "simbolo": "ETH",
         "nome": "Ethereum",
         "rank": 2,
-        "prezzo": 2114.59,
-        "cap": 258385609179,
-        "volume": 13503835299,
-        "v24h": 2.67,
-        "v7g": 2.78,
-        "v30g": -12.15,
-        "v1a": -28.66,
-        "daAth": -50.01,
+        "prezzo": 2000.11,
+        "cap": 244455566241,
+        "volume": 14162711673,
+        "v24h": -7.18,
+        "v7g": -3.95,
+        "v30g": -16.7,
+        "v1a": -35.11,
+        "daAth": -52.71,
         "ath": 4229.76,
         "athData": "2025-08-24",
         "offerta": 122192072,
@@ -1799,17 +1810,17 @@ window.ECO = {
         "simbolo": "USDT",
         "nome": "Tether",
         "rank": 3,
-        "prezzo": 0.891234,
-        "cap": 158972694181,
-        "volume": 50914877385,
-        "v24h": 0.51,
-        "v7g": 0.04,
-        "v30g": -0.05,
-        "v1a": -0.06,
-        "daAth": -23.55,
+        "prezzo": 0.890394,
+        "cap": 158221646158,
+        "volume": 56134355897,
+        "v24h": 0.07,
+        "v7g": -0.01,
+        "v30g": -0.11,
+        "v1a": -0.11,
+        "daAth": -23.62,
         "ath": 1.17,
         "athData": "2025-01-25",
-        "offerta": 178373746488,
+        "offerta": 177700050044,
         "offertaMax": null
       },
       {
@@ -1817,17 +1828,17 @@ window.ECO = {
         "simbolo": "BNB",
         "nome": "BNB",
         "rank": 4,
-        "prezzo": 630.31,
-        "cap": 82892488238,
-        "volume": 821661524,
-        "v24h": 1.19,
-        "v7g": -4.03,
-        "v30g": -9.53,
-        "v1a": -25.39,
-        "daAth": -46.71,
+        "prezzo": 614.93,
+        "cap": 80911499343,
+        "volume": 965379883,
+        "v24h": -3.58,
+        "v7g": -7.17,
+        "v30g": -11.38,
+        "v1a": -27.94,
+        "daAth": -48.01,
         "ath": 1182.86,
         "athData": "2025-10-13",
-        "offerta": 131511147,
+        "offerta": 131511130,
         "offertaMax": 200000000
       },
       {
@@ -1835,14 +1846,14 @@ window.ECO = {
         "simbolo": "XRP",
         "nome": "XRP",
         "rank": 5,
-        "prezzo": 1.16,
-        "cap": 73191009621,
-        "volume": 1721182316,
-        "v24h": 0.97,
-        "v7g": 1.35,
-        "v30g": -13.58,
-        "v1a": -41.87,
-        "daAth": -64.83,
+        "prezzo": 1.096,
+        "cap": 69461339940,
+        "volume": 1741912880,
+        "v24h": -5.51,
+        "v7g": -3.98,
+        "v30g": -18.11,
+        "v1a": -47.01,
+        "daAth": -66.63,
         "ath": 3.28,
         "athData": "2025-01-16",
         "offerta": 63351197653,
@@ -1853,17 +1864,17 @@ window.ECO = {
         "simbolo": "USDC",
         "nome": "USDC",
         "rank": 6,
-        "prezzo": 0.891501,
-        "cap": 63268228156,
-        "volume": 13234592266,
-        "v24h": 0.49,
-        "v7g": 0.02,
-        "v30g": -0.02,
-        "v1a": 0,
-        "daAth": -14.49,
+        "prezzo": 0.890904,
+        "cap": 62780280551,
+        "volume": 15476216874,
+        "v24h": 0.1,
+        "v7g": 0,
+        "v30g": -0.05,
+        "v1a": -0.02,
+        "daAth": -14.55,
         "ath": 1.043,
         "athData": "2022-09-27",
-        "offerta": 70968173344,
+        "offerta": 70468962804,
         "offertaMax": null
       },
       {
@@ -1871,17 +1882,17 @@ window.ECO = {
         "simbolo": "SOL",
         "nome": "Solana",
         "rank": 7,
-        "prezzo": 84.49,
-        "cap": 49873655488,
-        "volume": 4036776529,
-        "v24h": 2.05,
-        "v7g": -5.14,
-        "v30g": -20.85,
-        "v1a": -39.75,
-        "daAth": -70.42,
+        "prezzo": 79.98,
+        "cap": 47234271370,
+        "volume": 3964634194,
+        "v24h": -5.21,
+        "v7g": -9.89,
+        "v30g": -25.59,
+        "v1a": -44.7,
+        "daAth": -72,
         "ath": 285.6,
         "athData": "2025-01-19",
-        "offerta": 590317683,
+        "offerta": 590287475,
         "offertaMax": null
       },
       {
@@ -1889,17 +1900,17 @@ window.ECO = {
         "simbolo": "TRX",
         "nome": "TRON",
         "rank": 8,
-        "prezzo": 0.283586,
-        "cap": 26948176833,
-        "volume": 346010657,
-        "v24h": 0.15,
+        "prezzo": 0.283511,
+        "cap": 26935184208,
+        "volume": 358085466,
+        "v24h": -0.34,
         "v7g": -4.03,
-        "v30g": -5.21,
-        "v1a": 10.82,
-        "daAth": -30.88,
+        "v30g": -5.31,
+        "v1a": 9.87,
+        "daAth": -30.9,
         "ath": 0.410308,
         "athData": "2024-12-03",
-        "offerta": 95026385008,
+        "offerta": 95026330809,
         "offertaMax": null
       },
       {
@@ -1907,17 +1918,17 @@ window.ECO = {
         "simbolo": "FIGR_HELOC",
         "nome": "Figure Heloc",
         "rank": 9,
-        "prezzo": 0.934093,
-        "cap": 24400389768,
-        "volume": 19394011,
-        "v24h": 2.19,
-        "v7g": 1.6,
-        "v30g": 1.36,
-        "v1a": 1.36,
-        "daAth": -2.79,
+        "prezzo": 0.931416,
+        "cap": 24454328802,
+        "volume": 16873419,
+        "v24h": 1.61,
+        "v7g": -0.53,
+        "v30g": 0.6,
+        "v1a": 1.01,
+        "daAth": -3.07,
         "ath": 0.960901,
         "athData": "2026-10-05",
-        "offerta": 26122013618,
+        "offerta": 26254809264,
         "offertaMax": null
       },
       {
@@ -1925,17 +1936,17 @@ window.ECO = {
         "simbolo": "ZEC",
         "nome": "Zcash",
         "rank": 10,
-        "prezzo": 1151.64,
-        "cap": 19606898316,
-        "volume": 851539389,
-        "v24h": -0.32,
-        "v7g": 2.9,
-        "v30g": -4.46,
-        "v1a": 186.86,
-        "daAth": -59.97,
+        "prezzo": 1113.63,
+        "cap": 18979842043,
+        "volume": 996902779,
+        "v24h": -3.02,
+        "v7g": -5.71,
+        "v30g": -7.49,
+        "v1a": 154.63,
+        "daAth": -61.29,
         "ath": 2876.86,
         "athData": "2016-10-28",
-        "offerta": 17025172,
+        "offerta": 17025481,
         "offertaMax": 21000000
       },
       {
@@ -1943,14 +1954,14 @@ window.ECO = {
         "simbolo": "HYPE",
         "nome": "Hyperliquid",
         "rank": 11,
-        "prezzo": 72.4,
-        "cap": 17332237838,
-        "volume": 1081503802,
-        "v24h": -4.29,
-        "v7g": -8.83,
-        "v30g": -12.45,
-        "v1a": 97.89,
-        "daAth": -16.44,
+        "prezzo": 69.6,
+        "cap": 16672598431,
+        "volume": 1167028707,
+        "v24h": -6.59,
+        "v7g": -16.78,
+        "v30g": -15.08,
+        "v1a": 88.39,
+        "daAth": -19.67,
         "ath": 86.64,
         "athData": "2026-10-29",
         "offerta": 239406814,
@@ -1961,17 +1972,17 @@ window.ECO = {
         "simbolo": "XMR",
         "nome": "Monero",
         "rank": 12,
-        "prezzo": 565.59,
-        "cap": 10648412350,
-        "volume": 141155176,
-        "v24h": -0.36,
-        "v7g": 6.4,
-        "v30g": 14.03,
-        "v1a": 75.74,
-        "daAth": -17.49,
+        "prezzo": 548.78,
+        "cap": 10333232887,
+        "volume": 143646272,
+        "v24h": -2.56,
+        "v7g": 2.56,
+        "v30g": 10.11,
+        "v1a": 74.55,
+        "daAth": -19.94,
         "ath": 685.48,
         "athData": "2026-01-14",
-        "offerta": 18827025,
+        "offerta": 18827133,
         "offertaMax": null
       },
       {
@@ -1979,17 +1990,17 @@ window.ECO = {
         "simbolo": "DOGE",
         "nome": "Dogecoin",
         "rank": 13,
-        "prezzo": 0.067174,
-        "cap": 10521021384,
-        "volume": 506604891,
-        "v24h": 0.51,
-        "v7g": -3.81,
-        "v30g": -20.54,
-        "v1a": -53.79,
-        "daAth": -88.83,
+        "prezzo": 0.064418,
+        "cap": 10094550280,
+        "volume": 626019093,
+        "v24h": -5.8,
+        "v7g": -8.7,
+        "v30g": -22.91,
+        "v1a": -56.79,
+        "daAth": -89.29,
         "ath": 0.601466,
         "athData": "2021-05-07",
-        "offerta": 156622542860,
+        "offerta": 156624712860,
         "offertaMax": null
       },
       {
@@ -1997,17 +2008,17 @@ window.ECO = {
         "simbolo": "USDS",
         "nome": "USDS",
         "rank": 14,
-        "prezzo": 0.891875,
-        "cap": 8544016653,
-        "volume": 293574108,
-        "v24h": 0.48,
-        "v7g": 0.05,
-        "v30g": 0.05,
-        "v1a": 0.03,
-        "daAth": -10.7,
+        "prezzo": 0.891495,
+        "cap": 8504844966,
+        "volume": 288309240,
+        "v24h": 0.12,
+        "v7g": 0.02,
+        "v30g": 0.02,
+        "v1a": 0.13,
+        "daAth": -10.73,
         "ath": 0.99869,
         "athData": "2025-01-13",
-        "offerta": 9579835005,
+        "offerta": 9540046297,
         "offertaMax": null
       },
       {
@@ -2015,68 +2026,68 @@ window.ECO = {
         "simbolo": "WBT",
         "nome": "WhiteBIT Coin",
         "rank": 15,
-        "prezzo": 68.12,
-        "cap": 8082948541,
-        "volume": 136179181,
-        "v24h": 1.73,
-        "v7g": 0.04,
-        "v30g": -10.74,
-        "v1a": 46.7,
-        "daAth": -11.69,
+        "prezzo": 65.24,
+        "cap": 7744131304,
+        "volume": 177067576,
+        "v24h": -5.59,
+        "v7g": -5.52,
+        "v30g": -14.33,
+        "v1a": 38.54,
+        "daAth": -15.42,
         "ath": 77.13,
         "athData": "2026-10-02",
         "offerta": 118657693,
         "offertaMax": 400000000
       },
       {
-        "id": "chainlink",
-        "simbolo": "LINK",
-        "nome": "Chainlink",
-        "rank": 16,
-        "prezzo": 10.12,
-        "cap": 7762948320,
-        "volume": 309389521,
-        "v24h": 1.9,
-        "v7g": -1.68,
-        "v30g": -18.43,
-        "v1a": -23.46,
-        "daAth": -76.63,
-        "ath": 43.32,
-        "athData": "2021-05-09",
-        "offerta": 766849970,
-        "offertaMax": 1000000000
-      },
-      {
         "id": "leo-token",
         "simbolo": "LEO",
         "nome": "LEO Token",
-        "rank": 17,
-        "prezzo": 8.34,
-        "cap": 7669790770,
-        "volume": 78847,
-        "v24h": 0.76,
-        "v7g": -1.27,
-        "v30g": 5.23,
-        "v1a": -1.82,
-        "daAth": -13.9,
+        "rank": 16,
+        "prezzo": 8.3,
+        "cap": 7631670911,
+        "volume": 6864,
+        "v24h": -0.21,
+        "v7g": -1.54,
+        "v30g": 4.6,
+        "v1a": -2.31,
+        "daAth": -14.33,
         "ath": 9.68,
         "athData": "2025-03-02",
         "offerta": 919857852,
         "offertaMax": null
       },
       {
+        "id": "chainlink",
+        "simbolo": "LINK",
+        "nome": "Chainlink",
+        "rank": 17,
+        "prezzo": 9.58,
+        "cap": 7350098952,
+        "volume": 307453924,
+        "v24h": -5.95,
+        "v7g": -7.76,
+        "v30g": -22.9,
+        "v1a": -29.37,
+        "daAth": -77.89,
+        "ath": 43.32,
+        "athData": "2021-05-09",
+        "offerta": 766849970,
+        "offertaMax": 1000000000
+      },
+      {
         "id": "cardano",
         "simbolo": "ADA",
         "nome": "Cardano",
         "rank": 18,
-        "prezzo": 0.172301,
-        "cap": 6474675884,
-        "volume": 259619970,
-        "v24h": 1.9,
-        "v7g": -3.2,
-        "v30g": -29.79,
-        "v1a": -63.82,
-        "daAth": -93.39,
+        "prezzo": 0.163782,
+        "cap": 6158439877,
+        "volume": 284355573,
+        "v24h": -6.37,
+        "v7g": -8.92,
+        "v30g": -32.01,
+        "v1a": -66.12,
+        "daAth": -93.72,
         "ath": 2.61,
         "athData": "2021-09-01",
         "offerta": 37577688969,
@@ -2087,17 +2098,17 @@ window.ECO = {
         "simbolo": "BCH",
         "nome": "Bitcoin Cash",
         "rank": 19,
-        "prezzo": 255.78,
-        "cap": 5144415168,
-        "volume": 180912088,
-        "v24h": 5.19,
-        "v7g": 3.86,
-        "v30g": -8.64,
-        "v1a": -40.43,
-        "daAth": -91.97,
+        "prezzo": 244.49,
+        "cap": 4920999473,
+        "volume": 201871040,
+        "v24h": -2.37,
+        "v7g": -4.15,
+        "v30g": -12.65,
+        "v1a": -43.91,
+        "daAth": -92.33,
         "ath": 3187.12,
         "athData": "2017-12-19",
-        "offerta": 20112672,
+        "offerta": 20112844,
         "offertaMax": 21000000
       },
       {
@@ -2105,17 +2116,17 @@ window.ECO = {
         "simbolo": "XLM",
         "nome": "Stellar",
         "rank": 20,
-        "prezzo": 0.144706,
-        "cap": 5112842524,
-        "volume": 137120925,
-        "v24h": -0.3,
-        "v7g": -4,
-        "v30g": -23.85,
-        "v1a": -40.39,
-        "daAth": -80.15,
+        "prezzo": 0.13763,
+        "cap": 4866771660,
+        "volume": 173997479,
+        "v24h": -7.07,
+        "v7g": -8.52,
+        "v30g": -27.19,
+        "v1a": -44.75,
+        "daAth": -81.12,
         "ath": 0.729104,
         "athData": "2018-01-02",
-        "offerta": 35332725577,
+        "offerta": 35333011182,
         "offertaMax": null
       }
     ]
@@ -2127,41 +2138,41 @@ window.ECO = {
         "id": "mondo",
         "nome": "Azionario mondiale",
         "valuta": "€",
-        "m1": -0.84,
-        "m3": 2.07,
-        "ytd": 16.93,
-        "y1": 16.99,
-        "dalMax": -1.2,
-        "dalMin": 21.6,
-        "ma200": 7.4,
-        "vol": 10.9,
+        "m1": -3.25,
+        "m3": -0.41,
+        "ytd": 14.1,
+        "y1": 14.16,
+        "dalMax": -3.6,
+        "dalMin": 18.7,
+        "ma200": 4.8,
+        "vol": 11.1,
         "calo1a": -6.5
       },
       {
         "id": "emergenti",
         "nome": "Mercati emergenti",
         "valuta": "€",
-        "m1": -11.02,
-        "m3": -4.67,
-        "ytd": 15.57,
-        "y1": 14.05,
-        "dalMax": -12.5,
-        "dalMin": 20.2,
-        "ma200": -2.4,
-        "vol": 21.7,
-        "calo1a": -13.3
+        "m1": -13.19,
+        "m3": -6.99,
+        "ytd": 12.76,
+        "y1": 11.28,
+        "dalMax": -14.6,
+        "dalMin": 17.2,
+        "ma200": -4.7,
+        "vol": 22,
+        "calo1a": -14.6
       },
       {
         "id": "stoxx50",
         "nome": "Europa (Euro Stoxx 50)",
         "valuta": "€",
-        "m1": 0.55,
-        "m3": -3.01,
-        "ytd": 8.81,
-        "y1": 11.25,
-        "dalMax": -3.7,
-        "dalMin": 14.6,
-        "ma200": 3.1,
+        "m1": -0.65,
+        "m3": -4.17,
+        "ytd": 7.51,
+        "y1": 9.92,
+        "dalMax": -4.9,
+        "dalMin": 13.3,
+        "ma200": 1.9,
         "vol": 15.7,
         "calo1a": -10.9
       },
@@ -2169,42 +2180,42 @@ window.ECO = {
         "id": "ftsemib",
         "nome": "Italia (FTSE MIB)",
         "valuta": "€",
-        "m1": 0.06,
-        "m3": -4.45,
-        "ytd": 14.13,
-        "y1": 18.08,
-        "dalMax": -4.5,
-        "dalMin": 21.3,
-        "ma200": 3.6,
-        "vol": 16.5,
+        "m1": -1.47,
+        "m3": -5.92,
+        "ytd": 12.37,
+        "y1": 16.27,
+        "dalMax": -6,
+        "dalMin": 19.4,
+        "ma200": 2,
+        "vol": 16.6,
         "calo1a": -9.9
       },
       {
         "id": "sp500",
         "nome": "USA (S&P 500)",
         "valuta": "$",
-        "m1": -2.21,
-        "m3": -0.83,
-        "ytd": 11.7,
-        "y1": 12.51,
-        "dalMax": -2.2,
-        "dalMin": 20.5,
-        "ma200": 4.4,
-        "vol": 12.8,
+        "m1": -5.95,
+        "m3": -4.62,
+        "ytd": 7.43,
+        "y1": 9.43,
+        "dalMax": -5.9,
+        "dalMin": 15.9,
+        "ma200": 0.4,
+        "vol": 13.6,
         "calo1a": -9.1
       },
       {
         "id": "nasdaq",
         "nome": "Tecnologici USA (Nasdaq)",
         "valuta": "$",
-        "m1": -8.05,
-        "m3": -3.69,
-        "ytd": 9.18,
-        "y1": 7.99,
-        "dalMax": -8.1,
-        "dalMin": 22,
-        "ma200": 1.1,
-        "vol": 18.7,
+        "m1": -11.9,
+        "m3": -7.72,
+        "ytd": 4.62,
+        "y1": 5.47,
+        "dalMax": -11.9,
+        "dalMin": 16.9,
+        "ma200": -3.1,
+        "vol": 19.5,
         "calo1a": -12.8
       },
       {
@@ -2253,13 +2264,13 @@ window.ECO = {
         "id": "brasile",
         "nome": "Brasile",
         "valuta": "R$",
-        "m1": -17.98,
-        "m3": -3.83,
-        "ytd": 4.77,
-        "y1": 10.13,
-        "dalMax": -19.3,
-        "dalMin": 10.1,
-        "ma200": -7,
+        "m1": -19.11,
+        "m3": -5.16,
+        "ytd": 3.33,
+        "y1": 8.61,
+        "dalMax": -20.4,
+        "dalMin": 8.6,
+        "ma200": -8.3,
         "vol": 24.6,
         "calo1a": -20.8
       },
@@ -2267,13 +2278,13 @@ window.ECO = {
         "id": "oro_eur",
         "nome": "Oro",
         "valuta": "€",
-        "m1": -1.32,
-        "m3": -0.99,
-        "ytd": -0.32,
-        "y1": 5.96,
-        "dalMax": -18.4,
-        "dalMin": 6.1,
-        "ma200": -5.5,
+        "m1": -1.88,
+        "m3": -1.54,
+        "ytd": -0.89,
+        "y1": 5.35,
+        "dalMax": -18.9,
+        "dalMin": 5.5,
+        "ma200": -6,
         "vol": 27.3,
         "calo1a": -22.8
       },
@@ -2281,13 +2292,13 @@ window.ECO = {
         "id": "argento",
         "nome": "Argento",
         "valuta": "$",
-        "m1": -13.42,
-        "m3": -13.8,
-        "ytd": -24.49,
-        "y1": 10.65,
-        "dalMax": -54,
-        "dalMin": 10.8,
-        "ma200": -24.4,
+        "m1": -14.96,
+        "m3": -15.33,
+        "ytd": -25.83,
+        "y1": 8.69,
+        "dalMax": -54.8,
+        "dalMin": 8.8,
+        "ma200": -25.8,
         "vol": 69,
         "calo1a": -57.3
       },
@@ -2295,56 +2306,56 @@ window.ECO = {
         "id": "platino",
         "nome": "Platino",
         "valuta": "$",
-        "m1": -8.96,
-        "m3": -10.87,
-        "ytd": -24.26,
-        "y1": -0.8,
-        "dalMax": -46,
-        "dalMin": 7.6,
-        "ma200": -17.6,
-        "vol": 55.5,
+        "m1": -9.9,
+        "m3": -11.79,
+        "ytd": -25.04,
+        "y1": -1.83,
+        "dalMax": -46.5,
+        "dalMin": 6.5,
+        "ma200": -18.5,
+        "vol": 55.4,
         "calo1a": -49.8
       },
       {
         "id": "rame",
         "nome": "Rame",
         "valuta": "$",
-        "m1": -2.33,
-        "m3": -3.68,
-        "ytd": 14.4,
-        "y1": 29.78,
-        "dalMax": -5.3,
-        "dalMin": 30.4,
-        "ma200": 3.6,
-        "vol": 27.2,
+        "m1": -5.83,
+        "m3": -7.13,
+        "ytd": 10.3,
+        "y1": 25.13,
+        "dalMax": -8.7,
+        "dalMin": 25.8,
+        "ma200": -0.1,
+        "vol": 27.4,
         "calo1a": -13.5
       },
       {
         "id": "brent",
         "nome": "Petrolio",
         "valuta": "$",
-        "m1": -3.12,
-        "m3": 18.12,
-        "ytd": 60.13,
-        "y1": 53.4,
-        "dalMax": -17.7,
-        "dalMin": 65.4,
-        "ma200": 4.6,
-        "vol": 57,
+        "m1": -2.11,
+        "m3": 19.36,
+        "ytd": 61.81,
+        "y1": 55.01,
+        "dalMax": -16.8,
+        "dalMin": 67.1,
+        "ma200": 5.7,
+        "vol": 57.1,
         "calo1a": -39.5
       },
       {
         "id": "btc",
         "nome": "Bitcoin",
         "valuta": "$",
-        "m1": -7.3,
-        "m3": 23.42,
-        "ytd": -10.61,
-        "y1": -23.66,
-        "dalMax": -25.2,
-        "dalMin": 35.4,
-        "ma200": 8.3,
-        "vol": 44.1,
+        "m1": -11.14,
+        "m3": 18.3,
+        "ytd": -14.32,
+        "y1": -26.82,
+        "dalMax": -28.3,
+        "dalMin": 29.8,
+        "ma200": 3.9,
+        "vol": 44.4,
         "calo1a": -44.8
       }
     ]
@@ -2360,7 +2371,7 @@ window.ECO = {
         "inizio": "1985-01",
         "fine": "2026-11",
         "anni": 41.8,
-        "cagr": 9.4,
+        "cagr": 9.3,
         "calo": {
           "valore": -52.6,
           "picco": "2007-10",
@@ -2368,7 +2379,7 @@ window.ECO = {
           "ritorno": "2013-03",
           "mesi": 65
         },
-        "dalMassimo": -0.8,
+        "dalMassimo": -4.3,
         "finestre": [
           {
             "anni": 1,
@@ -2549,7 +2560,7 @@ window.ECO = {
         "inizio": "1985-01",
         "fine": "2026-11",
         "anni": 41.8,
-        "cagr": 11.4,
+        "cagr": 11.3,
         "calo": {
           "valore": -75,
           "picco": "2000-02",
@@ -2557,7 +2568,7 @@ window.ECO = {
           "ritorno": "2014-11",
           "mesi": 177
         },
-        "dalMassimo": -6.2,
+        "dalMassimo": -9.9,
         "finestre": [
           {
             "anni": 1,
@@ -2738,7 +2749,7 @@ window.ECO = {
         "inizio": "2007-03",
         "fine": "2026-11",
         "anni": 19.7,
-        "cagr": 2.1,
+        "cagr": 2,
         "calo": {
           "valore": -56.2,
           "picco": "2007-05",
@@ -2746,7 +2757,7 @@ window.ECO = {
           "ritorno": "2023-12",
           "mesi": 199
         },
-        "dalMassimo": -1.8,
+        "dalMassimo": -2.9,
         "finestre": [
           {
             "anni": 1,
@@ -3060,7 +3071,7 @@ window.ECO = {
         "inizio": "1997-12",
         "fine": "2026-11",
         "anni": 28.9,
-        "cagr": 2.6,
+        "cagr": 2.5,
         "calo": {
           "valore": -73.4,
           "picco": "2000-02",
@@ -3068,7 +3079,7 @@ window.ECO = {
           "ritorno": "2026-05",
           "mesi": 315
         },
-        "dalMassimo": -2.5,
+        "dalMassimo": -4,
         "finestre": [
           {
             "anni": 1,
@@ -3438,7 +3449,7 @@ window.ECO = {
           "ritorno": "2020-07",
           "mesi": 107
         },
-        "dalMassimo": -13,
+        "dalMassimo": -13.3,
         "finestre": [
           {
             "anni": 1,
@@ -3725,7 +3736,7 @@ window.ECO = {
       49948,
       49942,
       51031,
-      51293.5
+      50505.87
     ],
     "stoxx50": [
       6027.1299,
@@ -3857,7 +3868,7 @@ window.ECO = {
       6176.0601,
       6144.5601,
       6265.71,
-      6306.66
+      6231.54
     ],
     "dax": [
       24338.6309,
@@ -3989,7 +4000,7 @@ window.ECO = {
       25981.0898,
       25864.6191,
       26437.6699,
-      26629.22
+      26325.01
     ],
     "mondo": [
       119.51,
@@ -4121,7 +4132,7 @@ window.ECO = {
       129.95,
       128.96,
       130.52,
-      130.74
+      127.57
     ],
     "sp500": [
       7200.75,
@@ -4253,7 +4264,7 @@ window.ECO = {
       7541.3999,
       7568.9199,
       7688.6201,
-      7646.19
+      7353.8
     ],
     "dow": [
       48941.8984,
@@ -4385,7 +4396,7 @@ window.ECO = {
       51983.9805,
       51786.7188,
       53356.1211,
-      53606.62
+      51521.28
     ],
     "nasdaq": [
       25067.8008,
@@ -4517,7 +4528,7 @@ window.ECO = {
       25164.3105,
       25372.0098,
       25736.5098,
-      25376.637
+      24314.998
     ],
     "vix": [
       17.39,
@@ -4781,10 +4792,9 @@ window.ECO = {
       4.894,
       4.952,
       4.894,
-      4.909
+      4.837
     ],
     "eurusd": [
-      1.1534,
       1.1567,
       1.1593,
       1.1576,
@@ -4843,7 +4853,8 @@ window.ECO = {
       1.1172,
       1.1216,
       1.1179,
-      1.1267
+      1.1267,
+      1.1224
     ],
     "oro": [
       4533.2998,
@@ -4975,7 +4986,7 @@ window.ECO = {
       3969.6001,
       3940.3999,
       4073,
-      4132
+      4109.9
     ],
     "argento": [
       73.072,
@@ -5107,7 +5118,7 @@ window.ECO = {
       50.72,
       49.587,
       52.12,
-      52.96
+      52.02
     ],
     "brent": [
       114.44,
@@ -5239,7 +5250,7 @@ window.ECO = {
       104.77,
       103.6,
       94.62,
-      97.44
+      98.46
     ],
     "btc": [
       60138.3789,
@@ -5371,7 +5382,7 @@ window.ECO = {
       76677.2969,
       77345.0469,
       80405.2891,
-      79315.17
+      76023.2
     ],
     "btp10": [
       3.559,
@@ -5638,10 +5649,9 @@ window.ECO = {
       1.1157,
       1.1192,
       1.1207,
-      1.1217
+      1.1221
     ],
     "eurgbp": [
-      0.8549,
       0.8545,
       0.855,
       0.85585,
@@ -5700,10 +5710,10 @@ window.ECO = {
       0.8338,
       0.8358,
       0.83358,
-      0.8346
+      0.8346,
+      0.83393
     ],
     "eurchf": [
-      0.9373,
       0.939,
       0.9389,
       0.9406,
@@ -5762,7 +5772,8 @@ window.ECO = {
       0.9194,
       0.9193,
       0.9166,
-      0.9188
+      0.9188,
+      0.918
     ],
     "oro_eur": [
       124.23,
@@ -5894,10 +5905,9 @@ window.ECO = {
       114.39,
       113.19,
       116.85,
-      118.43
+      117.76
     ],
     "benzina": [
-      1.789,
       1.933,
       1.937,
       1.964,
@@ -5922,10 +5932,10 @@ window.ECO = {
       2.073,
       2.021,
       2.016,
-      2.006
+      2.006,
+      2.001
     ],
     "gasolio": [
-      2.046,
       2.02,
       1.983,
       1.989,
@@ -5950,7 +5960,8 @@ window.ECO = {
       2.273,
       2.241,
       2.244,
-      2.247
+      2.247,
+      2.238
     ],
     "platino": [
       1946.9,
@@ -6082,7 +6093,7 @@ window.ECO = {
       1459,
       1432.4,
       1501.1,
-      1541
+      1525.1
     ],
     "rame": [
       5.795,
@@ -6214,7 +6225,7 @@ window.ECO = {
       6.5435,
       6.3785,
       6.403,
-      6.441
+      6.21
     ],
     "emergenti": [
       47.05,
@@ -6346,7 +6357,7 @@ window.ECO = {
       45.415,
       44.685,
       45.065,
-      44.39
+      43.31
     ],
     "giappone": [
       59140.2305,
@@ -6874,11 +6885,11 @@ window.ECO = {
       167922,
       165529,
       167564,
-      168817.39
+      166495.38
     ]
   },
   "serieDate": {
-    "benzina": "2026-10-26",
-    "gasolio": "2026-10-26"
+    "benzina": "2026-11-02",
+    "gasolio": "2026-11-02"
   }
 };
