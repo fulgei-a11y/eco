@@ -575,7 +575,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
 .cr-map-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .8rem; color: #D5DAEA; }
 .cr-map-leg span { display: inline-flex; align-items: center; gap: 6px; }
 .cr-map-leg i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
-.cr-row { display: grid; grid-template-columns: 2rem minmax(0, 1.3fr) 9.5rem minmax(0, .9fr) minmax(0, .8fr) minmax(0, .9fr); gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+.cr-row { display: grid; grid-template-columns: 2rem minmax(0, 1.3fr) 11.5rem minmax(0, .9fr) minmax(0, .8fr) minmax(0, .9fr); gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--line); }
 .cr-row:last-child { border-bottom: 0; }
 .cr-row.head { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); }
 .cr-row.head span:nth-child(n+4) { text-align: right; }
@@ -2903,7 +2903,8 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     var K = window.ECO_CRIPTO || { famiglie: [], modi: [], pagella: [], lezioni: [], categoria: {} };
     var CR = D.cripto, B = D.bitcoin || {};
     var FAM = {}; K.famiglie.forEach(function (f) { FAM[f.id] = f; });
-    var famDi = function (m) { return FAM[K.categoria[m.id]] || FAM.infrastruttura || { id: "altro", nome: "Altro", colore: "#888" }; };
+    var ALTRO = { id: "altro", nome: "Altre cripto", breve: "Altro", colore: "#8A93A6" }; FAM.altro = ALTRO;
+    var famDi = function (m) { return FAM[K.categoria[m.id]] || ALTRO; };
     var segnoP = function (v, d) { return typeof v === "number" ? (v > 0 ? "+" : "") + pct(v, d == null ? 1 : d) : "—"; };
     var mld = function (v) { return v >= 1e12 ? nf(v / 1e12, 2) + " mila mld €" : nf(v / 1e9, 0) + " mld €"; };
     var M = CR && CR.monete || [];
@@ -2941,11 +2942,11 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
           var f = famDi(m), d = m.prezzo >= 100 ? 0 : m.prezzo >= 1 ? 2 : m.prezzo >= 0.01 ? 4 : 8;
           return '<div class="cr-row"><span class="cr-rank">' + m.rank + '</span><span class="cr-name"><b>' + esc(m.nome) + '</b><small>' + esc(m.simbolo) + '</small></span>' +
             '<span class="cr-fam" title="' + esc(f.nome) + '"><i style="background:' + f.colore + '"></i>' + esc(f.breve || f.nome) + (m.id === "tether" ? " · non MiCAR" : "") + '</span>' +
-            '<span class="cr-ms"><span class="rad-m"><small>Prezzo</small>' + nf(m.prezzo, d) + ' €</span>' + cell(per === "daAth" ? m.v1a : m[per], per === "daAth" ? "1 anno" : lab) + cell(m.daAth, "Dal max") + '</span></div>';
+            '<span class="cr-ms"><span class="rad-m"><small>Prezzo</small>' + nf(m.prezzo, d) + ' €</span>' + cell(per === "daAth" ? m.v1a : m[per], per === "daAth" ? "1 anno" : lab) + cell(K.categoria[m.id] === "stablecoin" ? null : m.daAth, "Dal max") + '</span></div>';
         }).join("");
       var sotto = M.filter(function (m) { return K.categoria[m.id] !== "stablecoin" && typeof m.daAth === "number" && m.daAth <= -50; }).length;
       var nonStable = M.filter(function (m) { return K.categoria[m.id] !== "stablecoin"; }).length;
-      $("#crTabNote").textContent = sotto + " delle " + nonStable + " cripto non stabili in elenco valgono meno della metà del loro massimo storico. Fonte: CoinGecko, " + (CR.data ? fmtDate(CR.data) : "") + ".";
+      $("#crTabNote").textContent = sotto + " delle " + nonStable + " cripto non stabili in elenco valgono meno della metà del loro massimo storico. Le stablecoin in dollari valgono circa 1 $: in euro si muovono solo con il cambio. Fonte: CoinGecko, " + (CR.data ? fmtDate(CR.data) : "") + ".";
     }
     document.querySelectorAll("#crSeg button").forEach(function (b) { b.addEventListener("click", function () { per = b.dataset.p; store.set("crPer", per); tabella(); }); });
     tabella();

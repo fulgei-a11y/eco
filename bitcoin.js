@@ -87,7 +87,8 @@ window.ECO_CRIPTO = {
     arbitrum: "layer2", optimism: "layer2", "matic-network": "layer2", "polygon-ecosystem-token": "layer2", mantle: "layer2", "immutable-x": "layer2",
     dogecoin: "meme", "shiba-inu": "meme", pepe: "meme", "official-trump": "meme", bonk: "meme", dogwifcoin: "meme", "floki": "meme",
     ripple: "pagamenti", stellar: "pagamenti", litecoin: "pagamenti", "bitcoin-cash": "pagamenti", monero: "pagamenti", "hyperliquid-2": "defi",
-    "tether-gold": "rwa", "pax-gold": "rwa", "blackrock-usd-institutional-digital-liquidity-fund": "rwa", "usdtb": "stablecoin", "world-liberty-financial": "defi"
+    "tether-gold": "rwa", "pax-gold": "rwa", "blackrock-usd-institutional-digital-liquidity-fund": "rwa", "usdtb": "stablecoin", "world-liberty-financial": "defi",
+    "figure-heloc": "rwa", zcash: "pagamenti", "ethena-staked-usde": "stablecoin", "falcon-finance": "stablecoin", "susds": "stablecoin", "midnight-3": "piattaforme", "kaspa": "piattaforme", "bittensor": "infrastruttura", "render-token": "infrastruttura", "filecoin": "infrastruttura", "ethereum-classic": "piattaforme", "pi-network": "piattaforme", "mantra-dao": "rwa", "crypto-com-chain": "exchange"
   },
   famiglie: [
     { id: "bitcoin", nome: "Bitcoin", colore: "#F7931A", rischio: 4,
