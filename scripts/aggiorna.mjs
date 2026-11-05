@@ -1157,6 +1157,27 @@ async function main() {
   vm.runInNewContext(testo, { window: {} }); // verifica che il file sia valido prima di scriverlo
   await writeFile(FILE, testo);
   log("data.js scritto:", out.edizione, out.aggiornato);
+  try { await aggiornaArchivio(out); } catch (e) { log("ATTENZIONE archivio non aggiornato:", e.message); }
+}
+
+// Archivio leggero delle edizioni: titolo, sintesi e valori principali, per rileggere e confrontare i giorni passati.
+const ARCHIVIO = new URL("../archivio.js", import.meta.url);
+const ARCHIVIO_VOCI = ["ftsemib", "stoxx50", "sp500", "mondo", "emergenti", "btp10", "spread", "bce", "euribor3m", "mutuo_medio", "dep_vincolati", "infl_it", "benzina", "gasolio", "oro_eur", "brent", "eurusd", "btc"];
+async function aggiornaArchivio(out) {
+  let lista = [];
+  try { const sb = { window: {} }; vm.runInNewContext(await readFile(ARCHIVIO, "utf8"), sb, { timeout: 2000 }); lista = Array.isArray(sb.window.ECO_ARCHIVIO) ? sb.window.ECO_ARCHIVIO : []; } catch { lista = []; }
+  const v = {};
+  for (const g of out.mercati || []) for (const x of g.voci || []) if (ARCHIVIO_VOCI.includes(x.id) && typeof x.valore === "number") v[x.id] = x.valore;
+  const voce = { t: out.aggiornato, e: out.edizione, titolo: out.titolo, sintesi: out.sintesi, v };
+  const chiave = (x) => String(x.t).slice(0, 10) + x.e;
+  lista = lista.filter((x) => chiave(x) !== chiave(voce));
+  lista.push(voce);
+  lista.sort((a, b) => String(a.t).localeCompare(String(b.t)));
+  lista = lista.slice(-240); // circa quattro mesi, due edizioni al giorno
+  const testo = "/* Archivio delle edizioni, generato automaticamente. */\nwindow.ECO_ARCHIVIO = " + JSON.stringify(lista) + ";\n";
+  vm.runInNewContext(testo, { window: {} });
+  await writeFile(ARCHIVIO, testo);
+  log("archivio:", lista.length, "edizioni, dalla", lista[0]?.t?.slice(0, 10));
 }
 
 main().catch((e) => { console.error("[aggiorna] ERRORE", e.message); process.exit(1); });

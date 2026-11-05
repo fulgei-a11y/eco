@@ -10,15 +10,75 @@
   "orientation": "portrait",
   "background_color": "#142238",
   "theme_color": "#142238",
-  "categories": ["finance", "education", "news"],
+  "categories": [
+    "finance",
+    "education",
+    "news"
+  ],
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    { "name": "Il mio piano", "short_name": "Piano", "url": "./#piano", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Strumenti", "short_name": "Strumenti", "url": "./#strumenti", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Bitcoin", "short_name": "Bitcoin", "url": "./#bitcoin", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+    {
+      "name": "Cerca nell'app",
+      "short_name": "Cerca",
+      "url": "./?cerca=1#oggi",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Il mio piano",
+      "short_name": "Piano",
+      "url": "./#piano",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Calcolatori",
+      "short_name": "Calcolatori",
+      "url": "./#strumenti",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Glossario",
+      "short_name": "Glossario",
+      "url": "./#h-glos",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }

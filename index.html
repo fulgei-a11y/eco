@@ -752,6 +752,61 @@ dialog.search-sheet { margin: auto auto 0; }
 .toast { position: fixed; left: 16px; right: 16px; margin-inline: auto; width: fit-content; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-size: .9rem; box-shadow: 0 8px 24px rgba(0,0,0,.25); animation: sheet-in .25s ease; max-width: calc(100% - 32px); }
 @media (min-width: 761px) { .toast { bottom: 28px; } }
 
+/* Glossario */
+.gl { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: help; text-decoration: underline dotted color-mix(in srgb, var(--teal) 70%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; display: inline; text-align: inherit; letter-spacing: inherit; }
+.gl:hover { color: var(--teal); }
+.pill-card .gl, .inv-hero .gl, .cr-hero .gl, .btc-hero .gl { text-decoration-color: currentColor; }
+.gl-def { font-size: 1.05rem; line-height: 1.6; }
+@media (min-width: 760px) { dialog.gl-sheet { width: min(520px, 100%); } }
+.glos-tools { display: grid; gap: 10px; margin-bottom: 12px; }
+.glos-find { max-width: 420px; border-width: 1.5px; }
+.glos-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 10px; }
+.glos-item { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 4px; align-content: start; }
+.glos-item b { font-family: var(--f-display); font-size: 1.02rem; }
+.glos-item small { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); }
+.glos-item p { color: var(--muted); font-size: .9rem; }
+.glos-item.flash { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+/* Testo grande */
+html.testo-grande { font-size: 118%; }
+html.testo-grande body { font-size: 18.5px; }
+html.testo-grande .tile .t-note { display: block; }
+/* Ascolto */
+.listen.on { background: var(--teal); color: #fff; border-color: var(--teal); }
+.brief-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Calcolatori con regole di legge */
+.regole { font-family: var(--f-mono); font-size: .72rem !important; color: var(--teal) !important; letter-spacing: .02em; margin-top: 8px !important; }
+.regole.ko { color: var(--down) !important; }
+details.come { border-top: 1px dashed var(--line); padding-top: 10px; }
+details.come summary { cursor: pointer; font-weight: 700; font-size: .9rem; color: var(--teal); }
+details.come div { display: grid; gap: 8px; margin-top: 10px; font-size: .88rem; color: var(--muted); max-width: 80ch; }
+details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.result .verdetto { font-size: .92rem; border-top: 1px dashed color-mix(in srgb, var(--teal) 35%, transparent); padding-top: 8px; }
+.result .big small { font-size: .9rem; color: var(--muted); font-weight: 400; margin-left: 4px; font-family: var(--f-body); }
+
+/* Settimana in breve, archivio, verifica */
+.week { background: linear-gradient(135deg, var(--teal-soft), var(--surface) 70%); border-radius: 18px; box-shadow: var(--shadow); padding: 18px; display: grid; gap: 14px; border: 1px solid color-mix(in srgb, var(--teal) 25%, transparent); }
+.week-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.week-top h2 { font-size: 1.2rem; }
+.week-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.week-grid div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+.week-grid small { display: block; font-size: .78rem; color: var(--muted); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.week-grid b { font-family: var(--f-mono); font-size: 1.05rem; }
+.week-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.week-cols h3 { font-size: .95rem; margin-bottom: 6px; }
+.week-cols ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .9rem; display: grid; gap: 4px; }
+@media (max-width: 760px) { .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .week-cols { grid-template-columns: minmax(0, 1fr); } }
+.verif { display: grid; gap: 10px; }
+.vf-step { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.vf-step .n { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--teal-soft); color: var(--teal); font-family: var(--f-display); font-weight: 800; }
+.vf-step b { font-family: var(--f-display); display: block; }
+.vf-step p { color: var(--muted); font-size: .9rem; margin-top: 2px; }
+.vf-step a { font-weight: 700; font-size: .9rem; display: inline-block; margin-top: 4px; }
+.vf-warn { background: color-mix(in srgb, var(--down) 10%, transparent); border-left: 3px solid var(--down); border-radius: 10px; padding: 10px 12px; font-size: .92rem; }
+#archTab { font-size: .84rem; }
+@media (max-width: 560px) { #archTab { font-size: .76rem; } #archTab td, #archTab th { padding-inline: 2px; } }
+.bg-alert { border-top: 1px dashed var(--line); padding-top: 12px; display: grid; gap: 6px; }
+
 /* Movimento discreto */
 .view:not([hidden]) { animation: view-in .32s ease both; }
 @keyframes view-in { from { opacity: 0; transform: translateY(6px); } }
@@ -821,6 +876,7 @@ dialog.search-sheet { margin: auto auto 0; }
     <p class="stale-banner" id="staleBanner" hidden></p>
     <section class="alerts" id="alertHits" aria-label="I tuoi segnali" hidden></section>
     <section class="brief" id="brief" aria-labelledby="h-brief"></section>
+    <section class="week" id="settimana" aria-labelledby="h-sett" hidden></section>
     <section id="portfolioToday" aria-label="Il tuo portafoglio oggi"></section>
     <a class="goal-strip" id="goalStrip" href="#piano-obiettivi" hidden></a>
 
@@ -892,6 +948,18 @@ dialog.search-sheet { margin: auto auto 0; }
           <button type="submit" class="btn">Aggiungi</button>
         </form>
         <p class="t-note">Le scadenze tue restano solo su questo dispositivo. Il calendario scarica un file che il telefono apre con la sua app Calendario.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-arch" id="archivio" hidden>
+      <div class="section-head">
+        <h2 id="h-arch">Le edizioni passate</h2>
+        <div class="input-wrap" style="max-width:320px"><select id="archSel" aria-label="Scegli un'edizione"></select></div>
+      </div>
+      <p class="sub-lede">Rileggi un giorno passato e confronta i numeri di allora con quelli di oggi: aiuta a non dare troppo peso al singolo giorno.</p>
+      <div class="grid-2">
+        <div class="panel" id="archTesto"></div>
+        <div class="panel" style="overflow-x:auto"><table class="inv-table" id="archTab"></table></div>
       </div>
     </section>
   </div>
@@ -989,6 +1057,10 @@ dialog.search-sheet { margin: auto auto 0; }
       <div class="panel">
         <header><h3 id="h-seg">I tuoi segnali</h3><p>Scegli cosa vuoi tenere d'occhio. Quando una soglia viene superata, te lo segnaliamo in cima a «Oggi».</p></header>
         <div id="signals"></div>
+        <div class="bg-alert" id="bgAlert" hidden>
+          <label class="toggle"><input type="checkbox" id="bgOn"> Avvisami sul telefono anche ad app chiusa</label>
+          <p class="t-note" id="bgNota"></p>
+        </div>
       </div>
       <div class="panel">
         <header><h3 id="h-dati">I tuoi dati</h3><p>Bilancio, portafoglio, segnali e impostazioni restano solo su questo dispositivo. Salva una copia per non perderli se cambi telefono o cancelli i dati del browser.</p></header>
@@ -1139,6 +1211,25 @@ dialog.search-sheet { margin: auto auto 0; }
 
   <!-- ===================== STRUMENTI ===================== -->
   <div class="view" id="view-strumenti" hidden>
+    <section class="panel calc" aria-labelledby="h-busta" data-calc="busta">
+      <header>
+        <h3 id="h-busta">Busta paga: dal lordo al netto</h3>
+        <p>Quanto resta in tasca da uno stipendio da dipendente nel settore privato, e quanto vale davvero un aumento. Include aliquote Irpef 2026, detrazioni da lavoro, taglio del cuneo fiscale e trattamento integrativo.</p>
+        <p class="regole" data-regole></p>
+      </header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="bp-ral">Stipendio lordo annuo (RAL)</label><div class="input-wrap"><input id="bp-ral" type="number" inputmode="decimal" step="any" value="30000" min="0" step="500"><span class="unit">€</span></div></div>
+          <div class="field"><label for="bp-mens">Mensilità</label><div class="input-wrap"><select id="bp-mens"><option value="12">12</option><option value="13" selected>13</option><option value="14">14</option></select></div></div>
+          <div class="field"><label for="bp-add">Addizionali regionale e comunale</label><div class="input-wrap"><input id="bp-add" type="number" inputmode="decimal" step="any" value="2" min="0" max="5" step="0.1"><span class="unit">%</span></div><span class="hint">Insieme di solito tra 1,5% e 4%: controlla quelle del tuo comune</span></div>
+          <div class="field"><label for="bp-tipo">Contratto</label><div class="input-wrap"><select id="bp-tipo"><option value="ind">Tempo indeterminato</option><option value="det">Tempo determinato</option></select></div></div>
+          <div class="field"><label for="bp-aum">Aumento lordo annuo da valutare</label><div class="input-wrap"><input id="bp-aum" type="number" inputmode="decimal" step="any" value="0" min="0" step="100"><span class="unit">€</span></div><span class="hint">Facoltativo: scopri quanto ti resta netto</span></div>
+        </div>
+        <div class="result" id="bpResult"></div>
+      </div>
+      <details class="come"><summary>Come è calcolato</summary><div id="bpCome"></div></details>
+    </section>
+
     <section class="panel" aria-labelledby="h-pac">
       <header>
         <h3 id="h-pac">Piano di accumulo: quanto può diventare</h3>
@@ -1247,6 +1338,52 @@ dialog.search-sheet { margin: auto auto 0; }
         </div>
         <div class="result" id="fxResult"></div>
       </div>
+    </section>
+
+    <section class="panel calc" aria-labelledby="h-rate" data-calc="rate">
+      <header>
+        <h3 id="h-rate">Acquisto a rate: quanto costa davvero</h3>
+        <p>Inserisci i numeri del preventivo: scopri il TAEG, cioè il costo vero in percentuale con interessi e spese. Utile anche con le offerte «a tasso zero».</p>
+        <p class="regole" data-regole></p>
+      </header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="rt-imp">Prezzo del bene (importo finanziato)</label><div class="input-wrap"><input id="rt-imp" type="number" inputmode="decimal" step="any" value="1200" min="0" step="50"><span class="unit">€</span></div></div><div class="field"><label for="rt-n">Numero di rate mensili</label><div class="input-wrap"><input id="rt-n" type="number" inputmode="decimal" step="any" value="12" min="1" max="120" step="1"><span class="unit">rate</span></div></div><div class="field"><label for="rt-rata">Importo di ogni rata</label><div class="input-wrap"><input id="rt-rata" type="number" inputmode="decimal" step="any" value="100" min="0" step="1"><span class="unit">€</span></div></div><div class="field"><label for="rt-sp0">Spese iniziali (istruttoria, pratica)</label><div class="input-wrap"><input id="rt-sp0" type="number" inputmode="decimal" step="any" value="30" min="0" step="1"><span class="unit">€</span></div></div><div class="field"><label for="rt-sp1">Spese per ogni rata (incasso, bollettino)</label><div class="input-wrap"><input id="rt-sp1" type="number" inputmode="decimal" step="any" value="1.5" min="0" step="0.5"><span class="unit">€</span></div></div>
+        </div>
+        <div class="result" id="rtResult"></div>
+      </div>
+      <details class="come"><summary>Come è calcolato</summary><div id="rtCome"></div></details>
+    </section>
+
+    <section class="panel calc" aria-labelledby="h-casa" data-calc="casa">
+      <header>
+        <h3 id="h-casa">Comprare casa o restare in affitto</h3>
+        <p>Confronta il patrimonio dopo un certo numero di anni: chi compra ha la casa meno il debito che resta; chi affitta investe l'anticipo e ogni mese la differenza di spesa. Il risultato dipende molto dalle ipotesi: provane diverse.</p>
+        <p class="regole" data-regole></p>
+      </header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="ca-prezzo">Prezzo della casa</label><div class="input-wrap"><input id="ca-prezzo" type="number" inputmode="decimal" step="any" value="250000" min="0" step="5000"><span class="unit">€</span></div></div><div class="field"><label for="ca-ant">Anticipo</label><div class="input-wrap"><input id="ca-ant" type="number" inputmode="decimal" step="any" value="20" min="0" max="100" step="1"><span class="unit">%</span></div></div><div class="field"><label for="ca-costi">Costi di acquisto</label><div class="input-wrap"><input id="ca-costi" type="number" inputmode="decimal" step="any" value="6" min="0" max="20" step="0.5"><span class="unit">%</span></div><span class="hint">Imposte, notaio, agenzia, perizia: spesso 5-9% per la prima casa</span></div><div class="field"><label for="ca-tasso">Tasso del mutuo</label><div class="input-wrap"><input id="ca-tasso" type="number" inputmode="decimal" step="any" value="3.6" min="0" max="15" step="0.05"><span class="unit">%</span></div><span class="hint"><span id="caTassoHint"></span></span></div><div class="field"><label for="ca-dur">Durata del mutuo</label><div class="input-wrap"><input id="ca-dur" type="number" inputmode="decimal" step="any" value="25" min="1" max="40" step="1"><span class="unit">anni</span></div></div><div class="field"><label for="ca-aff">Affitto mensile di una casa simile</label><div class="input-wrap"><input id="ca-aff" type="number" inputmode="decimal" step="any" value="900" min="0" step="25"><span class="unit">€</span></div></div><div class="field"><label for="ca-caff">Aumento annuo dell'affitto</label><div class="input-wrap"><input id="ca-caff" type="number" inputmode="decimal" step="any" value="2" min="0" max="10" step="0.5"><span class="unit">%</span></div></div><div class="field"><label for="ca-spese">Spese annue da proprietario</label><div class="input-wrap"><input id="ca-spese" type="number" inputmode="decimal" step="any" value="1" min="0" max="5" step="0.1"><span class="unit">% del valore</span></div><span class="hint">Manutenzione, assicurazione, lavori straordinari</span></div><div class="field"><label for="ca-riv">Rivalutazione annua della casa</label><div class="input-wrap"><input id="ca-riv" type="number" inputmode="decimal" step="any" value="1.5" min="-5" max="10" step="0.5"><span class="unit">%</span></div></div><div class="field"><label for="ca-rend">Rendimento netto dei risparmi di chi affitta</label><div class="input-wrap"><input id="ca-rend" type="number" inputmode="decimal" step="any" value="3" min="-5" max="10" step="0.5"><span class="unit">%</span></div></div><div class="field"><label for="ca-oriz">Dopo quanti anni confrontare</label><div class="input-wrap"><input id="ca-oriz" type="number" inputmode="decimal" step="any" value="20" min="1" max="40" step="1"><span class="unit">anni</span></div></div>
+        </div>
+        <div class="result" id="caResult"></div>
+      </div>
+      <details class="come"><summary>Come è calcolato</summary><div id="caCome"></div></details>
+    </section>
+
+    <section class="panel calc" aria-labelledby="h-pens" data-calc="pens">
+      <header>
+        <h3 id="h-pens">La tua pensione e il fondo pensione</h3>
+        <p>Una stima della pensione pubblica con il sistema contributivo, in euro di oggi, e di quanto può aggiungere un fondo pensione. Per la stima ufficiale usa il servizio «La mia pensione futura» sul sito INPS.</p>
+        <p class="regole" data-regole></p>
+      </header>
+      <div class="grid-2">
+        <div class="fields">
+          <div class="field"><label for="pn-eta">La tua età</label><div class="input-wrap"><input id="pn-eta" type="number" inputmode="decimal" step="any" value="40" min="18" max="70" step="1"><span class="unit">anni</span></div></div><div class="field"><label for="pn-uscita">Età di pensione</label><div class="input-wrap"><input id="pn-uscita" type="number" inputmode="decimal" step="any" value="67" min="57" max="71" step="1"><span class="unit">anni</span></div><span class="hint">La pensione di vecchiaia oggi è a 67 anni</span></div><div class="field"><label for="pn-gia">Anni di contributi già versati</label><div class="input-wrap"><input id="pn-gia" type="number" inputmode="decimal" step="any" value="15" min="0" max="50" step="1"><span class="unit">anni</span></div></div><div class="field"><label for="pn-ral">Stipendio lordo annuo attuale</label><div class="input-wrap"><input id="pn-ral" type="number" inputmode="decimal" step="any" value="32000" min="0" step="500"><span class="unit">€</span></div></div><div class="field"><label for="pn-cs">Crescita dello stipendio oltre l'inflazione</label><div class="input-wrap"><input id="pn-cs" type="number" inputmode="decimal" step="any" value="1" min="-2" max="5" step="0.5"><span class="unit">% annuo</span></div></div><div class="field"><label for="pn-rv">Rivalutazione dei contributi oltre l'inflazione</label><div class="input-wrap"><input id="pn-rv" type="number" inputmode="decimal" step="any" value="1" min="-1" max="3" step="0.25"><span class="unit">% annuo</span></div><span class="hint">Segue la crescita del PIL: storicamente intorno all'1% reale</span></div><div class="field"><label for="pn-vers">Versamento mensile al fondo pensione</label><div class="input-wrap"><input id="pn-vers" type="number" inputmode="decimal" step="any" value="50" min="0" step="10"><span class="unit">€</span></div></div><div class="field"><label for="pn-cap">Capitale già nel fondo pensione</label><div class="input-wrap"><input id="pn-cap" type="number" inputmode="decimal" step="any" value="0" min="0" step="500"><span class="unit">€</span></div></div><div class="field"><label for="pn-rf">Rendimento del fondo oltre l'inflazione</label><div class="input-wrap"><input id="pn-rf" type="number" inputmode="decimal" step="any" value="2" min="-2" max="6" step="0.5"><span class="unit">% annuo</span></div><span class="hint">Linee prudenti 0-1%, bilanciate 1,5-2,5%, azionarie 3-4% nel lungo periodo</span></div>
+          <label class="toggle" style="grid-column:1/-1"><input type="checkbox" id="pn-tfr" checked> Verso anche il TFR al fondo pensione</label>
+        </div>
+        <div class="result" id="pnResult"></div>
+      </div>
+      <details class="come"><summary>Come è calcolato</summary><div id="pnCome"></div></details>
     </section>
   </div>
 
@@ -1413,10 +1550,38 @@ dialog.search-sheet { margin: auto auto 0; }
         <ol class="ladder" id="askList"></ol>
       </div>
     </section>
+
+    <section class="panel" aria-labelledby="h-verif">
+      <header><h3 id="h-verif">Prima di versare: controlla chi ti propone l'investimento</h3><p>Scrivi il nome della società, della piattaforma o l'indirizzo del sito. Ti diciamo dove verificarlo, nell'ordine giusto: bastano cinque minuti e sono gratuiti.</p></header>
+      <div class="fields">
+        <div class="field" style="grid-column:1/-1"><label for="vfNome">Nome o sito</label><div class="input-wrap"><input id="vfNome" type="text" autocomplete="off" placeholder="Es. nome della piattaforma o www.esempio.com"></div></div>
+        <div class="field" style="grid-column:1/-1"><span class="flabel">Cosa ti propongono</span>
+          <div class="seg" id="vfTipo" role="group" aria-label="Cosa ti propongono">
+            <button type="button" data-t="inv" aria-pressed="true">Investimenti o trading</button>
+            <button type="button" data-t="cripto" aria-pressed="false">Cripto</button>
+            <button type="button" data-t="cons" aria-pressed="false">Un consulente</button>
+            <button type="button" data-t="pol" aria-pressed="false">Una polizza</button>
+          </div>
+        </div>
+      </div>
+      <div id="vfOut" class="verif"></div>
+      <p class="t-note">L'elenco dei siti oscurati dalla Consob è pubblicato solo nei suoi comunicati, non in un formato che l'app possa leggere in automatico: per questo ti portiamo direttamente alle fonti ufficiali, invece di darti una risposta che potrebbe essere incompleta.</p>
+    </section>
   </div>
 
   <!-- ===================== FONTI ===================== -->
   <div class="view" id="view-fonti" hidden>
+    <section aria-labelledby="h-glos" id="glossario">
+      <div class="section-head">
+        <h2 id="h-glos">Glossario</h2>
+        <p>Le parole della finanza spiegate in due righe. Nei testi dell'app le trovi sottolineate: toccale per leggere la spiegazione.</p>
+      </div>
+      <div class="glos-tools">
+        <label class="search-box glos-find"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="glosIn" type="search" autocomplete="off" placeholder="Cerca una parola" aria-label="Cerca nel glossario"></label>
+        <div class="filters" id="glosCat" role="group" aria-label="Argomento"></div>
+      </div>
+      <div class="glos-list" id="glosList"></div>
+    </section>
     <section>
       <div class="section-head">
         <h2>Le fonti affidabili</h2>
@@ -1451,9 +1616,19 @@ dialog.search-sheet { margin: auto auto 0; }
         <a href="#cripto" data-view="cripto"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 7.5v9M10 7.5h3.2a2 2 0 010 4H10m0 0h3.6a2.3 2.3 0 010 4.6H10M11 6v1.5M11 16.1v1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span><b>Cripto</b><small>Mercato, famiglie, Bitcoin e due corsi</small></span><span class="go">›</span></a>
         <a href="#tutela" data-view="tutela"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.3-3 7.8-7 9.5-4-1.7-7-5.2-7-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.8 12l2.2 2.2 4.2-4.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Tutelarsi</b><small>Profilo di rischio, protezioni, truffe</small></span><span class="go">›</span></a>
         <a href="#fonti" data-view="fonti"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h9l5 5V19a.5.5 0 01-.5.5h-13A.5.5 0 015 19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 4.5V10h5M8.5 13.5h7M8.5 16.5h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span><b>Fonti</b><small>Siti ufficiali e fonti di questa edizione</small></span><span class="go">›</span></a>
+        <a href="#h-glos" data-view="fonti"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A1.5 1.5 0 016.5 4H19v14H6.5A1.5 1.5 0 005 19.5zM5 19.5A1.5 1.5 0 006.5 21H19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.5h6M9 11.5h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span><b>Glossario</b><small>Le parole della finanza in due righe</small></span><span class="go">›</span></a>
         <button type="button" id="moreSearch"><span class="ic"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>Cerca</b><small>Lezioni, strumenti, calcolatori, pillole</small></span><span class="go">›</span></button>
       </nav>
       <div class="foot"><span style="color:var(--muted);font-size:.9rem">Tema</span><div class="theme-toggle" role="group" aria-label="Tema"><button type="button" data-theme-set="light">Chiaro</button><button type="button" data-theme-set="system">Auto</button><button type="button" data-theme-set="dark">Scuro</button></div></div>
+      <div class="foot"><span style="color:var(--muted);font-size:.9rem">Dimensione del testo</span><div class="theme-toggle" role="group" aria-label="Dimensione del testo"><button type="button" data-testo="normale">Normale</button><button type="button" data-testo="grande">Grande</button></div></div>
+    </div>
+  </dialog>
+
+  <dialog class="sheet gl-sheet" id="glSheet" aria-labelledby="glTitle">
+    <div class="sheet-in">
+      <div class="sheet-top"><div><div class="eyebrow" id="glCat"></div><h2 id="glTitle"></h2></div><button type="button" class="x" data-close aria-label="Chiudi">✕</button></div>
+      <p id="glDef" class="gl-def"></p>
+      <div><a href="#h-glos" class="mini-btn" id="glAll" style="text-decoration:none;display:inline-block">Apri il glossario completo</a></div>
     </div>
   </dialog>
 
@@ -1469,10 +1644,16 @@ dialog.search-sheet { margin: auto auto 0; }
     <div class="disclaimer">
       <div class="foot">
         <span id="footUpdated"></span>
-        <div class="theme-toggle" role="group" aria-label="Tema">
-          <button type="button" data-theme-set="light">Chiaro</button>
-          <button type="button" data-theme-set="system">Auto</button>
-          <button type="button" data-theme-set="dark">Scuro</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div class="theme-toggle" role="group" aria-label="Tema">
+            <button type="button" data-theme-set="light">Chiaro</button>
+            <button type="button" data-theme-set="system">Auto</button>
+            <button type="button" data-theme-set="dark">Scuro</button>
+          </div>
+          <div class="theme-toggle" role="group" aria-label="Dimensione del testo">
+            <button type="button" data-testo="normale">Testo normale</button>
+            <button type="button" data-testo="grande">Testo grande</button>
+          </div>
         </div>
       </div>
       <div class="install-help" id="installHelp" hidden>
@@ -1493,6 +1674,9 @@ dialog.search-sheet { margin: auto auto 0; }
 <script src="pillole.js"></script>
 <script src="bitcoin.js"></script>
 <script src="investire.js"></script>
+<script src="glossario.js"></script>
+<script src="calcoli.js"></script>
+<script src="archivio.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1614,6 +1798,13 @@ dialog.search-sheet { margin: auto auto 0; }
   }
   document.querySelectorAll("[data-theme-set]").forEach(function (b) { b.addEventListener("click", function () { applyTheme(b.dataset.themeSet); }); });
   applyTheme(store.get("theme", "system"));
+  function applyTesto(t) {
+    document.documentElement.classList.toggle("testo-grande", t === "grande");
+    document.querySelectorAll("[data-testo]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.testo === t)); });
+    store.set("testo", t);
+  }
+  document.querySelectorAll("[data-testo]").forEach(function (b) { b.addEventListener("click", function () { applyTesto(b.dataset.testo); window.dispatchEvent(new Event("resize")); }); });
+  applyTesto(store.get("testo", "normale"));
 
   /* ---------- testata ---------- */
   var upd = D.aggiornato ? new Date(D.aggiornato) : null;
@@ -2452,10 +2643,46 @@ dialog.search-sheet { margin: auto auto 0; }
       var id = el.dataset.sg || el.dataset.sgv;
       sigs[id] = { on: document.getElementById("sg-" + id).checked, soglia: parseFloat(String(document.getElementById("sgv-" + id).value).replace(",", ".")) };
       if (!isFinite(sigs[id].soglia)) sigs[id].soglia = null;
-      store.set("segnali", sigs); renderHits();
+      store.set("segnali", sigs); renderHits(); salvaConfigSw();
     });
   });
   renderHits();
+
+  /* avvisi ad app chiusa (Android, app installata): la configurazione va al service worker tramite la cache */
+  function salvaConfigSw() {
+    if (!("caches" in window)) return;
+    var cfg = { attivi: !!store.get("bgAvvisi", false), sig: SIG.map(function (s) { return [s[0], s[1], s[2], s[3], s[4], s[6], s[7]]; }), soglie: sigs };
+    caches.open("eco-config").then(function (c) { return c.put("./__segnali.json", new Response(JSON.stringify(cfg), { headers: { "Content-Type": "application/json" } })); }).catch(function () {});
+  }
+  (function () {
+    var box = $("#bgAlert"), cb = $("#bgOn"), nota = $("#bgNota");
+    var ok = "serviceWorker" in navigator && "Notification" in window && typeof ServiceWorkerRegistration !== "undefined" && "periodicSync" in ServiceWorkerRegistration.prototype;
+    box.hidden = false;
+    if (!ok) { cb.disabled = true; nota.textContent = "Su questo browser gli avvisi ad app chiusa non sono disponibili (per esempio su iPhone): i segnali superati compaiono in cima a «Oggi» quando apri l'app."; return; }
+    cb.checked = !!store.get("bgAvvisi", false) && Notification.permission === "granted";
+    nota.textContent = "Funziona con l'app installata: il telefono controlla i dati qualche volta al giorno, quando lo ritiene opportuno, e ti avvisa una volta sola quando una soglia viene superata.";
+    cb.addEventListener("change", function () {
+      if (!cb.checked) {
+        store.set("bgAvvisi", false); salvaConfigSw();
+        navigator.serviceWorker.ready.then(function (r) { return r.periodicSync.unregister("eco-segnali"); }).catch(function () {});
+        nota.textContent = "Avvisi ad app chiusa disattivati."; return;
+      }
+      Notification.requestPermission().then(function (perm) {
+        if (perm !== "granted") { cb.checked = false; nota.textContent = "Senza il permesso per le notifiche non possiamo avvisarti: puoi darlo dalle impostazioni del browser."; return; }
+        return navigator.serviceWorker.ready.then(function (reg) {
+          return navigator.permissions.query({ name: "periodic-background-sync" }).then(function (st) {
+            if (st.state !== "granted") { cb.checked = false; nota.textContent = "Per gli avvisi ad app chiusa installa prima l'app sulla schermata Home, poi riattiva questa opzione."; return; }
+            return reg.periodicSync.register("eco-segnali", { minInterval: 4 * 3600 * 1000 }).then(function () {
+              store.set("bgAvvisi", true); salvaConfigSw();
+              nota.textContent = "Attivi. Ti mandiamo ora un avviso di prova.";
+              reg.showNotification("Eco Bussola", { body: "Avvisi attivi: ti scriveremo quando un tuo segnale viene superato.", icon: "icons/icon-192.png", badge: "icons/favicon.png", tag: "prova" });
+            });
+          });
+        });
+      }).catch(function () { cb.checked = false; nota.textContent = "Non è stato possibile attivare gli avvisi su questo dispositivo."; });
+    });
+  })();
+  salvaConfigSw();
 
   $("#mioNome").value = store.get("nome", "");
   $("#mioNome").addEventListener("change", function () { store.set("nome", this.value.trim()); });
@@ -3351,7 +3578,8 @@ dialog.search-sheet { margin: auto auto 0; }
       if (!isNaN(dp)) quando = dp.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Rome" }) + (+dp.toLocaleString("en-GB", { hour: "numeric", hour12: false, timeZone: "Europe/Rome" }) < 12 ? ", mattina" : ", sera");
     }
     box.innerHTML = '<div class="brief-top"><div><p class="eyebrow">' + esc(dateLong) + '</p><h2 id="h-brief">In 30 secondi</h2></div>' +
-      '<button type="button" class="mini-btn share-btn" id="briefShare">' + SHARE_ICO + 'Condividi</button></div>' +
+      '<div class="brief-acts">' + ("speechSynthesis" in window ? '<button type="button" class="mini-btn share-btn listen" id="briefListen" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8v4h3l4 3.5v-11L6 8z" fill="currentColor"/><path d="M13 7a4 4 0 010 6M15.5 4.5a7.5 7.5 0 010 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Ascolta l\'edizione</span></button>' : '') +
+      '<button type="button" class="mini-btn share-btn" id="briefShare">' + SHARE_ICO + 'Condividi</button></div></div>' +
       '<div class="brief-kpis">' + kp.map(function (v) {
         return '<button type="button" class="bk" data-id="' + esc(v.id) + '" aria-label="Dettagli: ' + esc(v.nome) + '"><small>' + esc(corto[v.id] || v.nome) + '</small><b>' + nf(v.valore, v.decimali) + '<i>' + esc(v.unita) + '</i></b>' + chipFor(v) + spark(v.id) + '</button>';
       }).join("") + '</div>' +
@@ -3364,6 +3592,312 @@ dialog.search-sheet { margin: auto auto 0; }
       condividiImmagine({ kicker: "In 30 secondi · " + dateLong, titolo: D.titolo || "Il punto di oggi",
         righe: kp.map(function (v) { return [v.nome, nf(v.valore, v.decimali) + " " + v.unita]; }).concat(cambi.slice(0, 3).map(function (x) { return [x.nome + " dall'ultima visita", x.txt]; })) });
     });
+  })();
+
+  /* ---------- ascolta l'edizione (sintesi vocale del telefono, funziona anche offline) ---------- */
+  (function () {
+    var b = $("#briefListen"); if (!b || !("speechSynthesis" in window)) return;
+    var synth = window.speechSynthesis;
+    function parlato(t) {
+      return String(t || "").replace(/−/g, "meno ").replace(/(\d),(\d)/g, "$1 virgola $2").replace(/(\d)\.(\d{3})/g, "$1$2")
+        .replace(/€\/l/g, "euro al litro").replace(/€\/g/g, "euro al grammo").replace(/\$\/oz/g, "dollari l'oncia").replace(/€/g, " euro").replace(/\$/g, " dollari")
+        .replace(/%/g, " per cento").replace(/\bpb\b/g, "punti base").replace(/\bpt\b/g, "punti").replace(/\bBTP\b/g, "B T P").replace(/\bBCE\b/g, "B C E").replace(/\bETF\b/g, "E T F")
+        .replace(/«|»/g, "").replace(/\s+/g, " ").trim();
+    }
+    function testi() {
+      var out = [];
+      out.push("Eco Bussola. " + ed + " di " + dateLong + ".");
+      if (D.titolo) out.push(D.titolo + ".");
+      if (D.sintesi) out.push(D.sintesi);
+      var kp = ["ftsemib", "infl_it", "euribor3m", "benzina"].map(findVoce).filter(function (v) { return v && typeof v.valore === "number"; });
+      if (kp.length) out.push("In trenta secondi. " + kp.map(function (v) { return v.nome + ": " + nf(v.valore, v.decimali) + " " + v.unita; }).join(". ") + ".");
+      var since = $("#brief .since"); if (since && since.textContent.trim()) out.push(since.innerText.replace(/\n+/g, ". "));
+      (D.perTe || []).forEach(function (c) { out.push(c.titolo + ". " + c.testo); });
+      var pill = $("#pill h3"), pillT = $("#pill p"); if (pill && pillT) out.push("La pillola di oggi. " + pill.textContent + ". " + pillT.textContent);
+      out.push("Fine dell'edizione. Contenuti informativi, non consigli personalizzati.");
+      return out.map(parlato);
+    }
+    function voce() {
+      var vs = synth.getVoices().filter(function (v) { return /^it(-|_|$)/i.test(v.lang); });
+      return vs.filter(function (v) { return /google|natural|premium|enhanced|alice|federica|luca/i.test(v.name); })[0] || vs[0] || null;
+    }
+    function stato(on) { b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); b.querySelector("span").textContent = on ? "Ferma la lettura" : "Ascolta l'edizione"; }
+    b.addEventListener("click", function () {
+      if (synth.speaking || synth.pending) { synth.cancel(); stato(false); return; }
+      var parti = testi(), v = voce();
+      parti.forEach(function (t, i) {
+        var u = new SpeechSynthesisUtterance(t); u.lang = "it-IT"; if (v) u.voice = v; u.rate = 1;
+        if (i === parti.length - 1) u.onend = function () { stato(false); };
+        u.onerror = function () { stato(false); };
+        synth.speak(u);
+      });
+      stato(true);
+      if (!v) avviso("Sul dispositivo non c'è una voce italiana: la lettura usa quella predefinita.");
+    });
+    window.addEventListener("hashchange", function () { if (synth.speaking) { synth.cancel(); stato(false); } });
+  })();
+
+  /* ---------- glossario: parole sottolineate nei testi, scheda della parola e sezione completa ---------- */
+  var GLOS = window.ECO_GLOSSARIO || [];
+  var glNorm = function (t) { return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); };
+  function apriParola(i) {
+    var g = GLOS[i]; if (!g) return;
+    $("#glCat").textContent = "Glossario · " + g.c;
+    $("#glTitle").textContent = g.t;
+    $("#glDef").textContent = g.d;
+    $("#glAll").dataset.g = i;
+    apriFinestra($("#glSheet"));
+  }
+  var collegaGlossario = function () {};
+  (function () {
+    if (!GLOS.length) return;
+    var forme = [];
+    GLOS.forEach(function (g, i) { if (g.x) return; [g.t].concat(g.a || []).forEach(function (f) { forme.push({ f: f, i: i, sigla: /^[A-Z0-9&]{2,6}$/.test(f) }); }); });
+    forme.sort(function (a, b) { return b.f.length - a.f.length; });
+    var mappa = {}; forme.forEach(function (x) { var k = x.f.toLowerCase(); if (!mappa[k]) mappa[k] = x; });
+    var re;
+    try { re = new RegExp("(?<![\\p{L}\\p{N}])(" + forme.map(function (x) { return x.f.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")(?![\\p{L}\\p{N}])", "giu"); }
+    catch (e) { return; } // browser troppo vecchio: niente sottolineature, il glossario resta consultabile
+    var NO = "button,a,input,select,textarea,label,summary,h1,h2,h3,h4,.gl,.tile,.bk,.num,.jump,.seg,.chip,.cal,.when,.eyebrow,.t-src,.rad-m,.kpi .v,.big,.since-list,svg,dialog,.glos-list,.res,.news .src,time,#perf,.rank-num,.strum-top,#archTab,.week-grid,.vf-step b";
+    collegaGlossario = function (root) {
+      if (!root) return;
+      var usati = {}; root.querySelectorAll(".gl").forEach(function (el) { usati[el.dataset.g] = 1; });
+      var nodi = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: function (n) {
+        var p = n.parentElement;
+        if (!p || n.nodeValue.length < 4 || p.closest(NO)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      } });
+      while (w.nextNode()) nodi.push(w.currentNode);
+      var tot = Object.keys(usati).length;
+      nodi.forEach(function (n) {
+        if (tot >= 60) return;
+        var t = n.nodeValue, pezzi = [], last = 0, m, fatti = 0;
+        re.lastIndex = 0;
+        while ((m = re.exec(t)) && fatti < 2) {
+          var x = mappa[m[1].toLowerCase()];
+          if (!x || usati[x.i] || (x.sigla && m[1] !== x.f)) continue;
+          usati[x.i] = 1; fatti++; tot++;
+          pezzi.push(document.createTextNode(t.slice(last, m.index)));
+          var b = document.createElement("button"); b.type = "button"; b.className = "gl"; b.dataset.g = x.i; b.textContent = m[1];
+          b.setAttribute("aria-label", m[1] + ": spiegazione");
+          pezzi.push(b); last = m.index + m[1].length;
+        }
+        if (!pezzi.length) return;
+        pezzi.push(document.createTextNode(t.slice(last)));
+        var fr = document.createDocumentFragment(); pezzi.forEach(function (p) { fr.appendChild(p); });
+        n.parentNode.replaceChild(fr, n);
+      });
+    };
+    document.addEventListener("click", function (e) { var b = e.target.closest(".gl"); if (b) { e.preventDefault(); e.stopPropagation(); apriParola(+b.dataset.g); } }, true);
+  })();
+  (function () {
+    if (!GLOS.length) { $("#glossario").hidden = true; return; }
+    var cats = ["Tutte"].concat(GLOS.map(function (g) { return g.c; }).filter(function (c, i, a) { return a.indexOf(c) === i; }));
+    var cat = "Tutte";
+    $("#glosCat").innerHTML = cats.map(function (c) { return '<button type="button" data-c="' + esc(c) + '">' + esc(c) + '</button>'; }).join("");
+    var ordine = GLOS.map(function (g, i) { return i; }).sort(function (a, b) { return GLOS[a].t.localeCompare(GLOS[b].t, "it"); });
+    function render() {
+      var q = glNorm($("#glosIn").value).trim();
+      document.querySelectorAll("#glosCat button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.c === cat)); });
+      var lista = ordine.filter(function (i) { var g = GLOS[i]; return (cat === "Tutte" || g.c === cat) && (!q || glNorm(g.t + " " + (g.a || []).join(" ") + " " + g.d).indexOf(q) >= 0); });
+      $("#glosList").innerHTML = lista.map(function (i) { var g = GLOS[i]; return '<article class="glos-item" id="gl-' + i + '"><small>' + esc(g.c) + '</small><b>' + esc(g.t) + '</b><p>' + esc(g.d) + '</p></article>'; }).join("") || '<p class="s-hint">Nessuna parola trovata. Prova con la ricerca generale in alto.</p>';
+    }
+    $("#glosCat").addEventListener("click", function (e) { var b = e.target.closest("[data-c]"); if (b) { cat = b.dataset.c; render(); } });
+    $("#glosIn").addEventListener("input", render);
+    render();
+    $("#glAll").addEventListener("click", function () {
+      var i = this.dataset.g; $("#glSheet").close();
+      cat = "Tutte"; $("#glosIn").value = ""; render();
+      setTimeout(function () { var el = document.getElementById("gl-" + i); if (el) { el.classList.add("flash"); el.scrollIntoView({ block: "center" }); setTimeout(function () { el.classList.remove("flash"); }, 2200); } }, 120);
+    });
+  })();
+
+  /* ---------- la settimana in breve (dalle serie giornaliere e dall'archivio) ---------- */
+  (function () {
+    var box = $("#settimana"), S = D.serie || {};
+    var IDS = [["ftsemib", "Piazza Affari"], ["stoxx50", "Europa"], ["sp500", "Wall Street"], ["mondo", "Azionario mondiale"], ["oro_eur", "Oro"], ["brent", "Petrolio"], ["btc", "Bitcoin"], ["eurusd", "Euro/dollaro"]];
+    function setti(id) { var a = (S[id] || []).filter(function (x) { return typeof x === "number"; }); return a.length >= 6 && a[a.length - 6] ? (a[a.length - 1] / a[a.length - 6] - 1) * 100 : null; }
+    var righe = IDS.map(function (x) { return { id: x[0], nome: x[1], v: setti(x[0]) }; }).filter(function (x) { return x.v != null; });
+    if (righe.length < 4) return;
+    var tutti = ((D.classifica && D.classifica.voci) || []).map(function (c) { return { nome: c.nome, v: setti(c.id) }; }).filter(function (x) { return x.v != null; }).sort(function (a, b) { return b.v - a.v; });
+    var A = (window.ECO_ARCHIVIO || []).filter(function (x) { return Date.now() - new Date(x.t).getTime() < 8 * 864e5; });
+    var perGiorno = {}; A.forEach(function (x) { perGiorno[String(x.t).slice(0, 10)] = x; });
+    var titoli = Object.keys(perGiorno).sort().reverse().slice(0, 6).map(function (k) { return [k, perGiorno[k].titolo]; });
+    var prossima = (AG || [])[0];
+    var segno = function (v) { return '<b class="' + (v >= 0 ? "pos" : "neg") + '">' + (v > 0 ? "+" : "") + pct(v, 1) + '</b>'; };
+    box.innerHTML = '<div class="week-top"><div><p class="eyebrow">Ultime 5 sedute</p><h2 id="h-sett">La settimana in breve</h2></div>' + (tutti.length > 2 ? '<p class="t-note">Meglio: ' + esc(tutti[0].nome) + ' ' + segno(tutti[0].v) + ' · peggio: ' + esc(tutti[tutti.length - 1].nome) + ' ' + segno(tutti[tutti.length - 1].v) + '</p>' : '') + '</div>' +
+      '<div class="week-grid">' + righe.map(function (r) { return '<div><small>' + esc(r.nome) + '</small>' + segno(r.v) + '</div>'; }).join("") + '</div>' +
+      '<div class="week-cols">' + (titoli.length > 1 ? '<div><h3>I titoli dei giorni scorsi</h3><ul>' + titoli.map(function (t) { return '<li><span class="num" style="font-size:.78rem">' + esc(fmtDate(t[0])) + '</span> · ' + esc(t[1]) + '</li>'; }).join("") + '</ul></div>' : '') +
+      (prossima ? '<div><h3>Da segnare</h3><ul><li>' + esc(fmtDate(prossima.data)) + ' · ' + esc(prossima.evento) + '</li>' + (AG[1] ? '<li>' + esc(fmtDate(AG[1].data)) + ' · ' + esc(AG[1].evento) + '</li>' : '') + '</ul></div>' : '') + '</div>' +
+      '<p class="t-note">Una settimana è un periodo troppo breve per trarre conclusioni: serve a capire il clima, non a decidere.</p>';
+    box.hidden = false;
+    var g = new Date().getDay();
+    if (g !== 0 && g !== 6) { var perf = $("#perf"), sez = perf && perf.closest("section"); if (sez) sez.after(box); }
+  })();
+
+  /* ---------- le edizioni passate ---------- */
+  (function () {
+    var A = (window.ECO_ARCHIVIO || []).filter(function (x) { return x.t !== D.aggiornato; });
+    if (!A.length) return;
+    $("#archivio").hidden = false;
+    var lista = A.slice().reverse();
+    var etich = function (x) { var d = new Date(x.t); return d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Rome" }) + (x.e === "mattina" ? ", mattina" : ", sera"); };
+    $("#archSel").innerHTML = lista.map(function (x, i) { return '<option value="' + i + '">' + esc(etich(x)) + '</option>'; }).join("");
+    // di default l'edizione più vicina a un mese fa
+    var mese = Date.now() - 30 * 864e5, best = 0;
+    lista.forEach(function (x, i) { if (Math.abs(new Date(x.t) - mese) < Math.abs(new Date(lista[best].t) - mese)) best = i; });
+    $("#archSel").value = String(best);
+    function render() {
+      var x = lista[+$("#archSel").value];
+      $("#archTesto").innerHTML = '<header><p class="eyebrow">' + esc(etich(x)) + '</p><h3 style="margin-top:6px">' + esc(x.titolo) + '</h3></header><p style="color:var(--muted)">' + esc(x.sintesi || "") + '</p>';
+      var righe = Object.keys(x.v || {}).map(function (id) {
+        var v = findVoce(id); if (!v || typeof v.valore !== "number") return "";
+        var a = x.v[id], b = v.valore, pc = v.unita === "%" || v.unita === "pb";
+        var d = pc ? (b - a) : (a ? (b / a - 1) * 100 : 0);
+        var good = v.buono === "neutro" ? null : (v.buono === "giu" ? d < 0 : d > 0);
+        var txt = (d > 0 ? "+" : "") + (pc ? nf(d, v.unita === "pb" ? 0 : 2) + (v.unita === "pb" ? " pb" : " punti") : pct(d, 1));
+        return '<tr><td>' + esc(v.nome) + '</td><td>' + nf(a, v.decimali) + '</td><td>' + nf(b, v.decimali) + '</td><td class="' + (good == null || d === 0 ? "" : good ? "pos" : "neg") + '">' + txt + '</td></tr>';
+      }).join("");
+      $("#archTab").innerHTML = '<thead><tr><th></th><th>Allora</th><th>Oggi</th><th>Variazione</th></tr></thead><tbody>' + righe + '</tbody>';
+    }
+    $("#archSel").addEventListener("change", render);
+    render();
+  })();
+
+  /* ---------- prima di versare: verifica guidata ---------- */
+  (function () {
+    var tipo = "inv";
+    var FONTI = {
+      consob: ["Consob", "https://www.consob.it/", "Cerca il nome nella sezione «Occhio alle truffe!» e negli avvisi ai risparmiatori: lì ci sono i siti oscurati e le società abusive."],
+      albi: ["Banca d'Italia, albi ed elenchi", "https://infostat.bancaditalia.it/GIAVAInquiry-public/ng/", "Verifica che la società sia una banca, un istituto o un intermediario autorizzato a operare in Italia."],
+      ocf: ["Albo dei consulenti finanziari (OCF)", "https://www.organismocf.it/", "Chi ti consiglia investimenti in Italia deve essere iscritto all'albo con nome e cognome."],
+      esma: ["Registro ESMA delle piattaforme cripto", "https://registers.esma.europa.eu/", "Dal 1° luglio 2026 chi offre servizi cripto in UE deve essere autorizzato secondo MiCAR e comparire nel registro."],
+      ivass: ["IVASS", "https://www.ivass.it/", "Verifica che compagnia e intermediario siano iscritti e controlla gli avvisi su siti e polizze contraffatte."]
+    };
+    var ORDINE = { inv: ["consob", "albi", "ocf"], cripto: ["esma", "consob", "albi"], cons: ["ocf", "consob", "albi"], pol: ["ivass", "consob", "ocf"] };
+    var ROSSI = [[/garant|sicur[io] al 100|senza rischi/i, "Nessun investimento serio garantisce guadagni: la parola «garantito» è il segnale di truffa più comune."],
+      [/(\d{2,3})\s*%/, "Un rendimento a due cifre promesso in anticipo è un campanello d'allarme."],
+      [/\bAI\b|\bIA\b|intelligenza artificiale|robot|\bbot\b|algoritm/i, "«Robot» e «intelligenza artificiale» che guadagnano da soli sono una storia molto usata nelle truffe di trading online."],
+      [/whatsapp|telegram|instagram|tiktok/i, "Le proposte arrivate da chat e social, da sconosciuti, sono il canale preferito dagli abusivi."]];
+    function render() {
+      var nome = $("#vfNome").value.trim();
+      document.querySelectorAll("#vfTipo button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.t === tipo)); });
+      var avvisi = ROSSI.filter(function (r) { return nome && r[0].test(nome); }).map(function (r) { return '<p class="vf-warn">' + esc(r[1]) + '</p>'; }).join("");
+      $("#vfOut").innerHTML = avvisi + ORDINE[tipo].map(function (k, i) {
+        var f = FONTI[k];
+        return '<div class="vf-step"><span class="n">' + (i + 1) + '</span><div><b>' + esc(f[0]) + '</b><p>' + esc(f[2]) + (nome ? ' Cerca: «' + esc(nome) + '».' : '') + '</p><a href="' + f[1] + '" target="_blank" rel="noopener">Apri il sito ufficiale →</a></div></div>';
+      }).join("") +
+        '<div class="vf-step"><span class="n">' + (ORDINE[tipo].length + 1) + '</span><div><b>Se non trovi nulla, non è un buon segno</b><p>Una società seria è facile da trovare negli elenchi ufficiali. Se ti mettono fretta, chiedono bonifici all\'estero o accessi al tuo computer, fermati e chiedi a qualcuno di fiducia. Puoi segnalare alla Consob o alla Polizia postale.</p></div></div>' +
+        (nome ? '<div><button type="button" class="mini-btn" id="vfCopia">Copia il nome da incollare nelle ricerche</button></div>' : '');
+      var c = $("#vfCopia"); if (c) c.addEventListener("click", function () { try { navigator.clipboard.writeText(nome).then(function () { avviso("Copiato."); }); } catch (e) {} });
+    }
+    $("#vfTipo").addEventListener("click", function (e) { var b = e.target.closest("[data-t]"); if (b) { tipo = b.dataset.t; render(); } });
+    var tv = null; $("#vfNome").addEventListener("input", function () { clearTimeout(tv); tv = setTimeout(render, 250); });
+    render();
+  })();
+
+  /* ---------- calcolatori con regole di legge (calcoli.js) ---------- */
+  (function () {
+    var C = window.ECO_CALC; if (!C) { document.querySelectorAll(".calc").forEach(function (x) { x.hidden = true; }); return; }
+    var esiti = C.verifica(), tuttiOk = esiti.every(function (e) { return e.ok; });
+    document.querySelectorAll("[data-regole]").forEach(function (el) {
+      el.textContent = tuttiOk ? "Regole valide per il " + C.regole.anno + " · verificate il " + C.regole.verificate + " · " + esiti.length + " casi di prova superati"
+        : "Attenzione: una verifica automatica non è stata superata, i risultati potrebbero non essere corretti.";
+      if (!tuttiOk) el.classList.add("ko");
+    });
+    var row = function (a, b) { return '<div class="row"><span>' + a + '</span><span>' + b + '</span></div>'; };
+    // i valori inseriti restano solo su questo dispositivo
+    function legaCampi(chiave, ids, render) {
+      var salvati = store.get("calc:" + chiave, {});
+      ids.forEach(function (id) {
+        var el = document.getElementById(id); if (!el) return;
+        if (salvati[id] != null) { if (el.type === "checkbox") el.checked = !!salvati[id]; else el.value = salvati[id]; }
+        el.addEventListener(el.tagName === "SELECT" || el.type === "checkbox" ? "change" : "input", function () {
+          var o = {}; ids.forEach(function (j) { var e = document.getElementById(j); if (e) o[j] = e.type === "checkbox" ? e.checked : e.value; });
+          store.set("calc:" + chiave, o); render();
+        });
+      });
+      render();
+    }
+
+    // Busta paga
+    function renderBusta() {
+      var o = { ral: num("bp-ral"), mensilita: +$("#bp-mens").value, addizionali: num("bp-add"), determinato: $("#bp-tipo").value === "det" };
+      var b = C.bustaPaga(o), aum = num("bp-aum");
+      var cuneo = b.ulterioreDetrazione || b.sommaEsente;
+      var h = '<div><small style="color:var(--muted)">Netto stimato al mese, su ' + o.mensilita + ' mensilità</small><div class="big">' + eur(b.nettoMese) + '</div></div>' +
+        row("Netto all'anno", eur(b.nettoAnnuo)) +
+        row("Contributi INPS (9,19%)", "−" + eur(b.contributi)) +
+        row("Irpef lorda", "−" + eur(b.irpefLorda)) +
+        row("Detrazione da lavoro dipendente", "+" + eur(b.detrazioneLavoro)) +
+        (cuneo ? row("Taglio del cuneo fiscale", "+" + eur(cuneo)) : "") +
+        (b.trattamentoIntegrativo ? row("Trattamento integrativo", "+" + eur(b.trattamentoIntegrativo)) : "") +
+        row("Addizionali", "−" + eur(b.addizionali)) +
+        row("Aliquota sull'ultimo euro", pct(b.aliquotaMarginale * 100, 0));
+      if (aum > 0) {
+        var b2 = C.bustaPaga({ ral: o.ral + aum, mensilita: o.mensilita, addizionali: o.addizionali, determinato: o.determinato });
+        var d = b2.nettoAnnuo - b.nettoAnnuo;
+        h += '<p class="verdetto">Con <b>' + eur(aum) + '</b> lordi in più all\'anno ti restano <b>' + eur(d) + '</b> netti (' + eur(d / o.mensilita) + ' al mese), cioè il ' + pct(aum ? d / aum * 100 : 0, 0) + ' dell\'aumento.' +
+          (d / aum < 0.45 ? ' Una parte importante se ne va perché, salendo, si perdono detrazioni e taglio del cuneo.' : '') + '</p>';
+      }
+      h += '<p class="verdetto" style="color:var(--muted)">Stima per un dipendente privato senza familiari a carico, per un anno intero. Per il netto esatto fa fede la busta paga: conguagli, familiari, bonus e addizionali precise la cambiano.</p>';
+      $("#bpResult").innerHTML = h;
+    }
+    $("#bpCome").innerHTML = '<p>Il calcolo segue questi passi, con le regole in vigore nel ' + C.regole.anno + ':</p><ul>' +
+      '<li>Contributi INPS a carico del dipendente: 9,19% della retribuzione lorda (aliquota generale del settore privato; sopra circa 56.000 € si aggiunge un altro 1%, non incluso).</li>' +
+      '<li>Irpef sul reddito che resta: 23% fino a 28.000 €, 33% fino a 50.000 €, 43% oltre (art. 11 TUIR, L. 199/2025).</li>' +
+      '<li>Detrazione per lavoro dipendente: 1.955 € fino a 15.000 € di reddito, poi decrescente fino a zero a 50.000 €, più 65 € tra 25.000 e 35.000 € (art. 13 TUIR).</li>' +
+      '<li>Taglio del cuneo fiscale: fino a 20.000 € una somma esentasse pari al 7,1%, 5,3% o 4,8% del reddito; tra 20.000 e 40.000 € una detrazione di 1.000 € che si riduce oltre 32.000 € (L. 207/2024).</li>' +
+      '<li>Trattamento integrativo di 1.200 € l\'anno fino a 15.000 € di reddito, se le tasse superano la detrazione (DL 3/2020).</li>' +
+      '<li>Addizionali regionale e comunale con la percentuale che indichi.</li></ul>' +
+      '<p>Casi di prova controllati: ' + esiti.filter(function (e) { return /Detrazione|Somma|Ulteriore|Irpef/.test(e.nome); }).map(function (e) { return esc(e.nome) + ' (' + esc(e.fonte) + ')'; }).join("; ") + '.</p>';
+    legaCampi("busta", ["bp-ral", "bp-mens", "bp-add", "bp-tipo", "bp-aum"], renderBusta);
+
+    // Acquisto a rate
+    function renderRate() {
+      var o = { importo: num("rt-imp"), rate: num("rt-n"), rata: num("rt-rata"), speseIniziali: num("rt-sp0"), speseRata: num("rt-sp1") };
+      var t = C.taeg(o);
+      if (!t) { $("#rtResult").innerHTML = '<p>Inserisci prezzo, numero di rate e importo della rata.</p>'; return; }
+      if (!isFinite(t.taeg)) { $("#rtResult").innerHTML = '<p>Le rate sommate sono meno del prezzo: controlla i numeri del preventivo.</p>'; return; }
+      var zero = t.tan < 0.0005;
+      $("#rtResult").innerHTML = '<div><small style="color:var(--muted)">TAEG, il costo vero all\'anno</small><div class="big">' + pct(t.taeg * 100, 2) + '</div></div>' +
+        row("TAN, solo interessi", pct(t.tan * 100, 2)) + row("Paghi in tutto", eur(t.totale, 2)) + row("Costo oltre il prezzo", eur(t.costo, 2)) +
+        '<p class="verdetto">' + (zero && t.taeg > 0.0005 ? 'Il «tasso zero» vale solo per gli interessi: con le spese il costo è del ' + pct(t.taeg * 100, 1) + ' l\'anno.' :
+          t.taeg > 0.15 ? 'Un costo molto alto: valuta di risparmiare prima e comprare in contanti, o confronta altre offerte.' :
+          'Confronta sempre il TAEG di più offerte: è l\'unico numero che include tutti i costi obbligatori.') + ' Ogni rata è un impegno fisso: sommala alle altre prima di firmare.</p>';
+    }
+    $("#rtCome").innerHTML = '<p>Il TAEG è il tasso che rende uguali la somma che ricevi (il prezzo meno le spese pagate all\'inizio) e tutto ciò che restituisci, rata più spese, mese per mese. È il metodo previsto dalla direttiva europea sul credito ai consumatori (2008/48/CE), lo stesso che le finanziarie devono usare nei documenti.</p><p>Il TAN considera solo prezzo e rate, senza spese. Le assicurazioni facoltative non sono incluse: se te le propongono, aggiungile alle spese per vedere il costo totale.</p>';
+    legaCampi("rate", ["rt-imp", "rt-n", "rt-rata", "rt-sp0", "rt-sp1"], renderRate);
+
+    // Comprare o affittare
+    var mm = findVoce("mutuo_medio");
+    if (mm && typeof mm.valore === "number") { var el0 = $("#ca-tasso"); if (!store.get("calc:casa", null)) el0.value = mm.valore; $("#caTassoHint").textContent = "Media dei nuovi mutui oggi: " + pct(mm.valore, 2) + " (" + fmtDate(mm.data) + ")"; }
+    function renderCasa() {
+      var o = { prezzo: num("ca-prezzo"), anticipo: num("ca-ant"), costiAcquisto: num("ca-costi"), tasso: num("ca-tasso"), durata: Math.max(1, num("ca-dur")), affitto: num("ca-aff"), crescitaAffitto: num("ca-caff"), speseProprietario: num("ca-spese"), rivalutazione: num("ca-riv"), rendimento: num("ca-rend"), orizzonte: Math.max(1, num("ca-oriz")) };
+      if (!o.prezzo) { $("#caResult").innerHTML = '<p>Inserisci il prezzo della casa.</p>'; return; }
+      var r = C.compraAffitta(o), d = r.patrimonioCompra - r.patrimonioAffitto;
+      var prud = C.compraAffitta(Object.assign({}, o, { rivalutazione: 0 })), dp = prud.patrimonioCompra - prud.patrimonioAffitto;
+      $("#caResult").innerHTML = '<div><small style="color:var(--muted)">Dopo ' + o.orizzonte + ' anni, con queste ipotesi</small><div class="big">' + (d >= 0 ? "Comprare" : "Affittare") + '<small>+' + eur(Math.abs(d)) + '</small></div></div>' +
+        row("Rata del mutuo", eur(r.rata) + "/mese") + row("Patrimonio di chi compra", eur(r.patrimonioCompra)) + row("di cui casa", eur(r.valoreCasa)) + row("di cui debito ancora da pagare", "−" + eur(r.debitoResiduo)) + row("Patrimonio di chi affitta e investe", eur(r.patrimonioAffitto)) +
+        '<p class="verdetto">Se la casa non si rivalutasse affatto, ' + (dp >= 0 ? 'comprare resterebbe avanti di ' + eur(dp) : 'affittare sarebbe avanti di ' + eur(-dp)) + '. ' +
+        (o.orizzonte < 7 ? 'Su pochi anni i costi di acquisto pesano molto: comprare conviene di rado se poi si rivende presto.' : 'Oltre ai numeri contano stabilità, libertà di trasferirsi e la disciplina di investire davvero la differenza.') + '</p>';
+    }
+    $("#caCome").innerHTML = '<p>Mese per mese:</p><ul><li><b>Chi compra</b> paga anticipo e costi di acquisto, poi rata del mutuo (alla francese) e spese da proprietario in percentuale del valore della casa. Alla fine possiede la casa rivalutata meno il debito residuo.</li><li><b>Chi affitta</b> investe all\'inizio l\'anticipo e i costi di acquisto risparmiati, e ogni mese aggiunge (o preleva) la differenza tra la spesa di chi compra e l\'affitto, che cresce ogni anno.</li><li>Non sono incluse le detrazioni sugli interessi del mutuo prima casa (19% fino a 4.000 € di interessi l\'anno), le tasse sui guadagni di chi investe e i costi di un eventuale trasloco: possono spostare il risultato di qualche migliaio di euro.</li></ul>';
+    legaCampi("casa", ["ca-prezzo", "ca-ant", "ca-costi", "ca-tasso", "ca-dur", "ca-aff", "ca-caff", "ca-spese", "ca-riv", "ca-rend", "ca-oriz"], renderCasa);
+
+    // Pensione
+    function renderPens() {
+      var o = { eta: num("pn-eta"), etaUscita: num("pn-uscita"), anniVersati: num("pn-gia"), ral: num("pn-ral"), crescitaStipendio: num("pn-cs"), rivalutazione: num("pn-rv"), versamento: num("pn-vers"), capitaleFondo: num("pn-cap"), rendimentoFondo: num("pn-rf"), tfr: $("#pn-tfr").checked };
+      if (o.etaUscita < 57 || o.etaUscita > 71) { $("#pnResult").innerHTML = '<p>L\'età di pensione deve essere tra 57 e 71 anni.</p>'; return; }
+      var r = C.pensione(o);
+      $("#pnResult").innerHTML = '<div><small style="color:var(--muted)">Pensione pubblica stimata, lorda, in euro di oggi</small><div class="big">' + eur(r.pensioneAnnua / 13) + '<small>al mese su 13</small></div></div>' +
+        row("All'anno, lorda", eur(r.pensioneAnnua)) + row("Rispetto all'ultimo stipendio lordo", pct(r.sostituzione * 100, 0)) + row("Anni di contributi", nf(r.anni, 0)) +
+        row("Capitale nel fondo pensione", eur(r.capitaleFondo)) + row("Rendita stimata dal fondo", "+" + eur(r.renditaFondo / 13) + "/mese") + row("Pensione più fondo, rispetto allo stipendio", pct(r.sostituzioneTotale * 100, 0)) +
+        '<p class="verdetto">' + (r.anni < 20 ? 'Attenzione: per la pensione di vecchiaia servono almeno 20 anni di contributi. ' : '') +
+        'È una stima con ipotesi costanti: carriere discontinue, part-time o anni senza contributi la abbassano. La rendita del fondo è calcolata con lo stesso coefficiente pubblico; quelle offerte dalle assicurazioni sono di solito un po\' più basse.</p>';
+    }
+    $("#pnCome").innerHTML = '<ul><li>Ogni anno si accantona il 33% dello stipendio lordo (aliquota di computo dei dipendenti); gli anni già versati sono stimati con lo stesso stipendio riportato indietro.</li><li>Il montante si rivaluta ogni anno con il tasso che indichi, al netto dell\'inflazione (per legge segue la media quinquennale del PIL).</li><li>Alla pensione il montante si moltiplica per il coefficiente di trasformazione della tua età: per il biennio 2025-2026 va dal 4,204% a 57 anni al 6,510% a 71 anni (5,608% a 67 anni, decreto del 20 novembre 2024). Viene aggiornato ogni due anni.</li><li>Il fondo pensione accumula i versamenti mensili, il TFR (6,91% dello stipendio) se lo indichi, e il rendimento reale scelto.</li><li>Tutti gli importi sono in euro di oggi, quindi già depurati dall\'inflazione. Le tasse sulla pensione non sono incluse.</li></ul><p>Per una stima ufficiale con i tuoi contributi reali: servizio «La mia pensione futura» nell\'area riservata del sito INPS.</p>';
+    legaCampi("pens", ["pn-eta", "pn-uscita", "pn-gia", "pn-ral", "pn-cs", "pn-rv", "pn-vers", "pn-cap", "pn-rf", "pn-tfr"], renderPens);
   })();
 
   /* ---------- condividere i risultati dei calcolatori ---------- */
@@ -3406,12 +3940,12 @@ dialog.search-sheet { margin: auto auto 0; }
 
   /* ---------- indice rapido in cima alle schede ---------- */
   var JUMP = {
-    oggi: [["h-pert", "Per te"], ["h-perf", "Rendimenti"], ["h-rank", "Dove tenere i risparmi"], ["h-merc", "Cruscotto"], ["h-news", "Notizie"], ["h-agenda", "Scadenze"]],
+    oggi: [["h-sett", "Settimana"], ["h-pert", "Per te"], ["h-perf", "Rendimenti"], ["h-rank", "Dove tenere i risparmi"], ["h-merc", "Cruscotto"], ["h-news", "Notizie"], ["h-agenda", "Scadenze"], ["h-arch", "Edizioni passate"]],
     piano: [["h-bil", "Bilancio"], ["h-pi", "La tua inflazione"], ["h-fondo", "Emergenza"], ["h-prio", "Priorità"], ["h-port", "Portafoglio"], ["h-stip", "Stipendio"], ["h-goal", "Obiettivi"], ["h-patr", "Patrimonio"], ["h-seg", "Segnali"], ["h-dati", "Copia dei dati"]],
     investire: [["h-lett", "Lettura critica"], ["h-flussi", "Dove va il denaro"], ["h-reale", "Rendimento reale"], ["h-prem", "Premi per il rischio"], ["h-storia", "La storia"], ["h-strum", "Strumenti"], ["h-cmp", "Confronto"], ["h-idea", "Metti alla prova"], ["h-diario", "Diario"], ["h-percorso", "Percorso"]],
-    strumenti: [["h-pac", "Piano di accumulo"], ["h-dep", "Deposito o BTP"], ["h-inf", "Inflazione"], ["h-mut", "Mutuo"], ["h-sur", "Surroga"], ["h-oro", "Oro"], ["h-auto", "Carburante"], ["h-fx", "Cambi"]],
+    strumenti: [["h-busta", "Busta paga"], ["h-pac", "Piano di accumulo"], ["h-dep", "Deposito o BTP"], ["h-inf", "Inflazione"], ["h-mut", "Mutuo"], ["h-sur", "Surroga"], ["h-oro", "Oro"], ["h-auto", "Carburante"], ["h-fx", "Cambi"], ["h-rate", "Acquisti a rate"], ["h-casa", "Comprare o affittare"], ["h-pens", "Pensione"]],
     cripto: [["h-crtab", "Le prime 20"], ["h-crfam", "Famiglie"], ["h-btcdet", "Bitcoin"], ["h-btcsim", "Simulazione"], ["h-btcrisk", "Rischio"], ["h-btctax", "Tasse"], ["h-sats", "Satoshi"], ["h-crmodi", "Come investire"], ["h-pag", "Pagella"], ["h-corso2", "Oltre Bitcoin"], ["h-corso", "Corso Bitcoin"]],
-    tutela: [["h-quiz", "Profilo di rischio"], ["h-prot", "Protezioni"], ["h-truffe", "Truffe"], ["h-firma", "Prima di firmare"]]
+    tutela: [["h-quiz", "Profilo di rischio"], ["h-prot", "Protezioni"], ["h-truffe", "Truffe"], ["h-firma", "Prima di firmare"], ["h-verif", "Verifica chi ti propone"]]
   };
   function bersaglio(el) { return el.closest(".panel") || el.closest("section") || el; }
   function vaiA(id) {
@@ -3464,6 +3998,7 @@ dialog.search-sheet { margin: auto auto 0; }
       });
       (K.famiglie || []).forEach(function (f) { out.push({ k: "Famiglia di cripto", t: f.nome, d: f.cosa, x: testoDi(f.attenzione), go: function () { vai("cripto", "h-crfam"); } }); });
       (window.ECO_PILLOLE || []).forEach(function (pp) { out.push({ k: "Pillola", t: pp[0], d: pp[1], pill: true }); });
+      GLOS.forEach(function (g, i) { out.push({ k: "Glossario · " + g.c, t: g.t, d: g.d, x: (g.a || []).join(" "), pill: true, go: function () { chiudi(); apriParola(i); } }); });
       (D.mercati || []).forEach(function (g) { g.voci.forEach(function (v) { out.push({ k: "Dato di oggi · " + g.gruppo, t: v.nome, d: (typeof v.valore === "number" ? nf(v.valore, v.decimali) : v.valore) + " " + v.unita + (v.nota ? " · " + v.nota : ""), go: function () { chiudi(); openSheet(v.id); } }); }); });
       out.forEach(function (r) { r.nt = norm(r.t); r.nall = norm(r.t + " " + r.d + " " + (r.x || "") + " " + r.k); });
       return out;
@@ -3514,6 +4049,7 @@ dialog.search-sheet { margin: auto auto 0; }
       var r = res[+b.dataset.r]; if (r.go) r.go();
     });
     $("#searchBtn").addEventListener("click", apri);
+    if (/[?&]cerca=1/.test(location.search)) setTimeout(apri, 300);
     $("#moreSearch").addEventListener("click", apri);
     document.addEventListener("keydown", function (e) {
       if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement || {}).tagName || "") && !document.querySelector("dialog[open]")) { e.preventDefault(); apri(); }
@@ -3574,6 +4110,7 @@ dialog.search-sheet { margin: auto auto 0; }
     if (h === "piano") chartPatrimonio();
     if (h === "cripto") { renderBitcoinGrafici(); crDisegna(); }
     if (h === "investire") invDisegna();
+    setTimeout(function () { collegaGlossario(document.getElementById("view-" + h)); }, 30);
     if (anchor) { apriSezione(anchor); anchor.scrollIntoView({ block: "start" }); }
     else window.scrollTo(0, 0);
   }
