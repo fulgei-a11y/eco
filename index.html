@@ -402,6 +402,161 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   .scen { grid-template-columns: minmax(0, 1fr); }
   .edition-pill { display: none; }
 }
+/* Investire: bussola dell'investitore */
+.sub-lede { color: var(--muted); max-width: 72ch; margin: -4px 0 14px; font-size: .95rem; }
+.inv-hero { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 24px; align-items: center; background: var(--hero-bg); color: var(--hero-ink); border-radius: 20px; padding: 26px; }
+.inv-hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(90% 80% at 0% 110%, rgba(77,182,170,.28), transparent 60%), radial-gradient(60% 60% at 100% 0%, rgba(226,165,70,.18), transparent 65%); }
+.inv-hero > * { position: relative; }
+.inv-hero h2 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.5rem); }
+.inv-hero .eyebrow { color: var(--hero-muted); margin-bottom: 8px; }
+.inv-hero .lede { color: var(--hero-muted); margin-top: 10px; max-width: 58ch; }
+.inv-hero-txt { display: grid; gap: 0; }
+.inv-gauge .gauge { background: rgba(255,255,255,.05); }
+.inv-gauge .g-note { font-size: .82rem; color: var(--hero-muted); margin-top: 4px; }
+.lvl { margin-top: 18px; display: grid; gap: 6px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 12px 14px; max-width: 460px; }
+.lvl-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.lvl b { font-family: var(--f-display); font-size: 1.05rem; }
+.lvl small { color: var(--hero-muted); font-size: .8rem; }
+.lvl .bar { height: 8px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden; }
+.lvl .bar i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #4DB6AA, #E2A546); transition: width .5s; }
+.insights { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.insight { background: var(--surface); border-radius: var(--r); padding: 16px 18px; box-shadow: var(--shadow); border-left: 4px solid var(--teal); display: grid; gap: 6px; align-content: start; }
+.insight.hot { border-left-color: var(--down); }
+.insight.warm { border-left-color: var(--accent); }
+.insight .k { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.insight h3 { font-size: 1.05rem; }
+.insight p { color: var(--muted); font-size: .93rem; }
+.insight .q { color: var(--ink); font-size: .9rem; background: var(--surface-2); border-radius: 10px; padding: 8px 10px; }
+.insight .q b { font-family: var(--f-display); }
+.radar { background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); padding: 4px 16px; }
+.rad-row { display: grid; grid-template-columns: minmax(0, 1.25fr) 9rem repeat(4, minmax(0, .75fr)); gap: 10px; align-items: center; padding: 11px 0; border-bottom: 1px dashed var(--line); }
+.rad-row:last-child { border-bottom: 0; }
+.rad-row.head { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px 0 8px; border-bottom: 1px solid var(--line); }
+.rad-row.head span:nth-child(n+3) { text-align: right; }
+.rad-name { min-width: 0; }
+.rad-name b { display: block; font-size: .95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rad-name small { display: block; color: var(--muted); font-size: .78rem; line-height: 1.35; }
+.rad-m { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; font-size: .9rem; white-space: nowrap; }
+.rad-m small { display: none; }
+.tagc { display: inline-flex; align-items: center; gap: 6px; font-size: .76rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; white-space: nowrap; justify-self: start; }
+.tagc::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.tagc.tirata { color: var(--down); background: color-mix(in srgb, var(--down) 14%, transparent); }
+.tagc.forte { color: var(--warn); background: color-mix(in srgb, var(--warn) 15%, transparent); }
+.tagc.frenata { color: var(--warn); background: var(--surface-2); }
+.tagc.norma { color: var(--muted); background: var(--surface-2); }
+.tagc.recupero { color: var(--teal); background: var(--teal-soft); }
+.tagc.debole { color: var(--teal); background: var(--surface-2); }
+.tagc.trascurato { color: var(--teal); background: var(--teal-soft); }
+.inv-legend { margin-top: 10px; }
+.inv-legend .tagc { font-size: .72rem; }
+@media (max-width: 720px) {
+  .rad-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 8px; }
+  .rad-row.head { display: none; }
+  .rad-row .rad-m { grid-column: span 1; text-align: left; background: var(--bg); border-radius: 8px; padding: 6px 8px; }
+  .rad-row .rad-ms { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .rad-m small { display: block; font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+}
+@media (min-width: 721px) { .rad-ms { display: contents; } }
+.inv-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.inv-table th { text-align: left; font-weight: 700; color: var(--muted); font-size: .74rem; border-bottom: 1px solid var(--line); padding: 6px 4px; }
+.inv-table th:not(:first-child), .inv-table td:not(:first-child) { text-align: right; }
+.inv-table td { padding: 9px 4px; border-bottom: 1px dashed var(--line); font-variant-numeric: tabular-nums; }
+.inv-table td:not(:first-child) { font-family: var(--f-mono); white-space: nowrap; }
+.inv-table td small { display: block; color: var(--muted); font-family: var(--f-body); font-size: .76rem; }
+.premi { display: grid; gap: 12px; }
+.premio { display: grid; gap: 4px; }
+.premio .lbl { display: flex; justify-content: space-between; gap: 10px; font-size: .92rem; }
+.premio .lbl b { font-family: var(--f-mono); }
+.premio small { color: var(--muted); font-size: .84rem; }
+.hold { display: grid; gap: 12px; }
+.hold-row { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) 3.4rem; gap: 10px; align-items: center; }
+.hold-row .yr { font-family: var(--f-display); font-weight: 700; }
+.hold-row .pc { font-family: var(--f-mono); font-weight: 600; text-align: right; }
+.hold-row .tr { height: 14px; background: color-mix(in srgb, var(--down) 22%, var(--surface-2)); border-radius: 99px; overflow: hidden; }
+.hold-row .tr i { display: block; height: 100%; background: var(--up); border-radius: 99px; transition: width .5s; }
+.hold-row small { grid-column: 2 / -1; color: var(--muted); font-size: .8rem; margin-top: -4px; font-family: var(--f-mono); }
+.inv-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.filters button { font: inherit; font-size: .86rem; font-weight: 700; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 7px 13px; border-radius: 99px; cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.strum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 12px; align-items: start; }
+.strum { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; min-width: 0; }
+.strum.off { display: none; }
+.strum summary { list-style: none; cursor: pointer; padding: 14px 16px; display: grid; gap: 10px; }
+.strum summary::-webkit-details-marker { display: none; }
+.strum[open] { border-color: var(--teal); box-shadow: var(--shadow); }
+.strum-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.strum-top b { font-family: var(--f-display); font-size: 1.06rem; display: block; }
+.strum-top small { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); }
+.strum-live { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); text-align: right; white-space: nowrap; }
+.strum-live b { font-family: var(--f-mono); font-size: .92rem; color: var(--ink); }
+.votes { display: grid; gap: 5px; }
+.vote { display: grid; grid-template-columns: 6.6rem minmax(0, 1fr); gap: 8px; align-items: center; font-size: .8rem; color: var(--muted); }
+.dots { display: flex; gap: 4px; }
+.dots i { flex: 1; height: 7px; border-radius: 99px; background: var(--surface-2); }
+.dots i.on { background: var(--c, var(--teal)); }
+.strum-body { padding: 0 16px 16px; display: grid; gap: 10px; font-size: .92rem; }
+.strum-body p { color: var(--muted); }
+.strum-body h4 { margin: 0; font-family: var(--f-display); font-size: .92rem; }
+.strum-body ul { margin: 0; padding-left: 18px; color: var(--muted); }
+.strum-body .ask { background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; color: var(--ink); font-weight: 700; }
+.cmp { width: 100%; border-collapse: collapse; font-size: .9rem; table-layout: fixed; }
+.cmp th, .cmp td { padding: 9px 6px; border-bottom: 1px dashed var(--line); vertical-align: top; text-align: left; }
+.cmp th { width: 7.5rem; color: var(--muted); font-size: .78rem; font-weight: 700; }
+.cmp td { color: var(--muted); overflow-wrap: anywhere; }
+.cmp thead td { font-family: var(--f-display); font-weight: 800; color: var(--ink); font-size: 1rem; }
+.cmp .better { color: var(--ink); font-weight: 700; }
+.cmp .better::after { content: " ✓"; color: var(--up); font-weight: 800; }
+.cmp .better .dots { display: inline-flex; width: calc(100% - 1.4em); vertical-align: middle; }
+.view .t-note, .chart-box .t-note { font-size: .84rem; margin-top: 6px; color: var(--muted); line-height: 1.45; }
+@media (max-width: 560px) { .cmp th { width: 5.4rem; } .cmp { font-size: .84rem; } }
+.idea-form { display: grid; gap: 14px; }
+.flabel { font-size: .84rem; font-weight: 700; }
+.idea-set { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+.idea-set legend { font-weight: 700; font-size: .92rem; padding: 0; margin-bottom: 8px; }
+.idea-set legend small { color: var(--muted); font-weight: 400; margin-left: 6px; }
+.idea-opts { display: grid; gap: 6px; }
+.idea-opts .opt { padding: 8px 10px; font-size: .9rem; }
+.idea-right { display: grid; gap: 18px; align-content: start; min-width: 0; }
+.score { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: center; }
+.score .n { font-family: var(--f-mono); font-size: 2.2rem; font-weight: 600; letter-spacing: -.03em; }
+.score .bar { height: 10px; background: var(--surface-2); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.score .bar i { display: block; height: 100%; border-radius: 99px; }
+.trap { border-left: 3px solid var(--down); padding: 2px 0 2px 12px; display: grid; gap: 2px; }
+.trap b { font-family: var(--f-display); }
+.trap p { color: var(--muted); font-size: .9rem; }
+.trap.good { border-left-color: var(--up); }
+.idea-ctx { background: var(--bg); border-radius: 12px; padding: 12px 14px; display: grid; gap: 6px; font-size: .92rem; }
+.idea-ctx p { color: var(--muted); }
+.todo { margin: 0; padding-left: 18px; color: var(--muted); font-size: .9rem; display: grid; gap: 4px; }
+.diario { display: grid; gap: 8px; }
+.d-item { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--bg); display: grid; gap: 6px; }
+.d-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.d-top b { font-family: var(--f-display); }
+.d-top small { color: var(--muted); font-family: var(--f-mono); font-size: .74rem; }
+.d-item p { color: var(--muted); font-size: .86rem; }
+.d-acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.d-sint { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.d-sint div { background: var(--bg); border-radius: 10px; padding: 8px 10px; }
+.d-sint small { display: block; font-family: var(--f-mono); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.d-sint b { font-family: var(--f-mono); font-size: 1.05rem; }
+.l-quiz { display: grid; gap: 8px; }
+.l-quiz .q { color: var(--ink); font-weight: 700; }
+.l-quiz .esito { font-size: .9rem; }
+.inv-teaser { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; background: var(--surface); border-radius: var(--r); padding: 14px 18px; box-shadow: var(--shadow); text-decoration: none; color: var(--ink); border-left: 4px solid var(--teal); }
+.inv-teaser .ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--teal-soft); color: var(--teal); }
+.inv-teaser b { font-family: var(--f-display); display: block; }
+.inv-teaser small { color: var(--muted); font-size: .88rem; display: block; }
+.inv-teaser .go { color: var(--teal); font-weight: 700; white-space: nowrap; }
+@media (max-width: 860px) { .inv-hero { grid-template-columns: minmax(0, 1fr); } .inv-gauge { max-width: 320px; } }
+@media (max-width: 560px) {
+  .inv-hero { padding: 20px 16px; border-radius: 16px; }
+  .inv-teaser { grid-template-columns: auto minmax(0, 1fr); }
+  .inv-teaser .go { grid-column: 2; }
+  .inv-kpis { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .d-sint { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); }
+  .hold-row { grid-template-columns: 4rem minmax(0, 1fr) 3rem; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -438,6 +593,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     <nav class="tabs" aria-label="Sezioni">
       <a href="#oggi" data-view="oggi">Oggi</a>
       <a href="#piano" data-view="piano">Il mio piano</a>
+      <a href="#investire" data-view="investire">Investire</a>
       <a href="#strumenti" data-view="strumenti">Strumenti</a>
       <a href="#bitcoin" data-view="bitcoin">Bitcoin</a>
       <a href="#tutela" data-view="tutela">Tutelarsi</a>
@@ -462,6 +618,8 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
       </div>
       <div class="cards-4" id="perTe"></div>
     </section>
+
+    <a class="inv-teaser" id="invTeaser" href="#investire" hidden></a>
 
     <section class="daily" aria-label="Pillola e domanda del giorno">
       <article class="pill-card" id="pill"></article>
@@ -620,6 +778,139 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
         </div>
         <p id="bkMsg" class="callout" hidden></p>
       </div>
+    </section>
+  </div>
+
+  <!-- ===================== INVESTIRE ===================== -->
+  <div class="view" id="view-investire" hidden>
+    <section class="inv-hero" aria-labelledby="h-inv">
+      <div class="inv-hero-txt">
+        <p class="eyebrow">Investire con la testa, non con la folla</p>
+        <h2 id="h-inv">La bussola dell'investitore</h2>
+        <p class="lede">Dove si sta muovendo il denaro, quanto è affollato ogni mercato, cosa insegna la storia e come funzionano davvero gli strumenti. Per presentarti al mercato con idee tue, non con quelle del momento.</p>
+        <div class="lvl" id="invLevel"></div>
+      </div>
+      <div class="inv-gauge" id="invCrowd"></div>
+    </section>
+
+    <section aria-labelledby="h-lett">
+      <div class="section-head">
+        <h2 id="h-lett">La lettura critica di oggi</h2>
+        <p>Osservazioni calcolate dai dati di questa edizione, senza opinioni né previsioni: servono a farsi le domande giuste prima di muoversi.</p>
+      </div>
+      <div class="insights" id="invInsights"></div>
+    </section>
+
+    <section aria-labelledby="h-flussi">
+      <div class="section-head">
+        <h2 id="h-flussi">Dove si muove il denaro</h2>
+        <div class="seg" id="radarSeg" role="group" aria-label="Ordina per">
+          <button type="button" data-o="y1">Un anno</button>
+          <button type="button" data-o="m3">Tre mesi</button>
+          <button type="button" data-o="dalMax">Dal massimo</button>
+          <button type="button" data-o="vol">Oscillazione</button>
+        </div>
+      </div>
+      <p class="sub-lede">Non esistono dati pubblici gratuiti sui flussi di denaro, ma i prezzi li raccontano: un mercato che sale molto, vicino ai massimi e molto sopra la sua media di 200 sedute è quello dove sta entrando la folla. Uno lontano dai massimi è quello che la folla sta lasciando.</p>
+      <div class="radar" id="radar"></div>
+      <div class="legend inv-legend" id="radarLegend"></div>
+      <div class="panel" style="margin-top:18px">
+        <header><h3>Rischio e rendimento dell'ultimo anno</h3><p>Ogni punto è un mercato: più è a destra, più ha oscillato; più è in alto, più ha reso. Chi ha reso molto di solito ha anche oscillato molto, e non è detto che si ripeta.</p></header>
+        <div class="chart-box" id="invScatter"></div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="panel" aria-labelledby="h-reale">
+        <header><h3 id="h-reale">Il denaro «sicuro» batte i prezzi?</h3><p>Rendimento reale: quanto cresce davvero il potere d'acquisto, al netto di tasse e bollo, se l'inflazione restasse quella di oggi.</p></header>
+        <div id="invReal"></div>
+      </div>
+      <div class="panel" aria-labelledby="h-prem">
+        <header><h3 id="h-prem">Quanto paga il rischio</h3><p>Il confronto che fanno i professionisti: quanto rende prestare allo Stato rispetto al denaro senza rischio, e quanto chiede il mercato all'Italia rispetto alla Germania.</p></header>
+        <div id="invPremi"></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-storia" id="invStoriaSez">
+      <div class="section-head">
+        <h2 id="h-storia">La storia insegna</h2>
+        <div class="input-wrap" style="max-width:280px"><select id="storiaSel" aria-label="Mercato"></select></div>
+      </div>
+      <p class="sub-lede" id="storiaIntro"></p>
+      <div class="grid-2">
+        <div class="panel">
+          <header><h3>Più tieni, meno conta il caso</h3><p>Su tutti i periodi della storia disponibile: quante volte, tenendo l'investimento per quel numero di anni, si è finiti in guadagno.</p></header>
+          <div class="hold" id="storiaHold"></div>
+        </div>
+        <div class="panel">
+          <header><h3>I numeri da ricordare</h3></header>
+          <div class="inv-kpis" id="storiaKpi"></div>
+          <div class="chart-box" id="storiaAnni"></div>
+          <p class="t-note" id="storiaNota"></p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-strum">
+      <div class="section-head">
+        <h2 id="h-strum">Conoscere gli strumenti</h2>
+        <p>Sedici strumenti spiegati allo stesso modo: come guadagni, cosa rischi, quanto costa, come è tassato e la domanda da fare prima di firmare.</p>
+      </div>
+      <div class="filters" id="strumFiltri" role="group" aria-label="Filtra gli strumenti"></div>
+      <p class="sub-lede" id="strumFiltroNota"></p>
+      <div class="strum-grid" id="strumGrid"></div>
+      <div class="panel" style="margin-top:18px" aria-labelledby="h-cmp">
+        <header><h3 id="h-cmp">Mettili a confronto</h3><p>Scegli due strumenti per vederli fianco a fianco.</p></header>
+        <div class="fields">
+          <div class="field"><label for="cmpA">Primo</label><div class="input-wrap"><select id="cmpA"></select></div></div>
+          <div class="field"><label for="cmpB">Secondo</label><div class="input-wrap"><select id="cmpB"></select></div></div>
+        </div>
+        <div id="cmpOut"></div>
+      </div>
+    </section>
+
+    <section class="grid-2 idea-sez" aria-labelledby="h-idea" id="idea">
+      <div class="panel">
+        <header><h3 id="h-idea">Metti alla prova un'idea</h3><p>Prima di comprare o vendere, controlla il tuo ragionamento. Il punteggio misura come stai decidendo, non se lo strumento salirà.</p></header>
+        <form id="ideaForm" class="idea-form" novalidate>
+          <div class="fields">
+            <div class="field"><label for="ideaCosa">Su cosa</label><div class="input-wrap"><select id="ideaCosa"></select></div></div>
+            <div class="field"><label for="ideaImp">Importo</label><div class="input-wrap"><input id="ideaImp" type="number" inputmode="decimal" min="0" step="100" placeholder="facoltativo"><span class="unit">€</span></div></div>
+          </div>
+          <div class="field"><span class="flabel">Cosa pensi di fare</span>
+            <div class="seg" id="ideaAz" role="group" aria-label="Azione">
+              <button type="button" data-a="comprare">Comprare</button>
+              <button type="button" data-a="aumentare">Aumentare</button>
+              <button type="button" data-a="vendere">Vendere</button>
+              <button type="button" data-a="aspettare">Aspettare</button>
+            </div>
+          </div>
+          <div class="field"><label for="ideaAnni">Fra quanti anni potrebbero servirti questi soldi?</label><div class="input-wrap" style="max-width:200px"><input id="ideaAnni" type="number" inputmode="numeric" min="0" max="60" value="5"><span class="unit">anni</span></div></div>
+          <fieldset class="idea-set"><legend>Perché ci stai pensando? <small>Scegli tutto ciò che è vero</small></legend><div id="ideaMotivi" class="idea-opts"></div></fieldset>
+          <fieldset class="idea-set"><legend>Cosa sai già? <small>Spunta solo se è vero</small></legend><div id="ideaDomande" class="idea-opts"></div></fieldset>
+          <button type="submit" class="btn">Valuta il mio ragionamento</button>
+        </form>
+      </div>
+      <div class="idea-right">
+        <div class="panel" id="ideaRis" aria-live="polite">
+          <header><h3>Il risultato</h3><p>Compila a sinistra e premi il pulsante. Niente viene inviato: resta tutto su questo dispositivo.</p></header>
+        </div>
+        <div class="panel" aria-labelledby="h-diario">
+          <header><h3 id="h-diario">Il diario delle decisioni</h3><p>Annota le idee e rileggile dopo qualche mese: è il modo più rapido per conoscere le proprie abitudini da investitore.</p></header>
+          <div id="diarioSint"></div>
+          <div class="diario" id="diario"></div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-percorso">
+      <div class="section-head">
+        <h2 id="h-percorso">Percorso: investitore consapevole</h2>
+        <div class="course-bar" style="min-width:min(100%,280px)"><span class="bar"><i id="invCourseFill" style="width:0"></i></span><span class="num" id="invCourseTxt">0/10</span></div>
+      </div>
+      <p class="sub-lede">Dieci lezioni brevi. Ognuna si completa rispondendo alla domanda finale.</p>
+      <div class="lessons" id="invLessons"></div>
+      <p class="callout" style="margin-top:14px">Contenuti educativi e generali, non consigli personalizzati né inviti a comprare o vendere strumenti specifici. Rendimenti passati non garantiscono quelli futuri. Per decisioni importanti rivolgiti a un consulente abilitato iscritto all'albo OCF.</p>
     </section>
   </div>
 
@@ -894,6 +1185,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
 <script src="data.js"></script>
 <script src="pillole.js"></script>
 <script src="bitcoin.js"></script>
+<script src="investire.js"></script>
 <script>
 (function () {
   "use strict";
@@ -2056,6 +2348,431 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     render();
   })();
 
+  /* ---------- INVESTIRE: la bussola dell'investitore ---------- */
+  var INV = window.ECO_INV || { strumenti: [], lezioni: [], motivi: [], domande: [] };
+  var invDisegna = function () {};
+  (function () {
+    var C = (D.classifica && D.classifica.voci) || [];
+    var conStat = C.filter(function (c) { return typeof c.y1 === "number"; });
+    var segnoP = function (v, d) { return typeof v === "number" ? (v > 0 ? "+" : "") + pct(v, d == null ? 1 : d) : "—"; };
+    var clsP = function (v) { return typeof v === "number" ? (v >= 0 ? "pos" : "neg") : ""; };
+    var NOMI_BREVI = { mondo: "Mondo", emergenti: "Emergenti", stoxx50: "Europa", ftsemib: "Italia", sp500: "USA", nasdaq: "Nasdaq", giappone: "Giappone", india: "India", cina: "Cina", brasile: "Brasile", oro_eur: "Oro", argento: "Argento", platino: "Platino", rame: "Rame", brent: "Petrolio", btc: "Bitcoin" };
+
+    /* Etichetta della fase di mercato: descrive il prezzo, non dice cosa fare. */
+    var FASI = {
+      tirata: { t: "Corsa tirata", p: 100, d: "Forte salita in un anno, vicino ai massimi e molto sopra la media: è la fase in cui se ne parla di più." },
+      forte: { t: "In forte salita", p: 75, d: "Sale da mesi ed è vicino ai massimi: la folla se ne sta accorgendo." },
+      frenata: { t: "In frenata", p: 55, d: "Bene sull'anno ma in calo negli ultimi mesi: l'entusiasmo si sta raffreddando." },
+      norma: { t: "Nella norma", p: 50, d: "Movimenti senza eccessi né in un senso né nell'altro." },
+      recupero: { t: "In recupero", p: 40, d: "In calo sull'anno ma in risalita negli ultimi mesi." },
+      debole: { t: "Sotto pressione", p: 30, d: "Lontano dai massimi dell'anno." },
+      trascurato: { t: "Trascurato", p: 10, d: "Forte calo o molto lontano dai massimi: poco di moda. Non significa che risalirà." }
+    };
+    function fase(v) {
+      if (!v || typeof v.y1 !== "number") return null;
+      var y1 = v.y1, m3 = v.m3, dm = v.dalMax, ma = v.ma200;
+      var k = "norma";
+      if (y1 >= 25 && dm != null && dm > -6 && ma != null && ma > 8) k = "tirata";
+      else if (y1 >= 12 && (dm == null || dm > -10)) k = "forte";
+      else if (typeof m3 === "number" && m3 >= 8 && y1 < 0) k = "recupero";
+      else if ((dm != null && dm <= -25) || y1 <= -15) k = "trascurato";
+      else if (typeof m3 === "number" && m3 >= 5 && y1 < 0) k = "recupero";
+      else if (typeof m3 === "number" && m3 <= -6 && y1 > 5) k = "frenata";
+      else if (dm != null && dm <= -12) k = "debole";
+      return { k: k, t: FASI[k].t, d: FASI[k].d, p: FASI[k].p };
+    }
+    conStat.forEach(function (c) { c.fase = fase(c); });
+
+    /* ---- termometro della folla ---- */
+    var vix = V("vix");
+    var folla = null;
+    if (conStat.length >= 5) {
+      var media = conStat.reduce(function (a, c) { return a + c.fase.p; }, 0) / conStat.length;
+      if (vix) media += vix.valore < 14 ? 8 : vix.valore < 18 ? 3 : vix.valore > 30 ? -15 : vix.valore > 24 ? -8 : 0;
+      media = Math.max(0, Math.min(100, media));
+      var et = media >= 72 ? "Euforia" : media >= 58 ? "Ottimismo" : media >= 42 ? "Equilibrio" : media >= 28 ? "Timore" : "Paura";
+      var caldi = conStat.filter(function (c) { return c.fase.k === "tirata" || c.fase.k === "forte"; }).length;
+      folla = { valore: Math.round(media), etichetta: et, nota: caldi + " mercati su " + conStat.length + " in forte salita" + (vix ? ", VIX a " + nf(vix.valore, 1) : "") };
+      $("#invCrowd").innerHTML = gauge("Termometro della folla", folla, true) + '<p class="g-note" style="text-align:center">' + (media >= 58 ? "Quando la folla è ottimista, la prudenza vale di più." : media < 42 ? "Quando prevale la paura, i prezzi incorporano già molte cattive notizie." : "Né euforia né panico: un buon momento per ragionare con calma.") + '</p>';
+    } else $("#invCrowd").hidden = true;
+
+    /* ---- livello dell'investitore ---- */
+    function livello() {
+      var fatte = store.get("corsoInv", []).length, idee = Math.min(5, store.get("diario", []).length), visti = store.get("strumVisti", []).length;
+      var punti = fatte * 10 + idee * 6 + visti * 2;
+      var L = [[0, "Esploratore"], [25, "Risparmiatore consapevole"], [60, "Investitore critico"], [110, "Bussola esperta"]];
+      var i = 0; while (i + 1 < L.length && punti >= L[i + 1][0]) i++;
+      var prossimo = L[i + 1], base = L[i][0], fine = prossimo ? prossimo[0] : 162;
+      $("#invLevel").innerHTML = '<div class="lvl-top"><span><small>Il tuo livello</small><br><b>' + esc(L[i][1]) + '</b></span><small>' + punti + ' punti' + (prossimo ? ' · ' + (prossimo[0] - punti) + ' per «' + esc(prossimo[1]) + '»' : '') + '</small></div>' +
+        '<div class="bar"><i style="width:' + Math.min(100, (punti - base) / (fine - base) * 100).toFixed(0) + '%"></i></div>' +
+        '<small>Lezioni ' + fatte + '/' + INV.lezioni.length + ' · strumenti studiati ' + visti + '/' + INV.strumenti.length + ' · idee nel diario ' + store.get("diario", []).length + '</small>';
+    }
+
+    /* ---- lettura critica ---- */
+    function letture() {
+      var out = [];
+      var perY = conStat.slice().sort(function (a, b) { return b.y1 - a.y1; });
+      if (perY.length >= 4) {
+        var top = perY[0], f = top.fase;
+        out.push({ c: f.k === "tirata" ? "hot" : "warm", k: "Il più rincorso", h: top.nome + ": " + segnoP(top.y1) + " in un anno",
+          p: (typeof top.ma200 === "number" ? "È " + pct(Math.abs(top.ma200), 0) + (top.ma200 >= 0 ? " sopra" : " sotto") + " la sua media delle ultime 200 sedute" : "Ha fatto meglio di tutti") + (typeof top.dalMax === "number" ? (top.dalMax > -3 ? ", praticamente ai massimi dell'anno." : ", a " + pct(Math.abs(top.dalMax), 0) + " dal massimo dell'anno.") : ".") + (typeof top.vol === "number" ? " Nell'anno ha oscillato del " + pct(top.vol, 0) + " (volatilità)." : ""),
+          q: "Quanto ottimismo è già nel prezzo? Se tornasse indietro del " + pct(Math.min(50, Math.max(15, Math.round((top.vol || 20) * 1.5))), 0) + ", resterei tranquillo?" });
+        var bot = perY[perY.length - 1];
+        out.push({ c: "", k: "Il più trascurato", h: bot.nome + ": " + segnoP(bot.y1) + " in un anno",
+          p: "È il mercato che la folla sta lasciando" + (typeof bot.dalMax === "number" ? ", a " + pct(Math.abs(bot.dalMax), 0) + " dal massimo dell'anno" : "") + ". Chi compra oggi paga meno di un anno fa, ma un prezzo sceso può scendere ancora: spesso c'è un motivo.",
+          q: "Il calo è dovuto a un problema passeggero o a un cambiamento duraturo? Lo saprei spiegare?" });
+      }
+      var per3 = conStat.filter(function (c) { return typeof c.m3 === "number"; }).sort(function (a, b) { return b.m3 - a.m3; });
+      if (per3.length >= 4 && perY.length && per3[0].id !== perY[0].id) {
+        out.push({ c: "warm", k: "La corsa cambia guida", h: "Negli ultimi 3 mesi guida " + per3[0].nome + " (" + segnoP(per3[0].m3) + ")",
+          p: "Sull'anno il primo è " + perY[0].nome + ". Le classifiche cambiano spesso: chi insegue l'ultimo vincitore tende a comprare quando ha già corso.",
+          q: "Sto guardando i risultati degli ultimi mesi o il mio orizzonte di anni?" });
+      }
+      var inf = V("infl_it"), dv = V("dep_vincolati");
+      if (inf && dv) {
+        var reale = ((1 + (dv.valore * 0.74 - 0.2) / 100) / (1 + inf.valore / 100) - 1) * 100;
+        out.push({ c: reale < 0 ? "hot" : "", k: "Il costo della prudenza", h: "Deposito medio: " + segnoP(reale) + " reale l'anno",
+          p: "I nuovi depositi vincolati rendono in media il " + pct(dv.valore) + " lordo; con tasse, bollo e inflazione al " + pct(inf.valore, 1) + (reale < 0 ? " il potere d'acquisto scende. Il denaro fermo è al riparo dalle oscillazioni, non dall'inflazione." : " il potere d'acquisto cresce, anche se di poco."),
+          q: "Quanta parte dei miei risparmi serve davvero subito, e quanta potrei mettere al riparo dall'inflazione per più anni?" });
+      }
+      var nq = C.filter(function (c) { return c.id === "nasdaq"; })[0], mo = C.filter(function (c) { return c.id === "mondo"; })[0];
+      if (nq && mo && typeof nq.y1 === "number" && typeof mo.y1 === "number" && Math.abs(nq.y1 - mo.y1) > 8) {
+        out.push({ c: "", k: "Concentrazione", h: "Tecnologici USA " + segnoP(nq.y1) + ", mondo " + segnoP(mo.y1),
+          p: "Gli indici mondiali pesano molto sugli Stati Uniti e su pochi grandi gruppi tecnologici: chi crede di essere diversificato può dipendere più di quanto pensi da poche aziende.",
+          q: "So quali sono le prime dieci aziende del mio fondo e quanto pesano?" });
+      }
+      if (vix) {
+        out.push({ c: vix.valore < 15 ? "warm" : vix.valore > 25 ? "" : "", k: "Il nervosismo", h: "VIX a " + nf(vix.valore, 1) + (vix.valore < 15 ? ": mercati molto calmi" : vix.valore > 25 ? ": mercati nervosi" : ": nervosismo nella norma"),
+          p: vix.valore < 15 ? "La calma prolungata porta a sottovalutare il rischio. I ribassi arrivano spesso quando nessuno li aspetta." : vix.valore > 25 ? "Nei momenti di paura i prezzi oscillano molto e si è tentati di vendere. Storicamente le fasi di panico sono state anche quelle dei prezzi più bassi." : "Né compiacenza né panico: le decisioni prese a mente fredda sono di solito le migliori.",
+          q: vix.valore > 25 ? "Il mio piano è cambiato davvero, o è cambiato solo il mio umore?" : "Se domani la borsa perdesse il 10%, cosa farei? L'ho deciso prima?" });
+      }
+      var sp = V("spread");
+      if (sp) out.push({ c: sp.valore > 200 ? "hot" : "", k: "Il rischio Italia", h: "Spread BTP-Bund a " + nf(sp.valore) + " punti",
+        p: "È il rendimento in più che il mercato chiede per prestare all'Italia invece che alla Germania" + (sp.valore < 120 ? ": basso rispetto agli ultimi 15 anni, segno di fiducia. Un rendimento più basso significa anche un compenso più basso per il rischio." : sp.valore > 200 ? ": alto, segno di tensione sul debito italiano." : ".") + " Dato medio mensile.",
+        q: "Quanta parte dei miei risparmi dipende da un unico Stato, banca o settore?" });
+      return out;
+    }
+    function renderLetture() {
+      var L = letture();
+      $("#invInsights").innerHTML = L.length ? L.map(function (x) {
+        return '<article class="insight ' + x.c + '"><span class="k">' + esc(x.k) + '</span><h3>' + esc(x.h) + '</h3><p>' + esc(x.p) + '</p><p class="q"><b>La domanda da farsi:</b> ' + esc(x.q) + '</p></article>';
+      }).join("") : '<p class="callout">Le statistiche di mercato arriveranno con il prossimo aggiornamento.</p>';
+      var t = $("#invTeaser");
+      if (t && L.length) {
+        t.hidden = false;
+        t.innerHTML = '<span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 4.5l2.6 6.5L11 17.5 8.4 11z" fill="currentColor"/></svg></span>' +
+          '<span><b>Lettura critica' + (folla ? ' · folla in «' + esc(folla.etichetta.toLowerCase()) + '»' : '') + '</b><small>' + esc(L[0].h) + '. ' + esc(L[0].q) + '</small></span><span class="go">Apri la bussola →</span>';
+      }
+    }
+
+    /* ---- dove si muove il denaro ---- */
+    var ordine = store.get("radarOrd", "y1");
+    function renderRadar() {
+      document.querySelectorAll("#radarSeg button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.o === ordine)); });
+      if (!conStat.length) { $("#radar").innerHTML = '<p class="callout" style="margin:12px 0">Le statistiche di mercato arriveranno con il prossimo aggiornamento automatico.</p>'; return; }
+      var rows = conStat.slice().sort(function (a, b) {
+        var x = a[ordine], y = b[ordine];
+        if (typeof x !== "number") return 1; if (typeof y !== "number") return -1;
+        return ordine === "dalMax" ? y - x : ordine === "vol" ? y - x : y - x;
+      });
+      var m = function (v, lbl, fmt) { return '<span class="rad-m ' + (fmt === "vol" ? "" : clsP(v)) + '"><small>' + lbl + '</small>' + (typeof v === "number" ? (fmt === "vol" ? pct(v, 0) : segnoP(v)) : "—") + '</span>'; };
+      $("#radar").innerHTML = '<div class="rad-row head"><span>Mercato</span><span>Fase</span><span>3 mesi</span><span>1 anno</span><span>Dal massimo</span><span>Oscillazione</span></div>' +
+        rows.map(function (r) {
+          return '<div class="rad-row"><span class="rad-name"><b>' + esc(r.nome) + '</b><small>In ' + esc(r.valuta) + (typeof r.ma200 === "number" ? ' · ' + (r.ma200 >= 0 ? "+" : "") + nf(r.ma200, 0) + '% sulla media 200 sedute' : '') + '</small></span>' +
+            '<span class="tagc ' + r.fase.k + '" title="' + esc(r.fase.d) + '">' + esc(r.fase.t) + '</span>' +
+            '<span class="rad-ms">' + m(r.m3, "3 mesi") + m(r.y1, "1 anno") + m(r.dalMax, "Dal max") + m(r.vol, "Oscill.", "vol") + '</span></div>';
+        }).join("");
+      $("#radarLegend").innerHTML = ["tirata", "forte", "norma", "recupero", "trascurato"].map(function (k) { return '<span class="tagc ' + k + '">' + esc(FASI[k].t) + '</span>'; }).join("") +
+        '<span>«Oscillazione» è la volatilità annua: quanto il prezzo si è mosso in media. Rendimenti senza dividendi, nella valuta indicata.</span>';
+    }
+    document.querySelectorAll("#radarSeg button").forEach(function (b) { b.addEventListener("click", function () { ordine = b.dataset.o; store.set("radarOrd", ordine); renderRadar(); }); });
+
+    function renderScatter() {
+      var box = $("#invScatter"); if (!box) return;
+      var pts = conStat.filter(function (c) { return typeof c.vol === "number"; });
+      if (pts.length < 4) { box.closest(".panel").hidden = true; return; }
+      var W = Math.max(300, Math.round(box.clientWidth || 640)), H = W < 500 ? 260 : 320, L = 46, R = 16, T = 14, B = 34;
+      var xs = pts.map(function (p) { return p.vol; }), ys = pts.map(function (p) { return p.y1; });
+      var x0 = 0, x1 = Math.max.apply(null, xs) * 1.1, y0 = Math.min(0, Math.min.apply(null, ys)), y1 = Math.max(0, Math.max.apply(null, ys));
+      var py = (y1 - y0) * 0.12 || 5; y0 -= py; y1 += py;
+      var x = function (v) { return L + (v - x0) / (x1 - x0) * (W - L - R); }, y = function (v) { return T + (1 - (v - y0) / (y1 - y0)) * (H - T - B); };
+      var mono = 'font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muted)"';
+      var g = "";
+      var stepY = Math.pow(10, Math.floor(Math.log10((y1 - y0) / 4))); var sy = [1, 2, 5, 10].map(function (k) { return k * stepY; }).filter(function (s) { return (y1 - y0) / s <= 6; })[0] || stepY * 10;
+      for (var v = Math.ceil(y0 / sy) * sy; v <= y1; v += sy) g += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(v).toFixed(1) + '" y2="' + y(v).toFixed(1) + '" stroke="var(--line)" ' + (Math.abs(v) < 1e-9 ? '' : 'stroke-dasharray="3 4"') + '/><text x="' + (L - 6) + '" y="' + (y(v) + 4).toFixed(1) + '" text-anchor="end" ' + mono + '>' + (v > 0 ? "+" : "") + nf(v) + '%</text>';
+      var sx = x1 > 60 ? 20 : 10;
+      for (var u = sx; u < x1; u += sx) g += '<text x="' + x(u).toFixed(1) + '" y="' + (H - B + 16) + '" text-anchor="middle" ' + mono + '>' + nf(u) + '%</text>';
+      g += '<text x="' + (W - R) + '" y="' + (H - 4) + '" text-anchor="end" ' + mono + '>oscillazione annua →</text>';
+      g += '<text x="' + (L + 4) + '" y="' + (T + 10) + '" ' + mono + '>↑ rendimento 1 anno</text>';
+      var boxes = [], senza = [];
+      var urta = function (r) { return r.x < L || r.x + r.w > W - R || r.y < T || r.y + r.h > H - B || boxes.some(function (q) { return r.x < q.x + q.w && r.x + r.w > q.x && r.y < q.y + q.h && r.y + r.h > q.y; }); };
+      var info = pts.map(function (p) {
+        var cx = x(p.vol), cy = y(p.y1);
+        boxes.push({ x: cx - 6, y: cy - 6, w: 12, h: 12 });
+        var col = p.fase.k === "tirata" ? "var(--down)" : p.fase.k === "forte" || p.fase.k === "frenata" ? "var(--warn)" : p.fase.k === "trascurato" || p.fase.k === "recupero" || p.fase.k === "debole" ? "var(--teal)" : "var(--muted)";
+        return { p: p, cx: cx, cy: cy, col: col };
+      });
+      var fs = W < 500 ? 10.5 : 11.5;
+      var dots = info.map(function (o) {
+        var lbl = NOMI_BREVI[o.p.id] || o.p.nome, tw = lbl.length * fs * 0.56, th = fs + 2, txt = "";
+        var cand = [[o.cx + 8, o.cy - th / 2], [o.cx - 8 - tw, o.cy - th / 2], [o.cx - tw / 2, o.cy - 8 - th], [o.cx - tw / 2, o.cy + 8]];
+        for (var k = 0; k < cand.length; k++) {
+          var r = { x: cand[k][0], y: cand[k][1], w: tw, h: th };
+          if (!urta(r)) { boxes.push(r); txt = '<text x="' + r.x.toFixed(1) + '" y="' + (r.y + fs).toFixed(1) + '" font-size="' + fs + '" fill="var(--ink)" font-family="Atkinson Hyperlegible, sans-serif">' + esc(lbl) + '</text>'; break; }
+        }
+        if (!txt) senza.push(lbl + " " + segnoP(o.p.y1, 0));
+        return '<circle cx="' + o.cx.toFixed(1) + '" cy="' + o.cy.toFixed(1) + '" r="6" fill="' + o.col + '" fill-opacity=".85" stroke="var(--surface)" stroke-width="1.5"><title>' + esc(o.p.nome) + ': ' + segnoP(o.p.y1) + ', oscillazione ' + pct(o.p.vol, 0) + '</title></circle>' + txt;
+      }).join("");
+      box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Rendimento a un anno e oscillazione dei mercati">' + g + dots + '</svg>' + (senza.length ? '<p class="t-note">Senza etichetta per mancanza di spazio: ' + esc(senza.join(", ")) + '.</p>' : '');
+    }
+
+    /* ---- rendimento reale ---- */
+    function renderReale() {
+      var inf = V("infl_it");
+      if (!inf) { $("#invReal").innerHTML = '<p class="callout">Dato sull\'inflazione non disponibile.</p>'; return; }
+      var R = [];
+      var cc = V("dep_conto"), dv = V("dep_vincolati"), bt = V("btp10"), bce = V("bce");
+      if (cc) R.push({ n: "Conto corrente", s: "Tasso medio, interessi al 26%", r: cc.valore, t: 0.26, b: 0 });
+      if (dv) R.push({ n: "Deposito vincolato", s: "Media nuovi depositi, 26% e bollo 0,20%", r: dv.valore, t: 0.26, b: 0.2 });
+      if (bce) R.push({ n: "Tasso BCE sui depositi", s: "Riferimento per i BOT, calcolo al 12,5% e bollo", r: bce.valore, t: 0.125, b: 0.2 });
+      if (bt) R.push({ n: "BTP 10 anni", s: "Media mensile, 12,5% e bollo 0,20%", r: bt.valore, t: 0.125, b: 0.2 });
+      var rows = R.map(function (x) { var net = x.r * (1 - x.t) - x.b; x.net = net; x.reale = ((1 + net / 100) / (1 + inf.valore / 100) - 1) * 100; return x; });
+      $("#invReal").innerHTML = '<table class="inv-table"><thead><tr><th>Strumento</th><th>Lordo</th><th>Netto</th><th>Reale</th></tr></thead><tbody>' +
+        rows.map(function (x) { return '<tr><td>' + esc(x.n) + '<small>' + esc(x.s) + '</small></td><td>' + pct(x.r) + '</td><td>' + pct(x.net) + '</td><td class="' + clsP(x.reale) + '"><b>' + segnoP(x.reale) + '</b></td></tr>'; }).join("") +
+        '</tbody></table><p class="callout" style="margin-top:12px">Inflazione italiana (IPCA): ' + pct(inf.valore, 1) + ' (' + esc(fmtDate(inf.data)) + '). Il BTP a 10 anni rende quanto scritto solo se tenuto fino alla scadenza; i BTP indicizzati all\'inflazione proteggono il potere d\'acquisto per costruzione.</p>';
+    }
+    function renderPremi() {
+      var bt = V("btp10"), bce = V("bce"), sp = V("spread"), us = V("us10y"), out = [];
+      if (bt && bce) {
+        var d = bt.valore - bce.valore;
+        out.push({ l: "BTP 10 anni meno tasso BCE", v: (d >= 0 ? "+" : "") + nf(d, 2) + " punti", p: Math.max(0, Math.min(100, d / 3 * 100)), c: "var(--teal)", s: "Il compenso per bloccare i soldi 10 anni invece di tenerli a breve. " + (d < 0.5 ? "È basso: legarsi a lungo rende poco più del breve termine." : d > 2 ? "È ampio: il mercato paga bene chi presta a lungo." : "È nella media.") });
+      }
+      if (sp) out.push({ l: "Spread BTP-Bund", v: nf(sp.valore) + " pb", p: Math.min(100, sp.valore / 500 * 100), c: sp.valore > 250 ? "var(--down)" : sp.valore > 150 ? "var(--warn)" : "var(--up)", s: "Il premio chiesto all'Italia rispetto alla Germania. Nel 2011 superò i 500 punti; sotto i 100 è considerato basso." });
+      if (us && bt) out.push({ l: "Treasury USA 10 anni", v: pct(us.valore), p: Math.min(100, us.valore / 8 * 100), c: "var(--accent)", s: "Il tasso di riferimento mondiale. Per un risparmiatore europeo va confrontato tenendo conto del rischio di cambio dollaro-euro." });
+      $("#invPremi").innerHTML = out.length ? '<div class="premi">' + out.map(function (o) { return '<div class="premio"><div class="lbl"><span>' + esc(o.l) + '</span><b>' + esc(o.v) + '</b></div><div class="track"><div class="fill" style="width:' + o.p.toFixed(1) + '%;background:' + o.c + '"></div></div><small>' + esc(o.s) + '</small></div>'; }).join("") + '</div>' : '<p class="callout">Dati non disponibili.</p>';
+    }
+
+    /* ---- la storia insegna ---- */
+    var ST = (D.storia && D.storia.indici) || [];
+    var stSel = store.get("storiaSel", "sp500");
+    function renderStoria() {
+      if (!ST.length) { $("#invStoriaSez").hidden = true; return; }
+      var s = ST.filter(function (x) { return x.id === stSel; })[0] || ST[0];
+      $("#storiaSel").innerHTML = ST.map(function (x) { return '<option value="' + esc(x.id) + '"' + (x.id === s.id ? " selected" : "") + '>' + esc(x.nome) + '</option>'; }).join("");
+      $("#storiaIntro").textContent = "Dati mensili da " + fmtDate(s.inizio) + " a " + fmtDate(s.fine) + ", circa " + nf(s.anni, 0) + " anni. " + s.nota + ".";
+      $("#storiaHold").innerHTML = s.finestre.map(function (f) {
+        return '<div class="hold-row"><span class="yr">' + f.anni + (f.anni === 1 ? " anno" : " anni") + '</span><span class="tr"><i style="width:' + f.positivi + '%"></i></span><span class="pc">' + f.positivi + '%</span>' +
+          '<small>peggiore ' + segnoP(f.peggiore) + ' · tipico ' + segnoP(f.mediana) + ' · migliore ' + segnoP(f.migliore) + (f.anni > 1 ? ' l\'anno' : '') + '</small></div>';
+      }).join("") + '<p class="t-note">Verde: periodi chiusi in guadagno. I valori per anno sono medie composte. Il passato mostra cosa è successo, non garantisce cosa succederà.</p>';
+      var c = s.calo;
+      $("#storiaKpi").innerHTML =
+        '<div class="kpi"><span class="k">Crescita media annua</span><span class="v ' + clsP(s.cagr) + '">' + segnoP(s.cagr) + '</span><small>nominale, prima dell\'inflazione</small></div>' +
+        '<div class="kpi"><span class="k">Calo peggiore</span><span class="v neg">' + segnoP(c.valore, 0) + '</span><small>da ' + esc(fmtDate(c.picco)) + ' a ' + esc(fmtDate(c.minimo)) + '</small></div>' +
+        '<div class="kpi"><span class="k">Tempo per recuperare</span><span class="v">' + (c.mesi != null ? (c.mesi >= 24 ? nf(c.mesi / 12, 1) + " anni" : c.mesi + " mesi") : "non ancora") + '</span><small>' + (c.ritorno ? "dal picco, tornato sopra nel " + esc(fmtDate(c.ritorno)) : "dal picco di " + esc(fmtDate(c.picco))) + '</small></div>' +
+        '<div class="kpi"><span class="k">Oggi dal massimo storico</span><span class="v ' + (s.dalMassimo > -1 ? "pos" : "neg") + '">' + (s.dalMassimo > -1 ? "ai massimi" : segnoP(s.dalMassimo)) + '</span><small>' + (s.dalMassimo > -3 ? "quando tutto va bene è il momento di ricordare i cali" : "i cali fanno parte del percorso") + '</small></div>';
+      var box = $("#storiaAnni"), A = s.annuali || [];
+      if (A.length >= 8 && box.clientWidth) {
+        var W = Math.max(280, Math.round(box.clientWidth)), H = 150, L = 34, R = 6, T = 10, B = 20;
+        var vals = A.map(function (a) { return a[1]; }), mx = Math.max(10, Math.max.apply(null, vals)), mn = Math.min(-10, Math.min.apply(null, vals));
+        var y = function (v) { return T + (mx - v) / (mx - mn) * (H - T - B); }, bw = (W - L - R) / A.length;
+        var bars = A.map(function (a, i) { var y0 = y(0), y1 = y(a[1]); return '<rect x="' + (L + i * bw + 1).toFixed(1) + '" y="' + Math.min(y0, y1).toFixed(1) + '" width="' + Math.max(1, bw - 2).toFixed(1) + '" height="' + Math.max(1, Math.abs(y1 - y0)).toFixed(1) + '" rx="2" fill="' + (a[1] >= 0 ? "var(--up)" : "var(--down)") + '"><title>' + a[0] + ': ' + segnoP(a[1]) + '</title></rect>'; }).join("");
+        var mono = 'font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--muted)"';
+        box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Rendimento di ogni anno solare">' +
+          '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(0).toFixed(1) + '" y2="' + y(0).toFixed(1) + '" stroke="var(--line)"/>' +
+          '<text x="' + (L - 4) + '" y="' + (y(mx) + 8).toFixed(1) + '" text-anchor="end" ' + mono + '>+' + nf(mx, 0) + '%</text><text x="' + (L - 4) + '" y="' + (y(mn)).toFixed(1) + '" text-anchor="end" ' + mono + '>' + nf(mn, 0) + '%</text>' + bars +
+          '<text x="' + L + '" y="' + (H - 4) + '" ' + mono + '>' + A[0][0] + '</text><text x="' + (W - R) + '" y="' + (H - 4) + '" text-anchor="end" ' + mono + '>' + A[A.length - 1][0] + '</text></svg>';
+        var neg = vals.filter(function (v) { return v < 0; }).length;
+        $("#storiaNota").textContent = "Anno per anno, ultimi " + A.length + " anni: " + neg + " chiusi in perdita. Anche nei periodi migliori gli anni negativi sono normali.";
+      } else { box.innerHTML = ""; $("#storiaNota").textContent = ""; }
+    }
+    $("#storiaSel").addEventListener("change", function () { stSel = this.value; store.set("storiaSel", stSel); renderStoria(); });
+
+    /* ---- strumenti ---- */
+    var S = INV.strumenti;
+    var VOTI = [["rischio", "Rischio", "var(--down)"], ["costi", "Costi", "var(--warn)"], ["liquidita", "Liquidità", "var(--teal)"], ["complessita", "Complessità", "var(--accent)"], ["inflazione", "Anti-inflazione", "var(--up)"]];
+    var FILTRI = [
+      ["tutti", "Tutti", function () { return true; }, ""],
+      ["breve", "Soldi che servono entro 1 anno", function (s) { return s.anni <= 0 && s.voti.rischio <= 1; }, "Per i soldi che servono a breve conta non perdere e poter prelevare: l'oscillazione è il nemico."],
+      ["medio", "Da 3 a 5 anni", function (s) { return s.anni <= 5 && s.voti.rischio <= 2; }, "Su qualche anno si può accettare un po' di oscillazione in cambio di un rendimento migliore."],
+      ["lungo", "Oltre 10 anni", function (s) { return s.anni >= 7 && s.voti.inflazione >= 3; }, "Su orizzonti lunghi il rischio principale diventa l'inflazione, non l'oscillazione: qui gli strumenti che storicamente l'hanno battuta, con i loro cali."],
+      ["inflazione", "Contro l'inflazione", function (s) { return s.voti.inflazione >= 4; }, "Strumenti che nel lungo periodo hanno protetto il potere d'acquisto, ognuno con i suoi rischi."],
+      ["economici", "Costi bassi", function (s) { return s.voti.costi <= 1; }, "I costi sono l'unica parte del rendimento che conosci in anticipo."],
+      ["complessi", "Da maneggiare con cautela", function (s) { return s.voti.complessita >= 4 || s.voti.costi >= 4; }, "Strumenti complessi o costosi: prima di firmare chiedi il KID e confronta con alternative semplici."]
+    ];
+    var filtro = "tutti", visti = store.get("strumVisti", []);
+    function live(s) {
+      if (!s.dato) return "";
+      var v = V(s.dato); if (!v) return "";
+      var lbl = { dep_conto: "tasso medio", dep_vincolati: "tasso medio", bce: "tasso BCE", btp10: "rendimento", infl_it: "inflazione", mondo: "MSCI World, 1 anno", ftsemib: "FTSE MIB, 1 anno", oro_eur: "al grammo", btc: "prezzo", mutuo_medio: "mutuo medio" }[s.dato] || "";
+      var c = C.filter(function (x) { return x.id === s.dato; })[0];
+      var val = (s.dato === "mondo" || s.dato === "ftsemib") && c && typeof c.y1 === "number" ? '<b class="' + clsP(c.y1) + '">' + segnoP(c.y1) + '</b>' : '<b>' + nf(v.valore, v.decimali == null ? 2 : Math.min(2, v.decimali)) + (v.unita === "%" ? "%" : " " + esc(v.unita)) + '</b>';
+      return '<span class="strum-live">' + val + '<br>' + esc(lbl) + '</span>';
+    }
+    function dots(n, col) { var h = ""; for (var i = 1; i <= 5; i++) h += '<i class="' + (i <= n ? "on" : "") + '"></i>'; return '<span class="dots" style="--c:' + col + '">' + h + '</span>'; }
+    function renderStrumenti() {
+      $("#strumFiltri").innerHTML = FILTRI.map(function (f) { return '<button type="button" data-f="' + f[0] + '" aria-pressed="' + (f[0] === filtro) + '">' + esc(f[1]) + '</button>'; }).join("");
+      var F = FILTRI.filter(function (f) { return f[0] === filtro; })[0];
+      $("#strumFiltroNota").textContent = F[3] ? F[3] + " Elenco educativo, non una raccomandazione." : "";
+      $("#strumFiltroNota").hidden = !F[3];
+      $("#strumGrid").innerHTML = S.map(function (s) {
+        var on = F[2](s);
+        return '<details class="strum' + (on ? "" : " off") + '" data-s="' + esc(s.id) + '"><summary><div class="strum-top"><span><small>' + esc(s.famiglia) + (visti.indexOf(s.id) >= 0 ? " · ✓ studiato" : "") + '</small><b>' + esc(s.nome) + '</b></span>' + live(s) + '</div>' +
+          '<div class="votes">' + VOTI.map(function (v) { return '<span class="vote"><span>' + v[1] + '</span>' + dots(s.voti[v[0]], v[2]) + '</span>'; }).join("") + '</div></summary>' +
+          '<div class="strum-body"><p>' + esc(s.cosa) + '</p>' +
+          '<h4>Come guadagni</h4><p>' + esc(s.guadagno) + '</p>' +
+          '<h4>Cosa rischi</h4><ul>' + s.rischi.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join("") + '</ul>' +
+          '<h4>Quanto costa</h4><p>' + esc(s.costi) + '</p>' +
+          '<h4>Tasse</h4><p>' + esc(s.tasse) + '</p>' +
+          '<h4>Tutele</h4><p>' + esc(s.tutela) + '</p>' +
+          '<h4>Orizzonte minimo sensato</h4><p>' + (s.anni ? "Almeno " + s.anni + " anni" : "Nessun vincolo di tempo") + '</p>' +
+          '<p class="ask">Prima di firmare chiedi: ' + esc(s.domanda) + '</p></div></details>';
+      }).join("");
+      document.querySelectorAll("#strumFiltri button").forEach(function (b) { b.addEventListener("click", function () { filtro = b.dataset.f; renderStrumenti(); }); });
+      document.querySelectorAll("#strumGrid .strum").forEach(function (d) {
+        d.addEventListener("toggle", function () {
+          if (d.open && visti.indexOf(d.dataset.s) < 0) { visti.push(d.dataset.s); store.set("strumVisti", visti); livello(); var sm = d.querySelector(".strum-top small"); if (sm) sm.textContent += " · ✓ studiato"; }
+        });
+      });
+    }
+    function renderCmp() {
+      var a = S.filter(function (s) { return s.id === $("#cmpA").value; })[0], b = S.filter(function (s) { return s.id === $("#cmpB").value; })[0];
+      if (!a || !b) return;
+      store.set("cmp", [a.id, b.id]);
+      var meglio = function (k, x, y) { if (x === y) return ["", ""]; var alto = k === "liquidita" || k === "inflazione"; return (alto ? x > y : x < y) ? ["better", ""] : ["", "better"]; };
+      var riga = function (t, x, y, cl) { cl = cl || ["", ""]; return '<tr><th>' + t + '</th><td class="' + cl[0] + '">' + x + '</td><td class="' + cl[1] + '">' + y + '</td></tr>'; };
+      $("#cmpOut").innerHTML = '<table class="cmp"><thead><tr><th></th><td>' + esc(a.nome) + '</td><td>' + esc(b.nome) + '</td></tr></thead><tbody>' +
+        VOTI.map(function (v) { return riga(v[1], dots(a.voti[v[0]], v[2]), dots(b.voti[v[0]], v[2]), meglio(v[0], a.voti[v[0]], b.voti[v[0]])); }).join("") +
+        riga("Orizzonte", a.anni ? "≥ " + a.anni + " anni" : "nessuno", b.anni ? "≥ " + b.anni + " anni" : "nessuno") +
+        riga("Costi", esc(a.costi), esc(b.costi)) + riga("Tasse", esc(a.tasse), esc(b.tasse)) + riga("Tutele", esc(a.tutela), esc(b.tutela)) +
+        '</tbody></table><p class="t-note" style="margin-top:8px">Il segno ✓ indica il valore più favorevole per ogni voce. Nessuno strumento è migliore in tutto: si sceglie in base all\'orizzonte e a quanto si sopportano le oscillazioni.</p>';
+    }
+    (function () {
+      var opts = S.map(function (s) { return '<option value="' + esc(s.id) + '">' + esc(s.nome) + '</option>'; }).join("");
+      $("#cmpA").innerHTML = opts; $("#cmpB").innerHTML = opts;
+      var c = store.get("cmp", ["deposito", "btp"]);
+      $("#cmpA").value = c[0]; $("#cmpB").value = c[1];
+      $("#cmpA").addEventListener("change", renderCmp); $("#cmpB").addEventListener("change", renderCmp);
+    })();
+
+    /* ---- metti alla prova un'idea ---- */
+    var STORIA_DI = { mondo: "sp500", sp500: "sp500", nasdaq: "nasdaq", stoxx50: "stoxx50", ftsemib: "ftsemib", giappone: "giappone", oro_eur: "oro", emergenti: "sp500" };
+    var azione = "comprare";
+    (function () {
+      var gm = conStat.length ? '<optgroup label="Mercati seguiti dall\'app">' + conStat.map(function (c) { return '<option value="m:' + esc(c.id) + '">' + esc(c.nome) + '</option>'; }).join("") + '</optgroup>' : "";
+      var gs = '<optgroup label="Strumenti">' + S.map(function (s) { return '<option value="s:' + esc(s.id) + '">' + esc(s.nome) + '</option>'; }).join("") + '</optgroup>';
+      $("#ideaCosa").innerHTML = gm + gs;
+      $("#ideaMotivi").innerHTML = INV.motivi.map(function (m) { return '<label class="opt"><input type="checkbox" name="mot" value="' + esc(m.id) + '"><span>' + esc(m.t) + '</span></label>'; }).join("");
+      $("#ideaDomande").innerHTML = INV.domande.map(function (d) { return '<label class="opt"><input type="checkbox" name="dom" value="' + esc(d.id) + '"><span>' + esc(d.t) + '</span></label>'; }).join("");
+      function segAz() { document.querySelectorAll("#ideaAz button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.a === azione)); }); }
+      document.querySelectorAll("#ideaAz button").forEach(function (b) { b.addEventListener("click", function () { azione = b.dataset.a; segAz(); }); });
+      segAz();
+    })();
+    var ultima = null;
+    function valuta() {
+      var cosa = $("#ideaCosa").value, tipo = cosa.slice(0, 1), id = cosa.slice(2);
+      var mk = tipo === "m" ? conStat.filter(function (c) { return c.id === id; })[0] : null;
+      var st = tipo === "s" ? S.filter(function (s) { return s.id === id; })[0] : null;
+      var nome = mk ? mk.nome : st ? st.nome : "";
+      var imp = parseFloat(String($("#ideaImp").value).replace(",", ".")) || 0;
+      var anni = parseFloat($("#ideaAnni").value); if (!isFinite(anni)) anni = 0;
+      var mot = [].slice.call(document.querySelectorAll('#ideaMotivi input:checked')).map(function (i) { return i.value; });
+      var dom = [].slice.call(document.querySelectorAll('#ideaDomande input:checked')).map(function (i) { return i.value; });
+      var punti = 50, trappole = [], buoni = [], note = [];
+      INV.motivi.forEach(function (m) { if (mot.indexOf(m.id) < 0) return; punti += m.peso; if (m.peso < 0) trappole.push(m); else buoni.push(m); });
+      INV.domande.forEach(function (d) { punti += dom.indexOf(d.id) >= 0 ? 5 : -5; });
+      var minAnni = st ? st.anni : mk ? (mk.id === "brent" || mk.id === "rame" ? 10 : 7) : 0;
+      if (azione !== "aspettare" && azione !== "vendere" && anni < minAnni) { punti -= 12; note.push("Ti potrebbero servire tra " + nf(anni) + (anni === 1 ? " anno" : " anni") + ", ma per questo strumento un orizzonte sensato è di almeno " + minAnni + " anni: rischi di dover vendere in un momento di calo."); }
+      var f = mk && mk.fase;
+      var compra = azione === "comprare" || azione === "aumentare";
+      if (f && compra && (f.k === "tirata")) { punti -= 8; note.push("Stai pensando di comprare un mercato in «corsa tirata»: " + segnoP(mk.y1) + " in un anno. Non vuol dire che scenderà, ma che il prezzo incorpora già molto ottimismo."); }
+      if (f && azione === "vendere" && (f.k === "trascurato" || f.k === "debole")) { punti -= 8; note.push("Stai pensando di vendere dopo un forte calo: è il momento in cui la paura spinge di più a uscire, spesso vicino ai minimi."); }
+      if (f && compra && f.k === "trascurato") note.push("Compri un mercato trascurato: è il contrario della folla, ma serve sapere perché è sceso e avere pazienza.");
+      if (!mot.length) { punti -= 5; note.push("Non hai indicato perché ci stai pensando: scriverlo è il primo passo per decidere bene."); }
+      var pfT = 0; Object.keys(pf || {}).forEach(function (k) { pfT += +pf[k] || 0; });
+      if (imp && pfT && imp / pfT > 0.25 && (st ? st.voti.rischio >= 4 : true) && compra) { punti -= 8; note.push("L'importo è il " + nf(imp / pfT * 100, 0) + "% del portafoglio che hai inserito nel tuo piano: una quota alta per un singolo strumento rischioso."); }
+      punti = Math.max(0, Math.min(100, Math.round(punti)));
+      var ver = punti >= 75 ? ["Ragionamento solido", "var(--up)"] : punti >= 50 ? ["Da approfondire", "var(--warn)"] : ["Attenzione: decisione d'impulso?", "var(--down)"];
+      // prova di stress
+      var stress = "";
+      if (imp > 0) {
+        var righe = [];
+        if (mk && typeof mk.calo1a === "number") righe.push("Nell'ultimo anno, nel momento peggiore, è arrivato a perdere il " + pct(Math.abs(mk.calo1a), 0) + " dal massimo: su " + eur(imp) + " sarebbero " + eur(imp * Math.abs(mk.calo1a) / 100) + ".");
+        var sid = mk ? STORIA_DI[mk.id] : st ? st.storia : null, sto = sid && ST.filter(function (x) { return x.id === sid; })[0];
+        if (sto) righe.push("Nel calo peggiore della sua storia, " + sto.nome + " ha perso il " + pct(Math.abs(sto.calo.valore), 0) + ": su " + eur(imp) + " sarebbero " + eur(imp * Math.abs(sto.calo.valore) / 100) + (sto.calo.mesi ? ", con " + nf(sto.calo.mesi / 12, 1) + " anni per recuperare." : ", non ancora recuperati."));
+        if (!righe.length && st) righe.push(st.voti.rischio >= 4 ? "È uno strumento ad alto rischio: considera la possibilità di perdere una parte importante dell'importo." : st.voti.rischio <= 1 ? "Strumento a basso rischio di oscillazione: il rischio principale è l'inflazione." : "Strumento a rischio moderato: prima della scadenza il valore può oscillare.");
+        stress = '<div class="idea-ctx"><b>Prova di stress</b>' + righe.map(function (r) { return '<p>' + esc(r) + '</p>'; }).join("") + '</div>';
+      }
+      var mancano = INV.domande.filter(function (d) { return dom.indexOf(d.id) < 0; });
+      ultima = { id: tipo === "m" ? id : null, sid: st ? st.id : null, nome: nome, azione: azione, punti: punti, motivi: mot, data: new Date().toISOString().slice(0, 10), prezzo: mk && V(id) ? V(id).valore : null, unita: mk && V(id) ? V(id).unita : null };
+      $("#ideaRis").innerHTML = '<header><h3>Il risultato</h3><p>' + esc(azione.charAt(0).toUpperCase() + azione.slice(1)) + ' · ' + esc(nome) + '</p></header>' +
+        '<div class="score"><span class="n" style="color:' + ver[1] + '">' + punti + '</span><span><b class="verdict">' + esc(ver[0]) + '</b><span class="bar"><i style="width:' + punti + '%;background:' + ver[1] + '"></i></span></span></div>' +
+        (f ? '<div class="idea-ctx"><b>Il mercato oggi: <span class="tagc ' + f.k + '">' + esc(f.t) + '</span></b><p>' + esc(f.d) + ' Un anno ' + segnoP(mk.y1) + (typeof mk.dalMax === "number" ? ', ' + pct(Math.abs(mk.dalMax), 0) + ' dal massimo dell\'anno' : '') + (typeof mk.vol === "number" ? ', oscillazione ' + pct(mk.vol, 0) : '') + '.</p></div>' : '') +
+        trappole.map(function (t) { return '<div class="trap"><b>' + esc(t.bias) + '</b><p>' + esc(t.spiega) + '</p></div>'; }).join("") +
+        buoni.map(function (b) { return '<div class="trap good"><b>Buon segno</b><p>' + esc(b.t) + '.</p></div>'; }).join("") +
+        note.map(function (n) { return '<div class="trap" style="border-left-color:var(--warn)"><p>' + esc(n) + '</p></div>'; }).join("") +
+        stress +
+        (mancano.length ? '<div><b>Prima di decidere, verifica:</b><ul class="todo">' + mancano.map(function (d) { return '<li>' + esc(d.t) + '</li>'; }).join("") + '</ul></div>' : '') +
+        '<div class="d-acts"><button type="button" class="btn" id="ideaSalva">Salva nel diario</button></div>' +
+        '<p class="t-note">Il punteggio valuta il processo di decisione, non lo strumento. Non è un consiglio di investimento.</p>';
+      $("#ideaSalva").addEventListener("click", function () {
+        var d = store.get("diario", []); d.unshift(ultima); store.set("diario", d.slice(0, 60));
+        this.disabled = true; this.textContent = "Salvata nel diario"; renderDiario(); livello();
+      });
+      $("#ideaRis").scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+    $("#ideaForm").addEventListener("submit", function (e) { e.preventDefault(); valuta(); });
+    function renderDiario() {
+      var d = store.get("diario", []);
+      if (!d.length) { $("#diarioSint").innerHTML = ""; $("#diario").innerHTML = '<p class="t-note">Ancora nessuna idea annotata. Valuta un\'idea e premi «Salva nel diario».</p>'; return; }
+      var gregge = d.filter(function (x) { return (x.motivi || []).some(function (m) { return ["salito", "tutti", "paura", "recuperare", "sicuro"].indexOf(m) >= 0; }); }).length;
+      var media = d.reduce(function (a, x) { return a + (x.punti || 0); }, 0) / d.length;
+      $("#diarioSint").innerHTML = '<div class="d-sint"><div><small>Idee</small><b>' + d.length + '</b></div><div><small>Punteggio medio</small><b>' + nf(media, 0) + '</b></div><div><small>Spinte emotive</small><b>' + nf(gregge / d.length * 100, 0) + '%</b></div></div>' +
+        (d.length >= 3 ? '<p class="t-note" style="margin-top:8px">' + (gregge / d.length > 0.5 ? "Più di metà delle tue idee nasce da emozioni o dalla folla: prima di agire, aspetta una settimana e rileggi." : "La maggior parte delle tue idee nasce da ragionamenti, non dalla folla. Ottimo.") + '</p>' : '');
+      $("#diario").innerHTML = d.map(function (x, i) {
+        var ora = x.id ? V(x.id) : null, delta = "";
+        if (ora && x.prezzo) {
+          var ch = (ora.valore / x.prezzo - 1) * 100;
+          delta = '<p>Da allora il prezzo è <b class="' + clsP(ch) + '">' + segnoP(ch) + '</b> (' + nf(x.prezzo, 2) + ' → ' + nf(ora.valore, 2) + ' ' + esc(x.unita || "") + ').</p>';
+        }
+        var gg = Math.round((Date.now() - Date.parse(x.data)) / 864e5);
+        return '<div class="d-item"><div class="d-top"><b>' + esc(x.azione.charAt(0).toUpperCase() + x.azione.slice(1)) + ' · ' + esc(x.nome) + '</b><small>' + esc(fmtDate(x.data)) + ' · punteggio ' + x.punti + '</small></div>' + delta +
+          (gg >= 30 ? '<p>Sono passati ' + gg + ' giorni: il motivo di allora ti sembra ancora valido?</p>' : '') +
+          '<div class="d-acts"><button type="button" class="mini-btn danger" data-del="' + i + '">Elimina</button></div></div>';
+      }).join("");
+      document.querySelectorAll("#diario [data-del]").forEach(function (b) { b.addEventListener("click", function () { var d2 = store.get("diario", []); d2.splice(+b.dataset.del, 1); store.set("diario", d2); renderDiario(); livello(); }); });
+    }
+
+    /* ---- percorso ---- */
+    function renderLezioni() {
+      var L = INV.lezioni, fatte = store.get("corsoInv", []);
+      $("#invLessons").innerHTML = L.map(function (l, i) {
+        var ok = fatte.indexOf(i) >= 0, q = l.domanda;
+        return '<details class="lesson' + (ok ? " fatta" : "") + '" data-l="' + i + '"><summary><span class="n">' + (ok ? "✓" : i + 1) + '</span><b>' + esc(l.titolo) + '</b><span class="arrow" aria-hidden="true">›</span></summary>' +
+          '<div class="body">' + l.testo.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join("") + '<p class="key">' + esc(l.punto) + '</p>' +
+          '<div class="l-quiz"><p class="q">' + esc(q.q) + '</p><div class="quiz-opts">' + q.opts.map(function (o, j) { return '<button type="button" data-q="' + i + '" data-o="' + j + '"' + (ok ? " disabled" : "") + ' class="' + (ok && j === q.ok ? "giusta" : "") + '">' + esc(o) + '</button>'; }).join("") + '</div>' +
+          '<p class="esito" id="esito' + i + '">' + (ok ? esc(q.spiega) : "") + '</p>' + (ok ? '<div><button type="button" class="mini-btn" data-rif="' + i + '">Ripeti la lezione</button></div>' : '') + '</div></div></details>';
+      }).join("");
+      $("#invCourseFill").style.width = (fatte.length / (L.length || 1) * 100) + "%";
+      $("#invCourseTxt").textContent = fatte.length + "/" + L.length;
+      document.querySelectorAll("#invLessons [data-q]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var i = +b.dataset.q, j = +b.dataset.o, q = L[i].domanda, es = $("#esito" + i);
+          if (j === q.ok) {
+            b.classList.add("giusta");
+            b.parentNode.querySelectorAll("button").forEach(function (x) { x.disabled = true; });
+            es.innerHTML = '<b class="pos">Giusto.</b> ' + esc(q.spiega);
+            if (fatte.indexOf(i) < 0) { fatte.push(i); store.set("corsoInv", fatte); }
+            setTimeout(function () { renderLezioni(); livello(); var next = document.querySelector('#invLessons .lesson[data-l="' + (i + 1) + '"]'); if (next) { next.open = true; next.scrollIntoView({ block: "nearest", behavior: "smooth" }); } }, 1400);
+          } else { b.classList.add("sbagliata"); b.disabled = true; es.innerHTML = '<b class="neg">Non proprio.</b> Rileggi il testo e riprova.'; }
+        });
+      });
+      document.querySelectorAll("#invLessons [data-rif]").forEach(function (b) { b.addEventListener("click", function () { var i = +b.dataset.rif; fatte = fatte.filter(function (x) { return x !== i; }); store.set("corsoInv", fatte); renderLezioni(); livello(); var l = document.querySelector('#invLessons .lesson[data-l="' + i + '"]'); if (l) l.open = true; }); });
+    }
+
+    livello(); renderLetture(); renderRadar(); renderReale(); renderPremi(); renderStrumenti(); renderCmp(); renderDiario(); renderLezioni();
+    invDisegna = function () { renderScatter(); renderStoria(); };
+  })();
+
   /* ---------- app installabile ---------- */
   var standalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
@@ -2075,7 +2792,7 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
   window.addEventListener("offline", function () { var b = $("#staleBanner"); b.hidden = false; b.textContent = "Sei offline: stai vedendo gli ultimi dati scaricati."; });
 
   /* ---------- navigazione ---------- */
-  var VIEWS = ["oggi", "piano", "strumenti", "bitcoin", "tutela", "fonti"];
+  var VIEWS = ["oggi", "piano", "investire", "strumenti", "bitcoin", "tutela", "fonti"];
   function route() {
     var h = (location.hash || "#oggi").slice(1);
     var anchor = null;
@@ -2087,12 +2804,13 @@ dialog.sheet[open] { animation: sheet-in .28s cubic-bezier(.2,.8,.2,1); }
     if (h === "strumenti") renderPac();
     if (h === "piano") chartPatrimonio();
     if (h === "bitcoin") renderBitcoinGrafici();
+    if (h === "investire") invDisegna();
     if (anchor) anchor.scrollIntoView({ block: "start" });
     else window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
   var tRes = null;
-  window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); renderBitcoinGrafici(); }, 200); });
+  window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); renderBitcoinGrafici(); if (!$("#view-investire").hidden) invDisegna(); }, 200); });
   route();
 })();
 </script>

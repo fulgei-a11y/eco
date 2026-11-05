@@ -1,6 +1,6 @@
 /* Funzionamento offline: mostra sempre i dati più recenti disponibili, e l'ultima copia salvata quando manca la rete. */
-const VERSIONE = "eco-v5";
-const BASE = ["./", "./index.html", "./data.js", "./pillole.js", "./bitcoin.js", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png"];
+const VERSIONE = "eco-v6";
+const BASE = ["./", "./index.html", "./data.js", "./pillole.js", "./bitcoin.js", "./investire.js", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(VERSIONE).then((c) => c.addAll(BASE)).then(() => self.skipWaiting()));
@@ -12,7 +12,7 @@ self.addEventListener("activate", (e) => {
   );
 });
 
-// Rete prima, copia salvata se offline: per pagina e dati, che cambiano due volte al giorno.
+// Rete prima, copia salvata se offline: per pagina, dati e contenuti, che possono cambiare a ogni edizione.
 async function retePrima(req) {
   const cache = await caches.open(VERSIONE);
   try {
@@ -40,7 +40,7 @@ self.addEventListener("fetch", (e) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin === location.origin) {
-    if (req.mode === "navigate" || /\/(index\.html|data\.js)?$/.test(url.pathname) || url.pathname.endsWith("data.js")) {
+    if (req.mode === "navigate" || /\/(index\.html)?$/.test(url.pathname) || url.pathname.endsWith(".js") || url.pathname.endsWith(".webmanifest")) {
       e.respondWith(retePrima(req));
     } else {
       e.respondWith(cachePrima(req));

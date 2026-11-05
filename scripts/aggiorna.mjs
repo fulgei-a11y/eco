@@ -149,6 +149,107 @@ const inRange = (v, r) => num(v) != null && (!r || (v >= r[0] && v <= r[1]));
 
 // ================================================================ fonti
 
+// Statistiche di un anno di prezzi giornalieri: distanza da massimo e minimo, scarto dalla media di 200 sedute,
+// volatilità annua (deviazione standard dei rendimenti giornalieri) e calo massimo nell'anno.
+function statistiche(ts, c) {
+  if (!ts || !c || c.length < 60 || c.length !== ts.length) return null;
+  const last = c.at(-1), max = Math.max(...c), min = Math.min(...c);
+  const m = c.slice(-200), ma = m.reduce((a, b) => a + b, 0) / m.length;
+  const r = [];
+  for (let i = 1; i < c.length; i++) if (c[i - 1] > 0 && c[i] > 0) r.push(Math.log(c[i] / c[i - 1]));
+  if (r.length < 50) return null;
+  const mu = r.reduce((a, b) => a + b, 0) / r.length;
+  const sd = Math.sqrt(r.reduce((a, b) => a + (b - mu) ** 2, 0) / (r.length - 1));
+  const anni = (ts.at(-1) - ts[0]) / (365.25 * 86400);
+  const perAnno = anni > 0.3 ? r.length / anni : 252;
+  let picco = c[0], calo = 0;
+  for (const v of c) { if (v > picco) picco = v; calo = Math.min(calo, v / picco - 1); }
+  const out = { dalMax: round((last / max - 1) * 100, 1), dalMin: round((last / min - 1) * 100, 1), ma200: round((last / ma - 1) * 100, 1), vol: round(sd * Math.sqrt(perAnno) * 100, 1), calo1a: round(calo * 100, 1) };
+  return Object.values(out).every((v) => isFinite(v)) ? out : null;
+}
+
+// Storia lunga (dati mensili): quanto spesso e di quanto un mercato ha guadagnato o perso, a seconda di quanto a lungo lo si è tenuto.
+const STORIA = [
+  ["sp500", "^GSPC", "Borsa USA (S&P 500)", "Solo prezzo: i dividendi, circa 1-2% l'anno in più, non sono inclusi"],
+  ["nasdaq", "^IXIC", "Tecnologici USA (Nasdaq)", "Solo prezzo, senza dividendi"],
+  ["stoxx50", "^STOXX50E", "Europa (Euro Stoxx 50)", "Solo prezzo, senza dividendi"],
+  ["dax", "^GDAXI", "Germania (DAX)", "Indice con dividendi reinvestiti"],
+  ["ftsemib", "FTSEMIB.MI", "Italia (FTSE MIB)", "Solo prezzo, senza dividendi"],
+  ["giappone", "^N225", "Giappone (Nikkei)", "Solo prezzo, senza dividendi"],
+  ["oro", "GC=F", "Oro (in dollari)", "Prezzo del metallo, che non paga interessi né dividendi"],
+];
+
+async function storiaLunga(sym) {
+  let j, lastErr;
+  for (const host of ["query1", "query2"]) {
+    try { j = await get(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=max&interval=1mo&includePrePost=false`, { json: true, timeout: 45000 }); break; }
+    catch (e) { lastErr = e; }
+  }
+  if (!j) throw lastErr;
+  const r = j?.chart?.result?.[0];
+  if (!r) throw new Error(j?.chart?.error?.description || "risposta vuota");
+  const ts = r.timestamp || [], cl = r.indicators?.quote?.[0]?.close || [];
+  const perMese = new Map();
+  ts.forEach((t, i) => { const v = num(cl[i]); if (v != null && v > 0) perMese.set(new Date((t + 43200) * 1000).toISOString().slice(0, 7), v); });
+  const mesi = [...perMese.keys()].sort();
+  const m = [], c = [];
+  for (const k of mesi) {
+    const v = perMese.get(k);
+    if (c.length && (v / c.at(-1) > 1.6 || v / c.at(-1) < 0.45)) continue; // dato anomalo
+    m.push(k); c.push(v);
+  }
+  if (c.length < 120) throw new Error(`storia troppo corta (${c.length} mesi)`);
+  const n = c.length, anni = (n - 1) / 12;
+  const cagr = (c.at(-1) / c[0]) ** (1 / anni) - 1;
+  // calo massimo dal picco e mesi per tornare al picco
+  let pi = 0, best = { calo: 0, p: 0, t: 0 };
+  for (let i = 0; i < n; i++) { if (c[i] > c[pi]) pi = i; const d = c[i] / c[pi] - 1; if (d < best.calo) best = { calo: d, p: pi, t: i }; }
+  let rec = null;
+  for (let i = best.t; i < n; i++) if (c[i] >= c[best.p]) { rec = i; break; }
+  const max = Math.max(...c);
+  const finestre = [1, 3, 5, 10, 15, 20].map((H) => {
+    const k = 12 * H;
+    if (n - 1 < k + 24) return null;
+    const v = [];
+    for (let i = 0; i + k < n; i++) v.push((c[i + k] / c[i]) ** (1 / H) - 1);
+    v.sort((a, b) => a - b);
+    const pos = v.filter((x) => x > 0).length / v.length;
+    return { anni: H, n: v.length, positivi: round(pos * 100, 0), peggiore: round(v[0] * 100, 1), mediana: round(v[Math.floor(v.length / 2)] * 100, 1), migliore: round(v.at(-1) * 100, 1) };
+  }).filter(Boolean);
+  // rendimenti per anno solare (anni completi)
+  const fineAnno = new Map();
+  m.forEach((k, i) => fineAnno.set(+k.slice(0, 4), c[i]));
+  const anniSolari = [...fineAnno.keys()].sort((a, b) => a - b);
+  const annoCorrente = +m.at(-1).slice(0, 4);
+  const annuali = [];
+  for (let i = 1; i < anniSolari.length; i++) {
+    const y = anniSolari[i];
+    if (y === annoCorrente && m.at(-1).slice(5) !== "12") continue;
+    if (anniSolari[i - 1] !== y - 1) continue;
+    annuali.push([y, round((fineAnno.get(y) / fineAnno.get(y - 1) - 1) * 100, 1)]);
+  }
+  return {
+    inizio: m[0], fine: m.at(-1), anni: round(anni, 1), cagr: round(cagr * 100, 1),
+    calo: { valore: round(best.calo * 100, 1), picco: m[best.p], minimo: m[best.t], ritorno: rec != null ? m[rec] : null, mesi: rec != null ? rec - best.p : null },
+    dalMassimo: round((c.at(-1) / max - 1) * 100, 1),
+    finestre, annuali: annuali.slice(-30),
+  };
+}
+
+// Cambi ufficiali dal file giornaliero della BCE (server diverso dall'API statistica): usato se l'API non risponde.
+let cambiXml;
+async function cambiBceXml() {
+  if (cambiXml !== undefined) return cambiXml;
+  cambiXml = null;
+  const xml = await get("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml", { timeout: 45000 });
+  const out = {};
+  for (const g of xml.matchAll(/<Cube time="(\d{4}-\d{2}-\d{2})">([\s\S]*?)<\/Cube>/g))
+    for (const x of g[2].matchAll(/currency="([A-Z]{3})"\s+rate="([\d.]+)"/g)) (out[x[1]] ||= []).push({ t: g[1], v: Number(x[2]) });
+  for (const k of Object.keys(out)) out[k].sort((a, b) => a.t.localeCompare(b.t));
+  cambiXml = out;
+  return out;
+}
+
 async function yahoo(sym, range) {
   let j, lastErr;
   for (const host of ["query1", "query2"]) {
@@ -174,6 +275,8 @@ async function yahoo(sym, range) {
     else if (liveT > pts.at(-1)[0]) { prev = closes.at(-1); last = live; lastDay = day(liveT); closes.push(live); }
   }
   closes[closes.length - 1] = last;
+  const tsC = pts.map((p) => p[0]);
+  if (tsC.length < closes.length) tsC.push(liveT);
   if (!inRange(last, range) || !inRange(prev, range)) throw new Error(`valore fuori scala (${last})`);
   const var1 = (last / prev - 1) * 100;
   if (Math.abs(var1) > 35) throw new Error(`variazione implausibile (${var1.toFixed(1)}%)`);
@@ -194,6 +297,8 @@ async function yahoo(sym, range) {
     valore: last, var: var1, data: lastDay, mese: rend.m1, rend,
     inizio: dayRome(new Date(pts[Math.max(0, pts.length - 130)][0] * 1000)),
     serie: closes.slice(-130).map((v) => round(v, 4)),
+    stat: statistiche(tsC, closes),
+    completo: { ts: tsC, c: closes },
   };
 }
 
@@ -759,6 +864,7 @@ async function main() {
   const serieDate = { ...(prev.serieDate || {}) };
   const esito = { ok: [], ko: [] };
   const rendimenti = {};
+  const completi = {};
 
   // --- quotazioni giornaliere
   for (const [id, sym, nome, unita, dec, buono, range] of YAHOO) {
@@ -766,7 +872,8 @@ async function main() {
     await sleep(400);
     if (!y) { esito.ko.push(nome); continue; }
     V[id] = { nome, unita, decimali: dec, buono, valore: round(y.valore, dec), var: round(y.var, 2), data: y.data, mese: y.mese, fonte: "Yahoo Finance", url: `https://finance.yahoo.com/quote/${encodeURIComponent(sym)}` };
-    rendimenti[id] = y.rend;
+    rendimenti[id] = { ...y.rend, ...(y.stat || {}) };
+    completi[id] = y.completo;
     V[id].rend = y.rend; V[id].inizio = y.inizio;
     serie[id] = y.serie;
     esito.ok.push(nome);
@@ -852,7 +959,8 @@ async function main() {
     ["eurgbp", "GBP", "Euro / Sterlina", 4, "Cambio ufficiale BCE, utile per viaggi e acquisti nel Regno Unito"],
     ["eurchf", "CHF", "Euro / Franco svizzero", 4, "Cambio ufficiale BCE, utile per frontalieri e viaggi in Svizzera"],
   ]) {
-    const s = await safe(nome, () => ecb([`EXR.D.${cur}.EUR.SP00.A`], 60, [0.1, 500]));
+    const s = (await safe(nome, () => ecb([`EXR.D.${cur}.EUR.SP00.A`], 60, [0.1, 500])))
+      || (await safe(nome + " (file giornaliero BCE)", async () => { const x = (await cambiBceXml())?.[cur]; if (!x || x.length < 2) throw new Error("cambio assente"); return x.slice(-60); }));
     if (!s || s.length < 2) { if (!V[id]) esito.ko.push(nome); continue; }
     const l = s.at(-1), p = s.at(-2), ago = s.length > 22 ? s.at(-23) : null;
     V[id] = { nome, unita: cur === "USD" ? "$" : cur === "GBP" ? "£" : "CHF", decimali: dec, valore: round(l.v, dec), var: round((l.v / p.v - 1) * 100, 2), data: l.t, mese: ago ? (l.v / ago.v - 1) * 100 : null, nota, fonte: "BCE", url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.it.html" };
@@ -871,6 +979,14 @@ async function main() {
     serie.oro_eur = s;
     if (rendimenti.oro && rendimenti[fxOro]) {
       const r = {}; for (const k of ["m1", "m3", "ytd", "y1"]) { const a = rendimenti.oro[k], b = rendimenti[fxOro][k]; r[k] = a != null && b != null ? round(((1 + a / 100) / (1 + b / 100) - 1) * 100, 2) : null; }
+      const a = completi.oro, b = completi[fxOro];
+      if (a && b) {
+        const giornoDi = (t) => new Date(t * 1000).toISOString().slice(0, 10);
+        const fx = new Map(b.ts.map((t, i) => [giornoDi(t), b.c[i]]));
+        const ts2 = [], c2 = [];
+        a.ts.forEach((t, i) => { const f = fx.get(giornoDi(t)); if (f) { ts2.push(t); c2.push(g(a.c[i], f)); } });
+        Object.assign(r, statistiche(ts2, c2) || {});
+      }
       rendimenti.oro_eur = r;
       V.oro_eur.rend = r; V.oro_eur.inizio = V.oro?.inizio;
     }
@@ -945,6 +1061,15 @@ async function main() {
   if (btc) { log("bitcoin:", Object.keys(btc).join(", ")); esito.ok.push("Bitcoin (rete e mercato)"); }
   else esito.ko.push("Bitcoin (rete e mercato)");
 
+  const storia = [];
+  for (const [id, sym, nome, nota] of STORIA) {
+    const st = await safe("Storia " + sym, () => storiaLunga(sym));
+    await sleep(400);
+    if (st) storia.push({ id, nome, nota, ...st });
+  }
+  log("storia lunga:", storia.map((x) => `${x.id} ${x.inizio} ${x.cagr}%/anno, calo max ${x.calo.valore}%`).join("; "));
+  if (storia.length >= 3) esito.ok.push("Storia dei mercati"); else esito.ko.push("Storia dei mercati");
+
   const notizie = (await safe("notizie", () => notizieRss(giorno))) || [];
   log("notizie raccolte:", notizie.length);
 
@@ -994,6 +1119,7 @@ async function main() {
       const out = LISTA.filter(([id]) => rendimenti[id]).map(([id, nome, valuta]) => ({ id, nome, valuta, ...rendimenti[id] }));
       return out.length >= 6 ? { data: giorno, voci: out } : prev.classifica || null;
     })(),
+    storia: storia.length >= 3 ? { data: giorno, fonte: "Yahoo Finance, dati mensili", indici: storia } : prev.storia || null,
     serie,
     serieDate,
   };
