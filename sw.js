@@ -1,6 +1,6 @@
 /* Funzionamento offline: mostra sempre i dati più recenti disponibili, e l'ultima copia salvata quando manca la rete. */
-const VERSIONE = "eco-v9";
-const BASE = ["./", "./index.html", "./data.js", "./pillole.js", "./bitcoin.js", "./investire.js", "./glossario.js", "./calcoli.js", "./archivio.js", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png"];
+const VERSIONE = "eco-v10";
+const BASE = ["./", "./index.html", "./data.js", "./pillole.js", "./bitcoin.js", "./investire.js", "./glossario.js", "./calcoli.js", "./bonus.js", "./manovra.js", "./archivio.js", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(VERSIONE).then((c) => c.addAll(BASE)).then(() => self.skipWaiting()));

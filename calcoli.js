@@ -7,6 +7,8 @@
     verificate: "5 novembre 2026",
     // Irpef (art. 11 TUIR, come modificato dalla L. 199/2025): 23% fino a 28.000, 33% fino a 50.000, 43% oltre
     scaglioni: [[28000, 0.23], [50000, 0.33], [Infinity, 0.43]],
+    // Proposta per il solo 2027 (DDL Bilancio 2027, art. 9): il 33% arriva a 55.000. Non è ancora legge.
+    proposta2027: { scaglioni: [[28000, 0.23], [55000, 0.33], [Infinity, 0.43]], fonte: "disegno di legge di bilancio 2027, art. 9" },
     contributiDipendente: 0.0919, // quota INPS a carico del dipendente nel settore privato (generale)
     // Coefficienti di trasformazione 2025-2026 (decreto interministeriale del 20 novembre 2024)
     coeff: { 57: 4.204, 58: 4.308, 59: 4.419, 60: 4.536, 61: 4.661, 62: 4.795, 63: 4.936, 64: 5.088, 65: 5.250, 66: 5.423, 67: 5.608, 68: 5.808, 69: 6.024, 70: 6.258, 71: 6.510 },
@@ -14,9 +16,9 @@
     quotaTfr: 0.0691
   };
 
-  function irpefLorda(r) {
+  function irpefLorda(r, sc) {
     var tot = 0, base = 0;
-    R.scaglioni.forEach(function (s) { if (r > base) { tot += (Math.min(r, s[0]) - base) * s[1]; } base = s[0]; });
+    (sc || R.scaglioni).forEach(function (s) { if (r > base) { tot += (Math.min(r, s[0]) - base) * s[1]; } base = s[0]; });
     return Math.max(0, tot);
   }
   // Detrazione per lavoro dipendente (art. 13 c. 1 e 1.1 TUIR), anno intero
@@ -49,7 +51,8 @@
     var ral = Math.max(0, +o.ral || 0), mens = +o.mensilita || 13, add = Math.max(0, +o.addizionali || 0) / 100;
     var contr = ral * R.contributiDipendente;
     var rc = ral - contr;
-    var lorda = irpefLorda(rc);
+    var sc = o.scaglioni || R.scaglioni;
+    var lorda = irpefLorda(rc, sc);
     var detr = detrazioneLavoro(rc, o.determinato);
     var ult = ulterioreDetrazione(rc);
     var irpef = Math.max(0, lorda - detr - ult);
@@ -57,7 +60,7 @@
     var es = sommaEsente(rc, rc);
     var addiz = rc * add;
     var netto = ral - contr - irpef - addiz + ti + es;
-    var marg = 0; R.scaglioni.some(function (s) { if (rc <= s[0]) { marg = s[1]; return true; } return false; });
+    var marg = 0; sc.some(function (s) { if (rc <= s[0]) { marg = s[1]; return true; } return false; });
     return { ral: ral, contributi: contr, imponibile: rc, irpefLorda: lorda, detrazioneLavoro: detr, ulterioreDetrazione: ult, irpefNetta: irpef, trattamentoIntegrativo: ti, sommaEsente: es, addizionali: addiz, nettoAnnuo: netto, nettoMese: netto / mens, aliquotaMarginale: marg };
   }
 
@@ -124,6 +127,8 @@
     { nome: "Ulteriore detrazione, reddito 36.000 €", fn: function () { return ulterioreDetrazione(36000); }, atteso: 500, tol: 0.01, fonte: "L. 207/2024" },
     { nome: "Ulteriore detrazione, reddito 39.000 €", fn: function () { return ulterioreDetrazione(39000); }, atteso: 125, tol: 0.01, fonte: "L. 207/2024" },
     { nome: "Irpef lorda su 60.000 €", fn: function () { return irpefLorda(60000); }, atteso: 28000 * 0.23 + 22000 * 0.33 + 10000 * 0.43, tol: 0.01, fonte: "aliquote 2026" },
+    { nome: "Irpef lorda su 60.000 € con la proposta 2027", fn: function () { return irpefLorda(60000, R.proposta2027.scaglioni); }, atteso: 28000 * 0.23 + 27000 * 0.33 + 5000 * 0.43, tol: 0.01, fonte: "DDL Bilancio 2027, art. 9" },
+    { nome: "Risparmio massimo della proposta 2027", fn: function () { return irpefLorda(80000) - irpefLorda(80000, R.proposta2027.scaglioni); }, atteso: 500, tol: 0.01, fonte: "relazione tecnica: massimo 500 €" },
     { nome: "TAEG senza costi né interessi", fn: function () { return taeg({ importo: 1200, rate: 12, rata: 100 }).taeg; }, atteso: 0, tol: 1e-6, fonte: "definizione" },
     { nome: "TAEG 10.000 € in 36 rate al TAN 6%", fn: function () { return taeg({ importo: 10000, rate: 36, rata: rataMutuo(10000, 0.06, 3) }).taeg; }, atteso: Math.pow(1.005, 12) - 1, tol: 1e-6, fonte: "calcolo a mano" },
     { nome: "Rata mutuo 120.000 € al 3% per 20 anni", fn: function () { return rataMutuo(120000, 0.03, 20); }, atteso: 665.51, tol: 0.05, fonte: "formula alla francese" },

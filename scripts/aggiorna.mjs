@@ -73,6 +73,11 @@ const RSS = [
   ["Istat", "https://www.istat.it/feed/"],
   ["BCE", "https://www.ecb.europa.eu/rss/press.html"],
 ];
+// Feed in più, usati solo per le notizie su bonus, fisco e manovra (scheda «Bonus»)
+const RSS_FISCO = [
+  ["ANSA", "https://www.ansa.it/sito/notizie/politica/politica_rss.xml"],
+  ["Il Sole 24 Ore", "https://www.ilsole24ore.com/rss/norme-e-tributi.xml"],
+];
 
 // Parole che rendono una notizia rilevante per chi risparmia (servono a ordinare, non a giudicare).
 const PAROLE_CHIAVE = /borsa|piazza affari|ftse|spread|btp|bce|lagarde|fed|tass[oi]|mutu|inflazion|prezz|bollett|carburant|benzin|gas|petroli|energia|pil|istat|lavoro|occupa|disoccupa|pension|fisco|tasse|irpef|imu|manovra|bilancio|risparm|banc|conto|deposit|euribor|dollaro|oro|crypto|bitcoin|salari|stipend|consum/i;
@@ -526,26 +531,33 @@ function decode(s) {
 }
 const breve = (s, max) => { if (s.length <= max) return s; const c = s.slice(0, max); return c.slice(0, c.lastIndexOf(" ")).replace(/[,;:.\s]+$/, "") + "…"; };
 
+const FEED_LETTI = new Map();
+async function leggiFeed(url) {
+  if (!FEED_LETTI.has(url)) FEED_LETTI.set(url, await safe("RSS " + url, () => get(url, { tries: 2 })));
+  return FEED_LETTI.get(url);
+}
+function vociFeed(xml, fonte) {
+  const out = [];
+  if (!xml) return out;
+  const atom = /<feed[\s>]/i.test(xml) && !/<rss[\s>]/i.test(xml);
+  const items = xml.split(atom ? /<entry[\s>]/i : /<item[\s>]/i).slice(1, 20);
+  for (const raw of items) {
+    const tag = (n) => { const m = raw.match(new RegExp(`<${n}(?:\\s[^>]*)?>([\\s\\S]*?)</${n}>`, "i")); return m ? decode(m[1]) : ""; };
+    const titolo = tag("title");
+    let link = tag("link");
+    if (!/^https?:\/\//.test(link)) { const m = raw.match(/<link[^>]*href="([^"]+)"/i); link = m ? m[1] : ""; }
+    const dRaw = tag("pubDate") || tag("published") || tag("updated") || tag("dc:date");
+    const d = dRaw ? new Date(dRaw) : null;
+    const data = d && !isNaN(d) ? d.toISOString() : null;
+    let descr = breve(tag("description") || tag("summary"), 220);
+    if (descr.length < 25) descr = "";
+    if (titolo && /^https?:\/\//.test(link)) out.push({ titolo: breve(titolo, 140), url: link, fonte, data, descr: descr && descr !== titolo ? descr : "" });
+  }
+  return out;
+}
 async function notizieRss(giorno) {
   const out = [];
-  for (const [fonte, url] of RSS) {
-    const xml = await safe("RSS " + url, () => get(url, { tries: 2 }));
-    if (!xml) continue;
-    const atom = /<feed[\s>]/i.test(xml) && !/<rss[\s>]/i.test(xml);
-    const items = xml.split(atom ? /<entry[\s>]/i : /<item[\s>]/i).slice(1, 20);
-    for (const raw of items) {
-      const tag = (n) => { const m = raw.match(new RegExp(`<${n}(?:\\s[^>]*)?>([\\s\\S]*?)</${n}>`, "i")); return m ? decode(m[1]) : ""; };
-      const titolo = tag("title");
-      let link = tag("link");
-      if (!/^https?:\/\//.test(link)) { const m = raw.match(/<link[^>]*href="([^"]+)"/i); link = m ? m[1] : ""; }
-      const dRaw = tag("pubDate") || tag("published") || tag("updated") || tag("dc:date");
-      const d = dRaw ? new Date(dRaw) : null;
-      const data = d && !isNaN(d) ? d.toISOString() : null;
-      let descr = breve(tag("description") || tag("summary"), 220);
-      if (descr.length < 25) descr = "";
-      if (titolo && /^https?:\/\//.test(link)) out.push({ titolo: breve(titolo, 140), url: link, fonte, data, descr: descr && descr !== titolo ? descr : "" });
-    }
-  }
+  for (const [fonte, url] of RSS) out.push(...vociFeed(await leggiFeed(url), fonte));
   const limite = Date.parse(giorno) - 2 * 864e5;
   const seen = new Set(), perFonte = {};
   const pertinenti = out.filter((n) => PAROLE_CHIAVE.test(n.titolo + " " + n.descr)).length;
@@ -557,6 +569,20 @@ async function notizieRss(giorno) {
     .sort((a, b) => b.peso - a.peso || (b.data ? 1 : 0) - (a.data ? 1 : 0) || (b.data || "").localeCompare(a.data || ""))
     .filter((n) => { perFonte[n.fonte] = (perFonte[n.fonte] || 0) + 1; return perFonte[n.fonte] <= 3; })
     .slice(0, 12);
+}
+
+// Notizie su bonus, fisco e manovra: ultimi 7 giorni, al massimo 8, senza doppioni
+const PAROLE_MANOVRA = /manovra|legge di bilancio|ddl bilancio|bonus|isee|assegno unico|inps|detrazion|cedolare|congedo|bollo auto|irpef|pension|tobin|fringe|natalit|forfettar/i;
+async function notizieManovra(giorno) {
+  const tutte = [];
+  for (const [fonte, url] of [...RSS, ...RSS_FISCO]) tutte.push(...vociFeed(await leggiFeed(url), fonte));
+  const limite = Date.parse(giorno) - 7 * 864e5, seen = new Set();
+  return tutte
+    .filter((n) => PAROLE_MANOVRA.test(n.titolo + " " + n.descr) && (!n.data || Date.parse(n.data) >= limite))
+    .filter((n) => { const k = n.titolo.toLowerCase().replace(/[^a-zà-ù0-9 ]/g, "").slice(0, 50); if (seen.has(k)) return false; seen.add(k); return true; })
+    .sort((a, b) => (b.data || "").localeCompare(a.data || ""))
+    .slice(0, 8)
+    .map((n) => ({ titolo: n.titolo, testo: n.descr || "", fonte: n.fonte, url: n.url, data: n.data }));
 }
 
 // ================================================================ Bitcoin
@@ -1102,6 +1128,9 @@ async function main() {
 
   const notizie = (await safe("notizie", () => notizieRss(giorno))) || [];
   log("notizie raccolte:", notizie.length);
+  const notManovra = (await safe("notizie manovra", () => notizieManovra(giorno))) || [];
+  log("notizie su bonus e manovra:", notManovra.length);
+  if (notManovra.length) esito.ok.push("Notizie su bonus e manovra"); else esito.ko.push("Notizie su bonus e manovra");
 
   const ctx = { giorno, edizione, notizie, serie };
   ctx.dati = Object.fromEntries(Object.values(VV).map((v) => [v.nome, { valore: v.valore, unita: v.unita, var_giorno_pct: v.var ?? null, confronto: v.delta || null, var_mese_pct: v.mese != null ? round(v.mese, 1) : null, data: v.data }]));
@@ -1135,6 +1164,7 @@ async function main() {
     mercati,
     notizie: ia?.notizie || (base.notizie.length ? base.notizie : prev.notizie || []),
     agenda,
+    notizieManovra: notManovra.length ? notManovra : prev.notizieManovra || [],
     rendimenti: VV.dep_vincolati ? { mediaVincolati: VV.dep_vincolati.valore, mediaConto: VV.dep_conto?.valore ?? null, mutuoMedio: VV.mutuo_medio?.valore ?? null, data: VV.dep_vincolati.data, fonte: "Banca d'Italia / BCE" } : prev.rendimenti || null,
     inflazioneCategorie: inflCat || prev.inflazioneCategorie || null,
     bitcoin: btc ? { ...(prev.bitcoin || {}), ...btc } : prev.bitcoin || null,

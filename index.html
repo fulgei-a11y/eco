@@ -807,6 +807,92 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 @media (max-width: 560px) { #archTab { font-size: .76rem; } #archTab td, #archTab th { padding-inline: 2px; } }
 .bg-alert { border-top: 1px dashed var(--line); padding-top: 12px; display: grid; gap: 6px; }
 
+/* Bonus e manovra */
+.bn-hero { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 22px; align-items: center; background: linear-gradient(140deg, #123B39 0%, #142238 70%); color: var(--hero-ink); border-radius: 20px; padding: 26px; }
+.bn-hero::after { content: ""; position: absolute; right: -70px; bottom: -90px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(226,165,70,.32), transparent 70%); pointer-events: none; }
+.bn-hero > * { position: relative; z-index: 1; }
+.bn-hero h2 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.5rem); }
+.bn-hero .eyebrow { color: var(--hero-muted); margin-bottom: 8px; }
+.bn-hero .lede { color: var(--hero-muted); margin-top: 10px; max-width: 58ch; }
+.bn-count { display: grid; gap: 10px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 16px; }
+.bn-count .n { font-family: var(--f-display); font-size: 2.6rem; font-weight: 800; line-height: 1; color: #E2A546; }
+.bn-count small { color: var(--hero-muted); display: block; font-size: .88rem; }
+.bn-count .row2 { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,.12); padding-top: 10px; font-size: .92rem; }
+.bn-count .row2 b { font-family: var(--f-mono); color: var(--hero-ink); }
+.bn-count a { color: #9EE0D6; font-weight: 700; }
+.bn-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+.bn-form { gap: 16px; }
+.bn-q { display: grid; gap: 8px; }
+.bn-q > .flabel { font-size: .88rem; font-weight: 700; }
+.bn-q .hint { font-size: .78rem; color: var(--muted); }
+.bn-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.bn-chips button { font: inherit; font-size: .86rem; font-weight: 700; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 7px 12px; border-radius: 99px; cursor: pointer; }
+.bn-chips button[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: #fff; }
+.bn-checks { display: grid; gap: 8px; }
+.bn-checks label { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; font-size: .92rem; cursor: pointer; }
+.bn-checks input { width: 20px; height: 20px; accent-color: var(--teal); margin: 1px 0 0; }
+.bn-out { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.bn-group { display: grid; gap: 8px; }
+.bn-group > h3 { font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+.bn-group > h3 i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.bn-card { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid var(--line); min-width: 0; }
+.bn-card.si { border-left-color: var(--up); }
+.bn-card.forse { border-left-color: var(--warn); }
+.bn-card.prop { border-left-color: #7B6CD9; }
+.bn-card summary { list-style: none; cursor: pointer; padding: 12px 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: start; }
+.bn-card summary::-webkit-details-marker { display: none; }
+.bn-card summary b { font-family: var(--f-display); font-size: 1rem; }
+.bn-card summary small { grid-column: 1 / -1; color: var(--muted); font-size: .86rem; }
+.bn-card summary .tg { font-family: var(--f-mono); font-size: .68rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; white-space: nowrap; background: var(--surface-2); color: var(--muted); }
+.bn-card summary .tg.vigore { background: color-mix(in srgb, var(--up) 14%, transparent); color: var(--up); }
+.bn-card summary .tg.decreto { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+.bn-card summary .tg.proposta { background: color-mix(in srgb, #7B6CD9 16%, transparent); color: #6A5AD0; }
+:root[data-theme="dark"] .bn-card summary .tg.proposta { color: #B3A9F5; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bn-card summary .tg.proposta { color: #B3A9F5; } }
+.bn-card .body { padding: 0 14px 14px; display: grid; gap: 8px; font-size: .92rem; }
+.bn-card .body p { color: var(--muted); }
+.bn-card .body p b { color: var(--ink); }
+.bn-card .nota { background: var(--teal-soft); border-radius: 9px; padding: 8px 10px; color: var(--ink) !important; }
+.bn-card.forse .nota { background: var(--accent-soft); }
+.bn-card .acts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.bn-card .acts a { font-weight: 700; font-size: .88rem; }
+.bn-card .norma { font-family: var(--f-mono); font-size: .74rem; color: var(--muted); }
+.bn-empty { color: var(--muted); font-size: .92rem; background: var(--surface); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); }
+.bn-altri summary { cursor: pointer; font-weight: 700; color: var(--teal); font-size: .92rem; }
+.bn-altri[open] summary { margin-bottom: 8px; }
+.mv-iter { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.mv-iter li { display: grid; grid-template-columns: 22px 70px minmax(0, 1fr); gap: 10px; align-items: start; padding: 8px 0; position: relative; }
+.mv-iter li::before { content: ""; position: absolute; left: 10px; top: 24px; bottom: -8px; width: 2px; background: var(--line); }
+.mv-iter li:last-child::before { content: none; }
+.mv-iter .pt { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); display: grid; place-items: center; font-size: .72rem; font-weight: 800; color: #fff; position: relative; z-index: 1; }
+.mv-iter li.fatto .pt { background: var(--up); border-color: var(--up); }
+.mv-iter li.passata .pt { background: var(--surface-2); border-color: var(--muted); color: var(--muted); }
+.mv-iter li.ora .pt { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); }
+.mv-iter time { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); padding-top: 2px; }
+.mv-iter span { font-size: .92rem; }
+.mv-iter span small { display: block; color: var(--muted); font-size: .78rem; }
+.mv-iter li.ora span { font-weight: 700; }
+.mv-count { font-size: .92rem; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.mv-count b { font-family: var(--f-mono); }
+.mv-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.mv-item { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.mv-item header { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+.mv-item h3 { font-size: 1rem; }
+.mv-item p { color: var(--muted); font-size: .9rem; }
+.mv-item .meta { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
+.mv-item .tg { font-family: var(--f-mono); font-size: .68rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; white-space: nowrap; background: color-mix(in srgb, #7B6CD9 16%, transparent); color: #6A5AD0; }
+.mv-item .tg.decreto { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+:root[data-theme="dark"] .mv-item .tg:not(.decreto) { color: #B3A9F5; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .mv-item .tg:not(.decreto) { color: #B3A9F5; } }
+.mv-item .mini-btn { justify-self: start; }
+.isee-steps { counter-reset: st; list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.isee-steps li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; font-size: .92rem; }
+.isee-steps li::before { counter-increment: st; content: counter(st); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--teal-soft); color: var(--teal); font-family: var(--f-display); font-weight: 800; }
+.isee-steps b { display: block; font-family: var(--f-display); }
+.isee-steps span { color: var(--muted); }
+@media (max-width: 860px) { .bn-hero, .bn-grid { grid-template-columns: minmax(0, 1fr); } .mv-list { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 400px) { .mv-iter li { grid-template-columns: 22px 58px minmax(0, 1fr); gap: 8px; } .bn-hero { padding: 20px; } }
+
 /* Movimento discreto */
 .view:not([hidden]) { animation: view-in .32s ease both; }
 @keyframes view-in { from { opacity: 0; transform: translateY(6px); } }
@@ -852,6 +938,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
     <nav class="tabs" aria-label="Sezioni">
       <a href="#oggi" data-view="oggi">Oggi</a>
       <a href="#piano" data-view="piano">Il mio piano</a>
+      <a href="#bonus" data-view="bonus">Bonus</a>
       <a href="#investire" data-view="investire">Investire</a>
       <a href="#strumenti" data-view="strumenti">Strumenti</a>
       <a href="#cripto" data-view="cripto">Cripto</a>
@@ -889,6 +976,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
     </section>
 
     <a class="inv-teaser" id="invTeaser" href="#investire" hidden></a>
+    <a class="inv-teaser" id="bnTeaser" href="#bonus"><span class="ic" style="background:var(--accent-soft);color:var(--accent)"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-4-5.5-1.8C6 9 9.5 9 12 9zm0 0c1.5-3 5-4 5.5-1.8C18 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span><b id="bnTeaserT">Bonus e manovra 2027</b><small id="bnTeaserS">Scopri quali aiuti possono spettare alla tua famiglia e cosa cambia con la legge di bilancio.</small></span><span class="go">Apri ›</span></a>
 
     <section class="daily" aria-label="Pillola e domanda del giorno">
       <article class="pill-card" id="pill"></article>
@@ -1073,6 +1161,119 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
         </div>
         <p id="bkMsg" class="callout" hidden></p>
       </div>
+    </section>
+  </div>
+
+  <!-- ===================== BONUS E MANOVRA ===================== -->
+  <div class="view" id="view-bonus" hidden>
+    <section class="bn-hero" aria-labelledby="h-bonus">
+      <div>
+        <p class="eyebrow">Bonus, detrazioni e manovra 2027</p>
+        <h2 id="h-bonus">Quello che ti spetta, senza perderlo</h2>
+        <p class="lede">Rispondi a poche domande: vedi quali aiuti possono riguardare la tua famiglia, quanto valgono, come chiederli ed entro quando. Le risposte restano solo su questo dispositivo.</p>
+      </div>
+      <div class="bn-count" id="bnCount" aria-live="polite"></div>
+    </section>
+
+    <section aria-labelledby="h-trova">
+      <div class="section-head">
+        <h2 id="h-trova">Trova i tuoi bonus</h2>
+        <p>Una guida per orientarsi, non una risposta ufficiale: l'ultima parola spetta all'INPS o all'Agenzia delle Entrate, a cui ti portiamo con i link. Per la domanda puoi farti aiutare gratis da un patronato.</p>
+      </div>
+      <div class="grid-2 bn-grid">
+        <form class="panel bn-form" id="bnForm" onsubmit="return false">
+          <div class="bn-q"><span class="flabel" id="bnq-figli">Quanti figli hai, contando anche quelli in arrivo?</span>
+            <div class="seg" role="group" aria-labelledby="bnq-figli" data-q="figli">
+              <button type="button" data-v="0" aria-pressed="false">Nessuno</button><button type="button" data-v="1" aria-pressed="false">1</button><button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="false">4 o più</button>
+            </div>
+          </div>
+          <div class="bn-q" id="bnEtaQ"><span class="flabel" id="bnq-eta">Quanti anni hanno? Scegli tutte le fasce che valgono</span>
+            <div class="bn-chips" role="group" aria-labelledby="bnq-eta" data-q="eta">
+              <button type="button" data-v="attesa" aria-pressed="false">In arrivo o nato nel 2026</button><button type="button" data-v="m3" aria-pressed="false">Sotto i 3 anni</button><button type="button" data-v="m3_9" aria-pressed="false">3–9 anni</button><button type="button" data-v="m10_17" aria-pressed="false">10–17 anni</button><button type="button" data-v="m18_20" aria-pressed="false">18–20 anni</button><button type="button" data-v="m21_29" aria-pressed="false">21–29 anni a carico</button>
+            </div>
+          </div>
+          <div class="bn-q"><label class="flabel" for="bnIsee">ISEE della famiglia</label>
+            <div class="input-wrap"><select id="bnIsee">
+              <option value="">Non lo so o non ce l'ho</option>
+              <option value="9796">Fino a 9.796 €</option>
+              <option value="10140">Fino a 10.140 €</option>
+              <option value="15000">Fino a 15.000 €</option>
+              <option value="17468">Fino a 17.468 €</option>
+              <option value="30000">Fino a 30.000 €</option>
+              <option value="40000">Fino a 40.000 €</option>
+              <option value="46582">Fino a 46.582 €</option>
+              <option value="50000">Fino a 50.000 €</option>
+              <option value="999999">Oltre 50.000 €</option>
+            </select></div>
+            <span class="hint">Lo trovi nell'attestazione ISEE, anche sull'app INPS Mobile. Le soglie sono quelle dei bonus principali.</span>
+          </div>
+          <div class="bn-q"><span class="flabel" id="bnq-casa">La casa dove vivi è</span>
+            <div class="seg" role="group" aria-labelledby="bnq-casa" data-q="casa">
+              <button type="button" data-v="affitto" aria-pressed="false">In affitto</button><button type="button" data-v="proprieta" aria-pressed="false">Di proprietà</button><button type="button" data-v="altro" aria-pressed="false">Altro</button>
+            </div>
+          </div>
+          <div class="bn-q"><span class="flabel">Lavoro e famiglia</span>
+            <div class="bn-checks">
+              <label><input type="checkbox" data-c="dip"><span>Io o l'altro genitore lavoriamo come dipendenti</span></label>
+              <label><input type="checkbox" data-c="aut"><span>Io o l'altro genitore lavoriamo in proprio, con partita IVA</span></label>
+              <label><input type="checkbox" data-c="mamma"><span>In famiglia c'è una mamma che lavora, con reddito da lavoro fino a 40.000 € l'anno</span></label>
+              <label><input type="checkbox" data-c="fragile"><span>In famiglia c'è una persona con disabilità o con più di 60 anni</span></label>
+              <label><input type="checkbox" data-c="over75"><span>In famiglia c'è chi ha più di 75 anni e una pensione fino a 28.000 €</span></label>
+              <label><input type="checkbox" data-c="auto"><span>Abbiamo un'auto a benzina o gasolio, anche ibrida, fino a 80 kW</span></label>
+            </div>
+          </div>
+          <div><button type="button" class="mini-btn" id="bnReset">Cancella le risposte</button></div>
+        </form>
+        <div class="bn-out" id="bnOut" aria-live="polite"></div>
+      </div>
+      <p class="t-note" id="bnVerif"></p>
+    </section>
+
+    <section class="panel" aria-labelledby="h-isee">
+      <header><h3 id="h-isee">Prima di tutto, l'ISEE</h3><p>Quasi tutti gli aiuti dipendono da qui. Senza ISEE molti bonus si perdono o arrivano al minimo.</p></header>
+      <ol class="isee-steps">
+        <li><div><b>Fai la DSU precompilata</b><span>Sul sito INPS o con l'app INPS Mobile, con SPID o CIE: redditi e conti sono già inseriti. In alternativa un CAF la fa gratis.</span></div></li>
+        <li><div><b>Rinnovala ogni anno</b><span>L'ISEE scade il 31 dicembre. Rinnovarla a gennaio evita di ricevere il minimo dell'assegno unico da marzo e di perdere lo sconto in bolletta.</span></div></li>
+        <li><div><b>Usa quello giusto</b><span>Per assegno unico, nido e bonus nuovi nati conta l'ISEE per le prestazioni familiari, che non conta l'assegno unico tra i redditi. Se il reddito è calato da poco, ad esempio per perdita del lavoro, chiedi l'ISEE corrente.</span></div></li>
+        <li><div><b>Controlla prima di inviare</b><span>Un errore nella DSU può far perdere un bonus o costringere a restituirlo. Le difformità vanno corrette subito.</span></div></li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="h-manovra" id="manovra">
+      <div class="section-head">
+        <h2 id="h-manovra">Manovra 2027: a che punto è</h2>
+        <p id="mvLede">Il governo ha presentato la legge di bilancio per il 2027. Finché il Parlamento non la approva, ogni misura è una proposta e può cambiare.</p>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <header><h3 id="h-iter">Le tappe in Parlamento</h3><p>Le date sono quelle annunciate e possono slittare.</p></header>
+          <div class="mv-count" id="mvCount"></div>
+          <ol class="mv-iter" id="mvIter"></ol>
+        </div>
+        <div class="panel" aria-labelledby="h-mvirpef">
+          <header><h3 id="h-mvirpef">Quanto cambierebbe la tua Irpef nel 2027</h3><p>Confronto tra le regole del 2026 e la proposta per il 2027, che porta il 33% fino a 55.000 € di reddito. Per un dipendente del settore privato, senza familiari a carico.</p></header>
+          <div class="fields">
+            <div class="field"><label for="mv-ral">Stipendio lordo annuo (RAL)</label><div class="input-wrap"><input id="mv-ral" type="number" inputmode="decimal" min="0" step="500" value="60000"><span class="unit">€</span></div></div>
+            <div class="field"><label for="mv-mens">Mensilità</label><div class="input-wrap"><select id="mv-mens"><option value="12">12</option><option value="13" selected>13</option><option value="14">14</option></select></div></div>
+          </div>
+          <div class="result" id="mvResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-misure">
+      <div class="section-head">
+        <h2 id="h-misure">Le misure, per chi le riguarda</h2>
+        <p>Le principali novità del disegno di legge di bilancio, in parole semplici. Ogni scheda riporta l'articolo, per controllare il testo ufficiale.</p>
+      </div>
+      <div class="filters" id="mvFiltri" role="group" aria-label="Per chi"></div>
+      <div class="mv-list" id="mvList"></div>
+      <p class="t-note" id="mvFonti"></p>
+    </section>
+
+    <section aria-labelledby="h-mvnews" id="mvNewsSez" hidden>
+      <div class="section-head"><h2 id="h-mvnews">Le ultime notizie su bonus e manovra</h2><p>Dai notiziari economici degli ultimi sette giorni, aggiornate due volte al giorno.</p></div>
+      <div class="news" id="mvNews"></div>
     </section>
   </div>
 
@@ -1613,6 +1814,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
     <div class="sheet-in">
       <div class="sheet-top"><div><div class="eyebrow">Eco Bussola</div><h2 id="moreTitle">Altre sezioni</h2></div><button type="button" class="x" data-close aria-label="Chiudi">✕</button></div>
       <nav class="more-list" aria-label="Altre sezioni">
+        <a href="#bonus" data-view="bonus"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-4-5.5-1.8C6 9 9.5 9 12 9zm0 0c1.5-3 5-4 5.5-1.8C18 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span><b>Bonus e manovra</b><small>Cosa ti spetta e le novità del 2027</small></span><span class="go">›</span></a>
         <a href="#cripto" data-view="cripto"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 7.5v9M10 7.5h3.2a2 2 0 010 4H10m0 0h3.6a2.3 2.3 0 010 4.6H10M11 6v1.5M11 16.1v1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span><b>Cripto</b><small>Mercato, famiglie, Bitcoin e due corsi</small></span><span class="go">›</span></a>
         <a href="#tutela" data-view="tutela"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.3-3 7.8-7 9.5-4-1.7-7-5.2-7-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.8 12l2.2 2.2 4.2-4.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Tutelarsi</b><small>Profilo di rischio, protezioni, truffe</small></span><span class="go">›</span></a>
         <a href="#fonti" data-view="fonti"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h9l5 5V19a.5.5 0 01-.5.5h-13A.5.5 0 015 19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 4.5V10h5M8.5 13.5h7M8.5 16.5h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span><b>Fonti</b><small>Siti ufficiali e fonti di questa edizione</small></span><span class="go">›</span></a>
@@ -1676,6 +1878,8 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 <script src="investire.js"></script>
 <script src="glossario.js"></script>
 <script src="calcoli.js"></script>
+<script src="bonus.js"></script>
+<script src="manovra.js"></script>
 <script src="archivio.js"></script>
 <script>
 (function () {
@@ -3900,6 +4104,184 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
     legaCampi("pens", ["pn-eta", "pn-uscita", "pn-gia", "pn-ral", "pn-cs", "pn-rv", "pn-vers", "pn-cap", "pn-rf", "pn-tfr"], renderPens);
   })();
 
+  /* ---------- BONUS E MANOVRA: risposte solo sul dispositivo, nessun invio ---------- */
+  (function () {
+    var B = window.ECO_BONUS, M = window.ECO_MANOVRA, C = window.ECO_CALC;
+    var ETA = ["attesa", "m3", "m3_9", "m10_17", "m18_20", "m21_29"], CHECK = ["dip", "aut", "mamma", "fragile", "over75", "auto"];
+    var STATO = { vigore: "In vigore", decreto: "Decreto da convertire", proposta: "Proposta 2027" };
+    var giorni = function (iso) { return Math.round((new Date(iso + "T00:00:00") - new Date(isoOggi() + "T00:00:00")) / 864e5); };
+    var quando = function (iso) { var g = giorni(iso); return g < 0 ? "scaduta" : g === 0 ? "oggi" : g === 1 ? "domani" : "tra " + g + " giorni"; };
+    var dataLunga = function (iso) { var p = iso.split("-"); return +p[2] + " " + ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"][+p[1] - 1] + " " + p[0]; };
+    var ris = store.get("bonus", {}) || {};
+    ris.eta = ris.eta || {};
+    function compilato() { return ris.figli != null || ris.isee != null || !!ris.casa || CHECK.some(function (k) { return ris[k]; }); }
+    function risposte() {
+      var r = { figli: ris.figli || 0, eta: {}, isee: ris.isee == null ? null : +ris.isee, casa: ris.casa || null };
+      ETA.forEach(function (k) { r.eta[k] = !!(ris.figli && ris.eta[k]); });
+      CHECK.forEach(function (k) { r[k] = !!ris[k]; });
+      return r;
+    }
+    function valuta() {
+      var r = risposte();
+      return (B ? B.bonus : []).map(function (b) { var e; try { e = b.verifica(r); } catch (err) { e = ["forse", ""]; } return { b: b, esito: e[0], nota: e[1] || "" }; });
+    }
+    function prossimaScadenza(lista) {
+      var oggi = isoOggi(), best = null;
+      lista.forEach(function (x) { var d = x.b.scadenza && x.b.scadenza.data; if (d && d >= oggi && (!best || d < best.d)) best = { d: d, b: x.b }; });
+      return best;
+    }
+
+    function sync() {
+      var f = $("#bnForm");
+      f.querySelectorAll('[data-q="figli"] button').forEach(function (b) { b.setAttribute("aria-pressed", String(ris.figli != null && +b.dataset.v === ris.figli)); });
+      f.querySelectorAll('[data-q="eta"] button').forEach(function (b) { b.setAttribute("aria-pressed", String(!!ris.eta[b.dataset.v])); });
+      f.querySelectorAll('[data-q="casa"] button').forEach(function (b) { b.setAttribute("aria-pressed", String(ris.casa === b.dataset.v)); });
+      $("#bnEtaQ").hidden = !ris.figli;
+      $("#bnIsee").value = ris.isee == null ? "" : String(ris.isee);
+      f.querySelectorAll("[data-c]").forEach(function (c) { c.checked = !!ris[c.dataset.c]; });
+    }
+
+    function card(x, aperta) {
+      var b = x.b, cls = b.stato === "proposta" ? "prop" : x.esito, sc = b.scadenza, oggi = isoOggi();
+      var scad = "";
+      if (sc) {
+        scad = '<p><b>Scadenza:</b> ' + esc(sc.testo) + (sc.data ? ' · <span class="num">' + esc(dataLunga(sc.data)) + '</span> (' + quando(sc.data) + ')' : '') + '</p>';
+      }
+      var add = sc && sc.data && sc.data >= oggi ? '<button type="button" class="mini-btn" data-add="' + esc(b.id) + '">Aggiungi alle mie scadenze</button>' : '';
+      return '<details class="bn-card ' + cls + '" data-b="' + esc(b.id) + '"' + (aperta ? ' open' : '') + '><summary><b>' + esc(b.nome) + '</b><span class="tg ' + b.stato + '">' + STATO[b.stato] + '</span><small>' + esc(b.importo.split(". ")[0].replace(/\.$/, "")) + '.</small></summary>' +
+        '<div class="body">' + (x.nota ? '<p class="nota">' + esc(x.nota) + '</p>' : '') +
+        '<p><b>Quanto:</b> ' + esc(b.importo) + '</p><p><b>A chi:</b> ' + esc(b.chi) + '</p><p><b>Come:</b> ' + esc(b.come) + '</p>' +
+        (b.attenzione ? '<p><b>Attenzione:</b> ' + esc(b.attenzione) + '</p>' : '') + scad +
+        '<div class="acts">' + add + '<a href="' + esc(b.fonte.u) + '" target="_blank" rel="noopener">' + esc(b.fonte.n) + ' ›</a></div>' +
+        '<span class="norma">' + esc(b.norma) + '</span></div></details>';
+    }
+
+    function render() {
+      if (!B) { $("#bnOut").innerHTML = '<p class="bn-empty">L\'elenco dei bonus non è disponibile: ricarica la pagina.</p>'; return; }
+      var tutti = valuta(), aperti = {};
+      document.querySelectorAll("#bnOut details[open]").forEach(function (d) { aperti[d.dataset.b] = 1; });
+      var vig = tutti.filter(function (x) { return x.b.stato !== "proposta"; }), prop = tutti.filter(function (x) { return x.b.stato === "proposta"; });
+      var si = vig.filter(function (x) { return x.esito === "si"; }), forse = vig.filter(function (x) { return x.esito === "forse"; }), no = vig.filter(function (x) { return x.esito === "no"; });
+      var propOk = prop.filter(function (x) { return x.esito !== "no"; }), propNo = prop.filter(function (x) { return x.esito === "no"; });
+      var h = "";
+      if (!compilato()) h += '<p class="bn-empty">Rispondi alle domande qui accanto: l\'elenco si aggiorna mentre scegli. Intanto ecco tutti gli aiuti in vigore.</p>';
+      var gruppo = function (tit, col, lista, vuoto) {
+        return '<div class="bn-group"><h3><i style="background:' + col + '"></i>' + tit + ' <span class="num" style="color:var(--muted);font-weight:500">' + lista.length + '</span></h3>' +
+          (lista.length ? lista.map(function (x) { return card(x, aperti[x.b.id]); }).join("") : '<p class="bn-empty">' + vuoto + '</p>') + '</div>';
+      };
+      if (compilato()) {
+        h += gruppo("Probabilmente ti spettano", "var(--up)", si, "Con le risposte date non risultano aiuti sicuri: guarda quelli da verificare.");
+        h += gruppo("Da verificare", "var(--warn)", forse, "Nessuno.");
+        if (propOk.length) h += gruppo("In arrivo con la manovra, se approvata", "#7B6CD9", propOk, "");
+        var altri = no.concat(propNo);
+        if (altri.length) h += '<details class="bn-altri"><summary>Gli altri ' + altri.length + ' aiuti, che con queste risposte non sembrano riguardarti</summary><div class="bn-group">' + altri.map(function (x) { return card(x, aperti[x.b.id]); }).join("") + '</div></details>';
+      } else {
+        h += gruppo("In vigore nel 2026", "var(--up)", vig.map(function (x) { return { b: x.b, esito: "forse", nota: "" }; }), "");
+        h += gruppo("Proposte della manovra 2027", "#7B6CD9", prop.map(function (x) { return { b: x.b, esito: "forse", nota: "" }; }), "");
+      }
+      $("#bnOut").innerHTML = h;
+      if (!$("#view-bonus").hidden) collegaGlossario($("#view-bonus"));
+      // riepilogo in alto e nella scheda Oggi
+      var ps = prossimaScadenza(compilato() ? si : vig);
+      var cnt = $("#bnCount");
+      if (compilato()) {
+        cnt.innerHTML = '<div><span class="n">' + si.length + '</span><small>aiuti che probabilmente ti spettano' + (forse.length ? ', più ' + forse.length + ' da verificare' : '') + (propOk.length ? ' e ' + propOk.length + ' in arrivo con la manovra' : '') + '</small></div>' +
+          (ps ? '<div class="row2"><span>Prossima scadenza</span><b>' + esc(fmtDate(ps.d)) + '</b><span>' + esc(ps.b.nome) + ' · ' + quando(ps.d) + '</span></div>' : '') +
+          '<div class="row2"><a href="#h-manovra">Segui la manovra 2027 ›</a></div>';
+      } else {
+        cnt.innerHTML = '<div><span class="n">' + vig.length + '</span><small>aiuti in vigore e ' + prop.length + ' proposte della manovra, spiegati in parole semplici</small></div><div class="row2"><span>Rispondi a sei domande: bastano 30 secondi.</span></div><div class="row2"><a href="#h-manovra">Segui la manovra 2027 ›</a></div>';
+      }
+      if (compilato() && si.length + forse.length) {
+        $("#bnTeaserT").textContent = si.length ? si.length + (si.length === 1 ? " aiuto che probabilmente ti spetta" : " aiuti che probabilmente ti spettano") : forse.length + " aiuti da verificare per la tua famiglia";
+        $("#bnTeaserS").textContent = ps ? "Prossima scadenza: " + ps.b.nome + ", " + quando(ps.d) + "." : "Apri per vedere importi, requisiti e come fare domanda.";
+      }
+      $("#bnVerif").textContent = "Regole verificate il " + B.verificati + " su leggi, circolari INPS e delibere ARERA. Le proposte della manovra diventano valide solo con la legge pubblicata in Gazzetta Ufficiale.";
+    }
+
+    if ($("#bnForm")) {
+      sync(); render();
+      $("#bnForm").addEventListener("click", function (e) {
+        var b = e.target.closest("button[data-v]"); if (!b) return;
+        var q = b.parentElement.dataset.q;
+        if (q === "figli") { ris.figli = ris.figli === +b.dataset.v ? null : +b.dataset.v; }
+        else if (q === "eta") { ris.eta[b.dataset.v] = !ris.eta[b.dataset.v]; }
+        else if (q === "casa") { ris.casa = ris.casa === b.dataset.v ? null : b.dataset.v; }
+        store.set("bonus", ris); sync(); render();
+      });
+      $("#bnForm").addEventListener("change", function (e) {
+        if (e.target.id === "bnIsee") ris.isee = e.target.value === "" ? null : +e.target.value;
+        else if (e.target.dataset.c) ris[e.target.dataset.c] = e.target.checked;
+        store.set("bonus", ris); render();
+      });
+      $("#bnReset").addEventListener("click", function () { ris = { eta: {} }; try { localStorage.removeItem("eco:bonus"); } catch (err) {} sync(); render(); avviso("Risposte cancellate da questo dispositivo."); });
+      $("#bnOut").addEventListener("click", function (e) {
+        var a = e.target.closest("[data-add]"); if (!a) return;
+        var b = B.bonus.filter(function (x) { return x.id === a.dataset.add; })[0]; if (!b || !b.scadenza || !b.scadenza.data) return;
+        var mie = store.get("scadenze", []), ev = b.nome + ": " + b.scadenza.testo.charAt(0).toLowerCase() + b.scadenza.testo.slice(1);
+        if (mie.some(function (m) { return m.data === b.scadenza.data && m.evento === ev; })) { avviso("È già tra le tue scadenze."); return; }
+        mie.push({ id: String(Date.now()), evento: ev, data: b.scadenza.data }); store.set("scadenze", mie); renderAgenda();
+        avviso("Aggiunta alle tue scadenze, in «Oggi». Da lì puoi metterla nel calendario.");
+      });
+    }
+
+    /* ---------- manovra: tappe, Irpef 2027, misure, notizie ---------- */
+    if (!M) { var sm = $("#manovra"); if (sm) sm.hidden = true; return; }
+    var oggi = isoOggi();
+    $("#mvIter").innerHTML = M.tappe.map(function (t) {
+      var st = t.fatto ? "fatto" : oggi >= t.data && oggi <= t.fine ? "ora" : oggi > t.fine ? "passata" : "prevista";
+      var lab = { fatto: "Fatto", ora: "In corso", passata: "Secondo il calendario annunciato", prevista: "Previsto" }[st];
+      var dt = t.data === t.fine ? fmtDate(t.data) : (+t.data.slice(8)) + "–" + fmtDate(t.fine);
+      return '<li class="' + st + '"><i class="pt" aria-hidden="true">' + (st === "fatto" ? "✓" : "") + '</i><time datetime="' + t.data + '">' + esc(dt) + '</time><span>' + esc(t.cosa) + '<small>' + lab + '</small></span></li>';
+    }).join("");
+    var gFine = giorni("2026-12-31");
+    $("#mvCount").innerHTML = gFine > 0 ? 'Mancano <b>' + gFine + '</b> giorni al 31 dicembre, termine per approvare la legge. Fino ad allora le misure sono proposte.'
+      : gFine === 0 ? 'Oggi è l\'ultimo giorno per approvare la legge di bilancio.' : 'Il termine del 31 dicembre è passato: le misure valgono solo se la legge è stata pubblicata in Gazzetta Ufficiale. Controlla le schede aggiornate.';
+    $("#mvLede").textContent = "Il governo ha presentato la legge di bilancio per il 2027, che vale " + M.valore + ". Finché il Parlamento non la approva, ogni misura è una proposta e può cambiare.";
+
+    // Irpef 2026 contro proposta 2027
+    var mvSalv = store.get("calc:manovra", {});
+    if (mvSalv["mv-ral"] != null) $("#mv-ral").value = mvSalv["mv-ral"];
+    if (mvSalv["mv-mens"] != null) $("#mv-mens").value = mvSalv["mv-mens"];
+    function renderMv() {
+      if (!C || !C.regole.proposta2027) { $("#mvResult").innerHTML = "<p>Calcolo non disponibile.</p>"; return; }
+      var ral = num("mv-ral"), mens = +$("#mv-mens").value;
+      var a = C.bustaPaga({ ral: ral, mensilita: mens, addizionali: 0 }), b = C.bustaPaga({ ral: ral, mensilita: mens, addizionali: 0, scaglioni: C.regole.proposta2027.scaglioni });
+      var d = b.nettoAnnuo - a.nettoAnnuo;
+      var row = function (x, y) { return '<div class="row"><span>' + x + '</span><span>' + y + '</span></div>'; };
+      $("#mvResult").innerHTML = '<div><small style="color:var(--muted)">Irpef in meno nel 2027, se la proposta passa</small><div class="big">' + eur(d) + '<small>all\'anno</small></div></div>' +
+        row("Netto al mese con le regole 2026", eur(a.nettoMese)) + row("Netto al mese con la proposta 2027", eur(b.nettoMese)) + row("Differenza al mese", "+" + eur(d / mens, 2)) +
+        '<p class="verdetto">' + (a.imponibile <= 50000 ? 'Con un reddito imponibile di circa ' + eur(a.imponibile) + ' non cambia nulla: la proposta riguarda solo la parte di reddito tra 50.000 e 55.000 €, che passerebbe dal 43% al 33%.'
+          : a.imponibile < 55000 ? 'Risparmi il 10% della parte di reddito sopra 50.000 €.' : 'Hai il risparmio massimo previsto, 500 € l\'anno.') +
+        ' Le addizionali non cambiano e non sono incluse.</p>';
+      store.set("calc:manovra", { "mv-ral": $("#mv-ral").value, "mv-mens": $("#mv-mens").value });
+    }
+    $("#mv-ral").addEventListener("input", renderMv); $("#mv-mens").addEventListener("change", renderMv); renderMv();
+
+    var PER = { famiglie: "Famiglie e figli", lavoro: "Lavoro e stipendi", casa: "Casa e affitti", pensioni: "Pensioni e anziani", auto: "Auto", risparmio: "Risparmio e investimenti", "partite-iva": "Partite IVA", altro: "Altro" };
+    var filtro = "tutte";
+    function renderMisure() {
+      var conti = {}; M.misure.forEach(function (m) { conti[m.per] = (conti[m.per] || 0) + 1; });
+      $("#mvFiltri").innerHTML = '<button type="button" data-f="tutte" aria-pressed="' + (filtro === "tutte") + '">Tutte</button>' + Object.keys(PER).filter(function (k) { return conti[k]; }).map(function (k) { return '<button type="button" data-f="' + k + '" aria-pressed="' + (filtro === k) + '">' + PER[k] + '</button>'; }).join("");
+      $("#mvList").innerHTML = M.misure.filter(function (m) { return filtro === "tutte" || m.per === filtro; }).map(function (m) {
+        return '<article class="mv-item"><header><h3>' + esc(m.titolo) + '</h3><span class="tg' + (m.stato === "decreto" ? " decreto" : "") + '">' + (m.stato === "decreto" ? "Decreto in vigore" : m.stato === "legge" ? "Approvata" : "Proposta") + '</span></header>' +
+          '<p>' + esc(m.testo) + '</p><div class="meta"><span>' + esc(PER[m.per]) + '</span><span>' + esc(m.art) + '</span>' + (m.link ? '<a href="' + esc(m.link) + '" target="_blank" rel="noopener">Testo ufficiale</a>' : '') + '</div>' +
+          (m.calc ? '<button type="button" class="mini-btn" data-j2="h-mvirpef">Calcola quanto cambia per te</button>' : '') + '</article>';
+      }).join("");
+    }
+    renderMisure();
+    $("#mvFiltri").addEventListener("click", function (e) { var b = e.target.closest("[data-f]"); if (!b) return; filtro = b.dataset.f; renderMisure(); collegaGlossario($("#view-bonus")); });
+    $("#mvList").addEventListener("click", function (e) { var b = e.target.closest("[data-j2]"); if (b) { var el = document.getElementById(b.dataset.j2); (el.closest(".panel") || el).scrollIntoView({ block: "start", behavior: "smooth" }); } });
+    $("#mvFonti").innerHTML = "Fonti: " + M.fonti.map(function (f) { return '<a href="' + esc(f.u) + '" target="_blank" rel="noopener">' + esc(f.n) + '</a>'; }).join(" · ") + ". Testo del disegno di legge approvato dal Consiglio dei ministri il 28 ottobre 2026, verificato il " + esc(M.verificata) + ".";
+
+    var NM = D.notizieManovra || [];
+    if (NM.length) {
+      $("#mvNewsSez").hidden = false;
+      $("#mvNews").innerHTML = NM.map(function (n) {
+        return '<article><i class="dot neutro" aria-hidden="true"></i><div><h3>' + esc(n.titolo) + '</h3>' + (n.testo ? '<p>' + esc(n.testo) + '</p>' : '') + '<a class="src" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.fonte) + '</a>' + (n.data ? '<time datetime="' + esc(n.data) + '">' + new Date(n.data).toLocaleString("it-IT", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Rome" }) + '</time>' : '') + '</div></article>';
+      }).join("");
+    }
+  })();
+
   /* ---------- condividere i risultati dei calcolatori ---------- */
   document.querySelectorAll("#view-strumenti .panel").forEach(function (pn) {
     var h = pn.querySelector(":scope > header"), ris = pn.querySelector(".result");
@@ -3945,6 +4327,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
     investire: [["h-lett", "Lettura critica"], ["h-flussi", "Dove va il denaro"], ["h-reale", "Rendimento reale"], ["h-prem", "Premi per il rischio"], ["h-storia", "La storia"], ["h-strum", "Strumenti"], ["h-cmp", "Confronto"], ["h-idea", "Metti alla prova"], ["h-diario", "Diario"], ["h-percorso", "Percorso"]],
     strumenti: [["h-busta", "Busta paga"], ["h-pac", "Piano di accumulo"], ["h-dep", "Deposito o BTP"], ["h-inf", "Inflazione"], ["h-mut", "Mutuo"], ["h-sur", "Surroga"], ["h-oro", "Oro"], ["h-auto", "Carburante"], ["h-fx", "Cambi"], ["h-rate", "Acquisti a rate"], ["h-casa", "Comprare o affittare"], ["h-pens", "Pensione"]],
     cripto: [["h-crtab", "Le prime 20"], ["h-crfam", "Famiglie"], ["h-btcdet", "Bitcoin"], ["h-btcsim", "Simulazione"], ["h-btcrisk", "Rischio"], ["h-btctax", "Tasse"], ["h-sats", "Satoshi"], ["h-crmodi", "Come investire"], ["h-pag", "Pagella"], ["h-corso2", "Oltre Bitcoin"], ["h-corso", "Corso Bitcoin"]],
+    bonus: [["h-trova", "Trova i bonus"], ["h-isee", "ISEE"], ["h-manovra", "Manovra 2027"], ["h-mvirpef", "Irpef 2027"], ["h-misure", "Le misure"], ["h-mvnews", "Notizie"]],
     tutela: [["h-quiz", "Profilo di rischio"], ["h-prot", "Protezioni"], ["h-truffe", "Truffe"], ["h-firma", "Prima di firmare"], ["h-verif", "Verifica chi ti propone"]]
   };
   function bersaglio(el) { return el.closest(".panel") || el.closest("section") || el; }
@@ -3980,7 +4363,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 
   /* ---------- ricerca interna ---------- */
   (function () {
-    var IDX = null, NOMI = { oggi: "Oggi", piano: "Il mio piano", investire: "Investire", strumenti: "Strumenti", cripto: "Cripto", tutela: "Tutelarsi", fonti: "Fonti" };
+    var IDX = null, NOMI = { oggi: "Oggi", piano: "Il mio piano", bonus: "Bonus e manovra", investire: "Investire", strumenti: "Strumenti", cripto: "Cripto", tutela: "Tutelarsi", fonti: "Fonti" };
     var norm = function (t) { return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[«»"]/g, ""); };
     var testoDi = function (t) { return Array.isArray(t) ? t.join(" ") : String(t || ""); };
     function costruisci() {
@@ -3996,6 +4379,8 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
       [[INV.lezioni, "invLessons", "investire", "Lezione · Investire"], [K.lezioni, "crLessons", "cripto", "Lezione · Oltre Bitcoin"], [window.ECO_BTC_LEZIONI, "lessons", "cripto", "Lezione · Bitcoin"]].forEach(function (g) {
         (g[0] || []).forEach(function (l, i) { out.push({ k: g[3], t: l.titolo, d: l.punto, x: testoDi(l.testo), go: function () { vai(g[2], g[1], function () { var el = document.querySelector("#" + g[1] + ' .lesson[data-l="' + i + '"]'); if (el) { el.open = true; el.scrollIntoView({ block: "start" }); } }); } }); });
       });
+      ((window.ECO_BONUS || {}).bonus || []).forEach(function (b) { out.push({ k: b.stato === "proposta" ? "Bonus · proposta 2027" : "Bonus", t: b.nome, d: b.importo, x: b.chi + " " + b.come + " " + b.cat, go: function () { vai("bonus", "h-trova", function () { var el = document.querySelector('.bn-card[data-b="' + b.id + '"]'); if (el) { var alt = el.closest(".bn-altri"); if (alt) alt.open = true; el.open = true; el.scrollIntoView({ block: "center" }); } }); } }); });
+      ((window.ECO_MANOVRA || {}).misure || []).forEach(function (m) { out.push({ k: "Manovra 2027", t: m.titolo, d: m.testo, go: function () { vai("bonus", "h-misure"); } }); });
       (K.famiglie || []).forEach(function (f) { out.push({ k: "Famiglia di cripto", t: f.nome, d: f.cosa, x: testoDi(f.attenzione), go: function () { vai("cripto", "h-crfam"); } }); });
       (window.ECO_PILLOLE || []).forEach(function (pp) { out.push({ k: "Pillola", t: pp[0], d: pp[1], pill: true }); });
       GLOS.forEach(function (g, i) { out.push({ k: "Glossario · " + g.c, t: g.t, d: g.d, x: (g.a || []).join(" "), pill: true, go: function () { chiudi(); apriParola(i); } }); });
@@ -4018,7 +4403,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
       });
       return h;
     }
-    var SUGG = ["mutuo", "inflazione", "ETF", "truffa", "BTP", "bollo", "fondo pensione", "Bitcoin", "conto deposito", "tasse"];
+    var SUGG = ["bonus", "manovra", "mutuo", "inflazione", "ETF", "truffa", "BTP", "bollo", "fondo pensione", "Bitcoin", "conto deposito", "tasse"];
     var res = [];
     function cerca() {
       var q = norm($("#searchIn").value).trim(), out = $("#searchOut");
@@ -4095,7 +4480,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
   if (!standalone && /^https?:$/.test(location.protocol)) $("#installHelp").hidden = false;
 
   /* ---------- navigazione ---------- */
-  var VIEWS = ["oggi", "piano", "investire", "strumenti", "cripto", "tutela", "fonti"];
+  var VIEWS = ["oggi", "piano", "bonus", "investire", "strumenti", "cripto", "tutela", "fonti"];
   function route() {
     var h = (location.hash || "#oggi").slice(1);
     if (h === "bitcoin") h = "cripto";
@@ -4103,7 +4488,7 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
     if (VIEWS.indexOf(h) < 0) { anchor = document.getElementById(h); h = anchor && anchor.closest(".view") ? anchor.closest(".view").id.replace("view-", "") : "oggi"; }
     VIEWS.forEach(function (v) { var el = document.getElementById("view-" + v); if (el) el.hidden = v !== h; });
     document.querySelectorAll(".tabs a, .bnav a, .more-list a").forEach(function (a) { if (a.dataset.view === h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
-    if (["cripto", "tutela", "fonti"].indexOf(h) >= 0) $("#moreBtn").setAttribute("aria-current", "page"); else $("#moreBtn").removeAttribute("aria-current");
+    if (["bonus", "cripto", "tutela", "fonti"].indexOf(h) >= 0) $("#moreBtn").setAttribute("aria-current", "page"); else $("#moreBtn").removeAttribute("aria-current");
     $("#hero").hidden = h !== "oggi";
     // i grafici delle sezioni nascoste vanno ridisegnati alla larghezza reale quando diventano visibili
     if (h === "strumenti") renderPac();

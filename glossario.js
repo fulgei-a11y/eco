@@ -125,7 +125,7 @@ window.ECO_GLOSSARIO = [
   { t: "Cuneo fiscale", a: ["taglio del cuneo"], c: "Tasse", d: "La differenza tra quanto costa un lavoratore all'azienda e quanto lui riceve netto. Il «taglio del cuneo» lascia più soldi in busta paga ai redditi medio-bassi." },
   { t: "Cedolare secca", a: [], c: "Tasse", d: "Una tassa fissa sugli affitti al posto dell'Irpef: 21% sui contratti liberi e 10% su quelli a canone concordato." },
   { t: "IMU", a: [], c: "Tasse", d: "L'imposta sugli immobili diversi dall'abitazione principale (salvo case di lusso). Si paga in due rate, a giugno e a dicembre." },
-  { t: "Tobin tax", a: [], c: "Tasse", d: "Un'imposta sugli acquisti di azioni di società italiane con capitalizzazione sopra 500 milioni: 0,1% in Borsa, 0,2% fuori Borsa." },
+  { t: "Tobin tax", a: [], c: "Tasse", d: "Un'imposta sugli acquisti di azioni di società italiane con capitalizzazione sopra 500 milioni: dal 2026 0,2% in Borsa e 0,4% fuori Borsa. La manovra 2027 propone di raddoppiarla ancora." },
   { t: "730", a: ["modello 730", "precompilata"], c: "Tasse", d: "La dichiarazione dei redditi più semplice per dipendenti e pensionati. Quella precompilata dall'Agenzia delle Entrate si controlla, si corregge e si invia online." },
   { t: "F24", a: [], c: "Tasse", d: "Il modulo per pagare tasse e contributi, anche dall'home banking." },
 
@@ -140,6 +140,12 @@ window.ECO_GLOSSARIO = [
   { t: "Montante contributivo", a: [], c: "Famiglia", d: "La somma di tutti i contributi versati e rivalutati. Moltiplicata per il coefficiente di trasformazione dà la pensione annua lorda." },
   { t: "Coefficiente di trasformazione", a: [], c: "Famiglia", d: "La percentuale che trasforma il montante in pensione annua. È più alta se vai in pensione più tardi e viene aggiornata ogni due anni in base alla speranza di vita." },
   { t: "RAL", a: ["retribuzione annua lorda"], c: "Famiglia", d: "Lo stipendio annuo lordo scritto nel contratto, prima di contributi e tasse." },
+  { t: "Legge di bilancio", a: ["manovra", "disegno di legge di bilancio"], c: "Tasse", d: "La legge con cui ogni anno il Parlamento decide tasse, bonus e spese dello Stato per l'anno dopo. Il governo la presenta in autunno e va approvata entro il 31 dicembre: fino ad allora le misure sono solo proposte." },
+  { t: "Decreto-legge", a: ["decreto legge"], c: "Tasse", d: "Una norma del governo che vale subito, ma il Parlamento deve convertirla in legge entro 60 giorni, anche cambiandola. Se non la converte, decade come se non fosse mai esistita." },
+  { t: "Fringe benefit", a: ["fringe benefits"], c: "Famiglia", d: "Beni e servizi che l'azienda dà al dipendente oltre allo stipendio, come buoni o rimborsi di bollette e affitto. Fino a un certo limite l'anno non sono tassati." },
+  { t: "Congedo parentale", a: [], c: "Famiglia", d: "Il periodo in cui un genitore dipendente può restare a casa con il figlio dopo il congedo obbligatorio. Alcuni mesi sono pagati all'80% dello stipendio, gli altri al 30%." },
+  { t: "Patronato", a: ["patronati"], c: "Famiglia", d: "Un ente riconosciuto dallo Stato che aiuta gratis a fare domande all'INPS: assegno unico, bonus, pensioni, congedi." },
+  { t: "Regime forfettario", a: ["forfettario", "forfettari"], c: "Tasse", d: "Un regime semplificato per partite IVA con ricavi bassi: si paga un'imposta unica del 15% (5% per i primi cinque anni) su una parte dei ricavi stabilita per legge, invece dell'Irpef." },
 
   // Tutela
   { t: "Consob", a: [], c: "Tutela", d: "L'autorità che vigila sulla Borsa e sugli intermediari finanziari. Pubblica l'elenco dei siti abusivi che fa oscurare." },
