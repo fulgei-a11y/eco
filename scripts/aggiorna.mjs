@@ -578,7 +578,7 @@ async function notizieManovra(giorno) {
   for (const [fonte, url] of [...RSS, ...RSS_FISCO]) tutte.push(...vociFeed(await leggiFeed(url), fonte));
   const limite = Date.parse(giorno) - 7 * 864e5, seen = new Set();
   return tutte
-    .filter((n) => PAROLE_MANOVRA.test(n.titolo + " " + n.descr) && (!n.data || Date.parse(n.data) >= limite))
+    .filter((n) => (PAROLE_MANOVRA.test(n.titolo) || /manovra|legge di bilancio/i.test(n.descr)) && (!n.data || Date.parse(n.data) >= limite))
     .filter((n) => { const k = n.titolo.toLowerCase().replace(/[^a-zà-ù0-9 ]/g, "").slice(0, 50); if (seen.has(k)) return false; seen.add(k); return true; })
     .sort((a, b) => (b.data || "").localeCompare(a.data || ""))
     .slice(0, 8)
