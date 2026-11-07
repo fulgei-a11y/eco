@@ -1,5 +1,5 @@
 /* Funzionamento offline: mostra sempre i dati più recenti disponibili, e l'ultima copia salvata quando manca la rete. */
-const VERSIONE = "eco-v10";
+const VERSIONE = "eco-v11";
 const BASE = ["./", "./index.html", "./data.js", "./pillole.js", "./bitcoin.js", "./investire.js", "./glossario.js", "./calcoli.js", "./bonus.js", "./manovra.js", "./archivio.js", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/favicon.png"];
 
 self.addEventListener("install", (e) => {

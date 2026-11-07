@@ -81,6 +81,12 @@ jobs:
           cp -r icons _site/
           touch _site/.nojekyll
 
+      - name: Imposta la password del sito
+        env:
+          # Facoltativo: senza segreto resta la password predefinita.
+          SITO_PASSWORD: ${{ secrets.SITO_PASSWORD }}
+        run: node scripts/password.mjs _site/index.html
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

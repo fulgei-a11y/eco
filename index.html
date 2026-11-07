@@ -4,6 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Eco Bussola</title>
+<!-- Non mostrare il sito nei motori di ricerca -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
+<script>
+/* Accesso con password semplice. Tiene lontani i curiosi, non è una protezione forte.
+   La password si cambia con il segreto SITO_PASSWORD su GitHub (vedi README). */
+var ECO_ACCESSO = { sale: "fd88593741cb1f9f16c495cf7fb9f65c", impronta: "b86a43a75ed2195f60f3077503f32c6450706e17eb850d91f3e3f1ec40e1ab8a", giri: 200000 };
+(function () {
+  var ok = false;
+  try { ok = localStorage.getItem("eco:accesso") === ECO_ACCESSO.impronta; } catch (e) {}
+  if (!ok) document.documentElement.classList.add("bloccato");
+})();
+</script>
+<style>
+html.bloccato body > :not(#lucchetto) { display: none !important; }
+#lucchetto { display: none; }
+html.bloccato #lucchetto { display: grid; min-height: 100vh; min-height: 100dvh; place-items: center; padding: 24px; box-sizing: border-box; background: #142238; color: #fff; font-family: "Atkinson Hyperlegible", system-ui, sans-serif; }
+#lucchetto form { width: 100%; max-width: 340px; display: grid; gap: 14px; text-align: center; }
+#lucchetto h1 { margin: 0; font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 1.7rem; }
+#lucchetto p { margin: 0; color: #C9D3E0; line-height: 1.45; }
+#lucchetto input { font: inherit; font-size: 1.05rem; padding: 12px 14px; border-radius: 12px; border: 1px solid #3A4C68; background: #0E1A2C; color: #fff; text-align: center; }
+#lucchetto button { font: inherit; font-weight: 700; font-size: 1.05rem; padding: 12px 14px; border-radius: 12px; border: 0; background: #E2A546; color: #142238; cursor: pointer; }
+#lucchetto .err { color: #FFB4A8; min-height: 1.4em; }
+</style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Il punto quotidiano su mercati, prezzi e risparmio, con strumenti per decidere dove spendere e come investire.">
 <meta name="theme-color" content="#142238">
@@ -901,9 +925,67 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 .gauge .arc { stroke-dasharray: var(--len) 999; animation: arc 1s cubic-bezier(.2,.8,.2,1) both .15s; }
 @keyframes arc { from { stroke-dasharray: 0 999; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ---------- pulsante PDF e stampa ---------- */
+.pdf-riga { display: flex; justify-content: flex-end; margin: -20px 0 -16px; }
+.pdf-btn { display: inline-flex; align-items: center; gap: 7px; font: inherit; font-size: .86rem; font-weight: 700; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.pdf-btn:hover { border-color: var(--accent); color: var(--accent); }
+.stampa-testa { display: none; }
+@media print {
+  @page { margin: 14mm 12mm; }
+  html, body { background: #fff !important; color: #142238 !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none !important; transition: none !important; }
+  .masthead, .bnav, .jump, .pdf-riga, footer, dialog, #lucchetto, .sec-tog svg, .stale-banner, .install-btn, .icon-btn, .toast { display: none !important; }
+  .stampa-testa { display: grid !important; gap: 2px; padding: 0 0 10px; margin-bottom: 14px; border-bottom: 2px solid #142238; font-size: 10pt; color: #586579; }
+  .stampa-testa b { font-size: 15pt; color: #142238; }
+  main.wrap { max-width: none !important; padding: 0 !important; margin: 0 !important; }
+  .view { gap: 18px !important; }
+  section.chiusa > :not(.section-head), section.chiusa > .section-head > :not(h2) { display: revert !important; }
+  .sec-tog { pointer-events: none; padding: 0 !important; border: 0 !important; background: none !important; }
+  .cards-4 > *, tr, figure, .chart-box, canvas, svg { break-inside: avoid; page-break-inside: avoid; }
+  .share-btn { display: none !important; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  canvas, svg, img { max-width: 100% !important; }
+  a { color: inherit; text-decoration: none; }
+  input, select, textarea { border: 1px solid #bbb !important; background: #fff !important; color: #142238 !important; }
+  .seg button:not([aria-pressed="true"]):not(.on) { opacity: .55; }
+}
 </style>
 </head>
 <body>
+
+<div id="lucchetto">
+  <form id="lucchettoForm" autocomplete="on">
+    <svg width="54" height="54" viewBox="0 0 34 34" aria-hidden="true" style="margin:0 auto"><circle cx="17" cy="17" r="15.5" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5"/><path d="M17 4.5 L21 17 L13 17 Z" fill="#E2A546"/><path d="M17 29.5 L13 17 L21 17 Z" fill="none" stroke="#fff" stroke-opacity=".5"/><circle cx="17" cy="17" r="2" fill="#fff"/></svg>
+    <h1>Eco Bussola</h1>
+    <p>Sito riservato. Scrivi la password per entrare: su questo dispositivo te la chiederà una volta sola.</p>
+    <input type="text" name="username" value="eco" autocomplete="username" hidden>
+    <input type="password" id="lucchettoPw" autocomplete="current-password" aria-label="Password" placeholder="Password" required>
+    <button type="submit">Entra</button>
+    <p class="err" id="lucchettoErr" aria-live="polite"></p>
+  </form>
+</div>
+<script>
+(function () {
+  var f = document.getElementById("lucchettoForm"); if (!f) return;
+  function hex(buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ("0" + b.toString(16)).slice(-2); }).join(""); }
+  function bytes(h) { var a = new Uint8Array(h.length / 2); for (var i = 0; i < a.length; i++) a[i] = parseInt(h.substr(i * 2, 2), 16); return a; }
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var err = document.getElementById("lucchettoErr"), pw = document.getElementById("lucchettoPw").value;
+    if (!window.crypto || !crypto.subtle) { err.textContent = "Apri il sito dall'indirizzo https per entrare."; return; }
+    err.textContent = "Controllo…";
+    crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"]).then(function (k) {
+      return crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: bytes(ECO_ACCESSO.sale), iterations: ECO_ACCESSO.giri }, k, 256);
+    }).then(function (b) {
+      if (hex(b) === ECO_ACCESSO.impronta) {
+        try { localStorage.setItem("eco:accesso", ECO_ACCESSO.impronta); } catch (x) {}
+        location.reload();
+      } else { err.textContent = "Password sbagliata, riprova."; document.getElementById("lucchettoPw").select(); }
+    }).catch(function () { err.textContent = "Qualcosa non ha funzionato, riprova."; });
+  });
+})();
+</script>
 
 <header class="masthead">
   <div class="wrap">
@@ -1855,6 +1937,9 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
           <div class="theme-toggle" role="group" aria-label="Dimensione del testo">
             <button type="button" data-testo="normale">Testo normale</button>
             <button type="button" data-testo="grande">Testo grande</button>
+          </div>
+          <div class="theme-toggle" role="group" aria-label="Accesso">
+            <button type="button" id="esciBtn" title="Su questo dispositivo la password verrà richiesta di nuovo">Esci</button>
           </div>
         </div>
       </div>
@@ -4500,6 +4585,59 @@ details.come ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
     else window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
+
+  /* ---------- uscita (la password verrà richiesta di nuovo) ---------- */
+  var esci = document.getElementById("esciBtn");
+  if (esci) esci.addEventListener("click", function () { try { localStorage.removeItem("eco:accesso"); } catch (e) {} location.reload(); });
+
+  /* ---------- salva la scheda come PDF (stampa del browser → "Salva come PDF") ---------- */
+  var NOMI = { oggi: "Oggi", piano: "Il mio piano", bonus: "Bonus e manovra", investire: "Investire", strumenti: "Strumenti", cripto: "Cripto", tutela: "Tutelarsi", fonti: "Fonti e glossario" };
+  var PDF_IC = '<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h7l4 4V17a.5.5 0 01-.5.5h-10A.5.5 0 015 17z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 8v6m0 0l-2.5-2.5M10 14l2.5-2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var statoStampa = null;
+  function oggiIt() { try { return new Date().toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" }); } catch (e) { return new Date().toISOString().slice(0, 10); } }
+  function preparaStampa() {
+    if (statoStampa) return;
+    var view = document.querySelector("main > .view:not([hidden])");
+    var v = view ? view.id.replace("view-", "") : "oggi";
+    statoStampa = { titolo: document.title, tema: document.documentElement.getAttribute("data-theme"), aperti: [] };
+    // nome del file PDF suggerito
+    document.title = "Eco Bussola - " + (NOMI[v] || v) + " - " + new Date().toISOString().slice(0, 10);
+    // stampa sempre a colori chiari
+    document.documentElement.setAttribute("data-theme", "light");
+    document.documentElement.classList.add("stampa");
+    // apre i riquadri a scomparsa della scheda, per averli nel PDF
+    if (view) view.querySelectorAll("details:not([open])").forEach(function (d) { d.open = true; statoStampa.aperti.push(d); });
+    var testa = document.getElementById("stampaTesta");
+    if (testa) testa.innerHTML = "<b>Eco Bussola · " + esc(NOMI[v] || v) + "</b><span>Salvato il " + esc(oggiIt()) + ". Informazioni generali, non consigli finanziari personalizzati.</span>";
+    // ridisegna i grafici della scheda dopo il cambio di colori
+    try { if (v === "strumenti") renderPac(); if (v === "piano") chartPatrimonio(); if (v === "cripto") { renderBitcoinGrafici(); crDisegna(); } if (v === "investire") invDisegna(); } catch (e) {}
+  }
+  function finisciStampa() {
+    if (!statoStampa) return;
+    var s = statoStampa; statoStampa = null;
+    document.title = s.titolo;
+    if (s.tema) document.documentElement.setAttribute("data-theme", s.tema); else document.documentElement.removeAttribute("data-theme");
+    document.documentElement.classList.remove("stampa");
+    s.aperti.forEach(function (d) { d.open = false; });
+    window.dispatchEvent(new Event("resize"));
+  }
+  window.addEventListener("beforeprint", preparaStampa);
+  window.addEventListener("afterprint", finisciStampa);
+  var testaStampa = document.createElement("div"); testaStampa.id = "stampaTesta"; testaStampa.className = "stampa-testa";
+  var mainEl = document.querySelector("main.wrap"); if (mainEl) mainEl.insertBefore(testaStampa, mainEl.firstChild);
+  VIEWS.forEach(function (v) {
+    var view = document.getElementById("view-" + v); if (!view) return;
+    var riga = document.createElement("div"); riga.className = "pdf-riga";
+    riga.innerHTML = '<button type="button" class="pdf-btn" title="Salva questa scheda in PDF per conservarla o condividerla">' + PDF_IC + "Salva " + esc(NOMI[v]) + " in PDF</button>";
+    var jump = view.querySelector(":scope > .jump");
+    if (jump) jump.after(riga); else view.insertBefore(riga, view.firstChild);
+    riga.querySelector("button").addEventListener("click", function () {
+      preparaStampa();
+      // un attimo per ridisegnare, poi la finestra di stampa: scegli "Salva come PDF"
+      setTimeout(function () { window.print(); }, 250);
+    });
+  });
+
   var tRes = null;
   window.addEventListener("resize", function () { clearTimeout(tRes); tRes = setTimeout(function () { renderPac(); chartPatrimonio(); renderBitcoinGrafici(); if (!$("#view-investire").hidden) invDisegna(); if (!$("#view-cripto").hidden) crDisegna(); }, 200); });
   route();
