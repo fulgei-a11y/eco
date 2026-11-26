@@ -49,8 +49,8 @@ jobs:
             echo "Nessuna novità."
             exit 0
           fi
-          git config user.name "eco"
-          git config user.email "eco@users.noreply.github.com"
+          git config user.name "anonimo"
+          git config user.email "noreply@anonimo.invalid"
           # Commit senza messaggio; riallineato a main a ogni tentativo, includendo solo i dati generati
           for i in 1 2 3; do
             git fetch -q origin main
